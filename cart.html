@@ -9,8 +9,6 @@
 @font-face {
   font-family: 'Aeropus UI II';
   src: url('dasfohlen1900.github.io/mini-word/assets/fonts/AeropusUIII-Regular.otf') format('woff2');
-  font-weight: 400;
-  font-style: normal;
 }
 
 body {
@@ -46,6 +44,21 @@ body {
   text-decoration: none;
 }
 
+#cartBadge {
+  display:inline-block;
+  background:#c00;
+  color:#fff;
+  font-size:0.7em;
+  width:18px;
+  height:18px;
+  line-height:18px;
+  text-align:center;
+  border-radius:50%;
+  vertical-align:top;
+  margin-left:5px;
+  transition: transform 0.2s ease;
+}
+
 /* Page Title */
 .page-header {
   text-align: center;
@@ -56,7 +69,7 @@ body {
 
 /* Container */
 .container {
-  max-width: 900px;
+  max-width: 950px;
   margin: 30px auto;
   background: #fff;
   padding: 20px;
@@ -89,18 +102,22 @@ th { background: #222; color: #fff; }
 }
 
 button {
-  margin-top: 20px;
-  padding: 12px 20px;
-  font-size: 1em;
+  margin-top: 10px;
+  padding: 8px 12px;
+  font-size: 0.9em;
   background: #111;
   color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-button:hover {
-  opacity: 0.85;
+button:hover { opacity: 0.85; }
+
+.qty-input {
+  width: 40px;
+  text-align: center;
+  font-size: 1em;
 }
 </style>
 </head>
@@ -108,7 +125,10 @@ button:hover {
 
 <header class="store-header">
   <a href="index.html" class="logo">Aeropus</a>
-  <a href="cart.html" class="cart">🛒</a>
+  <a href="cart.html" class="cart">
+    🛒
+    <span id="cartBadge">0</span>
+  </a>
 </header>
 
 <div class="page-header">
@@ -123,7 +143,9 @@ button:hover {
         <th>Speicher</th>
         <th>Farbe</th>
         <th>Zubehör</th>
+        <th>Stückzahl</th>
         <th>Preis</th>
+        <th>Aktion</th>
       </tr>
     </thead>
     <tbody>
@@ -137,7 +159,7 @@ button:hover {
 </div>
 
 <script>
-// Warenkorb laden
+// Warenkorb laden und Tabelle aufbauen
 function loadCart() {
   const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
   const tbody = document.querySelector("#cartTable tbody");
@@ -145,7 +167,7 @@ function loadCart() {
 
   let total = 0;
 
-  cart.forEach(item => {
+  cart.forEach((item, index) => {
     const tr = document.createElement("tr");
 
     const accessoriesText = item.accessories.length ? item.accessories.join(", ") : "-";
@@ -155,30 +177,71 @@ function loadCart() {
       <td>${item.storage}</td>
       <td>${item.color ? `<span class="color-circle" style="background:${item.color};"></span>` : "-"}</td>
       <td>${accessoriesText}</td>
+      <td>
+        <input type="number" class="qty-input" min="1" value="${item.qty || 1}" data-index="${index}">
+      </td>
       <td>${item.priceText}</td>
+      <td><button data-index="${index}" class="delete-btn">Löschen</button></td>
     `;
     tbody.appendChild(tr);
-
-    total += item.priceVIL;
+    total += (item.priceVIL * (item.qty || 1));
   });
 
   document.getElementById("total").textContent = `Gesamt: ${total} VIL (${(total*0.75).toFixed(2)} €)`;
+
+  updateCartBadge(false);
+
+  // EventListener für Menge ändern
+  document.querySelectorAll(".qty-input").forEach(input => {
+    input.addEventListener("change", e => {
+      const idx = e.target.dataset.index;
+      const newQty = parseInt(e.target.value);
+      if(newQty < 1) e.target.value = 1;
+      cart[idx].qty = parseInt(e.target.value);
+      localStorage.setItem("aeropusCart", JSON.stringify(cart));
+      loadCart(); // neu rendern
+    });
+  });
+
+  // EventListener für löschen
+  document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.addEventListener("click", e => {
+      const idx = e.target.dataset.index;
+      cart.splice(idx, 1);
+      localStorage.setItem("aeropusCart", JSON.stringify(cart));
+      loadCart();
+    });
+  });
 }
 
 // Checkout Demo
 function checkout() {
   alert("Danke für deinen Einkauf! \nDemo-Ende, kein echtes Bezahlen.");
   localStorage.removeItem("aeropusCart");
-  location.reload();
+  loadCart();
 }
 
 // Warenkorb leeren
 function clearCart() {
   localStorage.removeItem("aeropusCart");
-  location.reload();
+  loadCart();
 }
 
-// Initial
+// Badge aktualisieren
+function updateCartBadge(animated = true) {
+  const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+  const badge = document.getElementById("cartBadge");
+  let totalItems = 0;
+  cart.forEach(item => totalItems += item.qty || 1);
+  badge.textContent = totalItems;
+
+  if(animated && totalItems > 0) {
+    badge.style.transform = "scale(1.5)";
+    setTimeout(() => { badge.style.transform = "scale(1)"; }, 200);
+  }
+}
+
+// initial
 loadCart();
 </script>
 
