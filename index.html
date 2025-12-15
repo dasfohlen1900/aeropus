@@ -116,8 +116,33 @@ footer {
 
 <header class="store-header">
   <a href="index.html" class="logo">Aeropus</a>
-  <a href="cart.html" class="cart">🛒</a>
+
+  <a href="cart.html" class="cart">
+    🛒 
+    <span id="cart-badge" style="
+      background:#ff3b30;
+      color:white;
+      font-size:0.8em;
+      font-weight:bold;
+      padding:2px 6px;
+      border-radius:50%;
+      vertical-align:top;
+      margin-left:5px;
+    ">0</span>
+  </a>
 </header>
+
+<script>
+// Anzahl der Items aus LocalStorage auslesen
+function updateCartBadge() {
+  const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+  const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  document.getElementById("cart-badge").textContent = totalItems;
+}
+
+// Beim Laden ausführen
+updateCartBadge();
+</script>
 
 <div class="container">
   <div class="intro">
