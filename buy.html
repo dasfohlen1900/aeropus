@@ -4,23 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AeroPhone II Konfigurator</title>
+
 <style>
- @font-face {
-      font-family: 'Aeropus UI II';
-      src: url('dasfohlen1900.github.io/mini-word/assets/fonts/AeropusUIII-Regular.otf') format('woff2'),
-      font-weight: 400;
-      font-style: normal;
-    }
-body { font-family: 'Aeropus UI II'; Arial, sans-serif; background: #f4f4f4; color: #222; margin: 0; padding: 0; }
-header { background: #111; color: #fff; padding: 20px; text-align: center; }
-h1 { margin: 0; }
-.container { max-width: 800px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.2);}
-label { display: block; margin: 10px 0 5px; font-weight: bold; }
-select, input[type="checkbox"] { width: 100%; padding: 8px; font-size: 1em; margin-bottom: 15px; }
-.color-swatch { display: inline-block; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #000; margin-right: 5px; vertical-align: middle; cursor: pointer; transition: border 0.2s;}
-.color-swatch.selected { border: 3px solid #007bff; } /* blauer Ring */
-#price { font-size: 1.5em; font-weight: bold; margin-top: 20px; text-align: center; }
- .store-header {
+@font-face {
+  font-family: 'Aeropus UI II';
+  src: url('dasfohlen1900.github.io/mini-word/assets/fonts/AeropusUIII-Regular.otf') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Aeropus UI II', Arial, sans-serif;
+  background: #f4f4f4;
+  color: #222;
+  margin: 0;
+}
+
+/* Store Header */
+.store-header {
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -37,11 +38,6 @@ select, input[type="checkbox"] { width: 100%; padding: 8px; font-size: 1em; marg
   text-decoration: none;
   font-size: 1.4em;
   font-weight: bold;
-  letter-spacing: 0.5px;
-}
-
-.logo:hover {
-  opacity: 0.8;
 }
 
 .cart {
@@ -50,41 +46,104 @@ select, input[type="checkbox"] { width: 100%; padding: 8px; font-size: 1em; marg
   text-decoration: none;
 }
 
-.cart:hover {
-  opacity: 0.8;
+/* Page Header */
+.page-header {
+  background: #111;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+
+select,
+input[type="checkbox"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 1em;
+  margin-bottom: 15px;
+}
+
+.color-swatch {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 2px solid #000;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.color-swatch.selected {
+  border: 3px solid #007bff;
+}
+
+#price {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 20px;
+  text-align: center;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  font-size: 1.1em;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.85;
 }
 </style>
 </head>
+
 <body>
 
- <header class="store-header">
-
+<header class="store-header">
   <a href="index.html" class="logo">Aeropus</a>
-
-  <a href="cart.html" class="cart">
-    🛒
-  </a>
+  <a href="cart.html" class="cart">🛒</a>
 </header>
 
-<h1>AeroPhone II Konfigurator</h1>
-<p>Wähle Modell, Speicher, Farbe und Zubehör</p>
-</header>
+<div class="page-header">
+  <h1>AeroPhone II Konfigurator</h1>
+  <p>Wähle Modell, Speicher, Farbe und Zubehör</p>
+</div>
 
 <div class="container">
-<label for="model">Modell:</label>
+
+<label for="model">Modell</label>
 <select id="model">
   <option value="II">AeroPhone II</option>
   <option value="Pro">AeroPhone II Pro</option>
   <option value="Premium">AeroPhone II Premium</option>
 </select>
 
-<label for="storage">Speicher:</label>
+<label for="storage">Speicher</label>
 <select id="storage"></select>
 
-<label>Farbe:</label>
+<label>Farbe</label>
 <div id="colors"></div>
 
-<label>Zubehör:</label>
+<label>Zubehör</label>
 <div id="accessories">
   <label><input type="checkbox" value="50"> Schutzhülle (+50 VIL)</label>
   <label><input type="checkbox" value="30"> Displayschutz (+30 VIL)</label>
@@ -95,13 +154,16 @@ select, input[type="checkbox"] { width: 100%; padding: 8px; font-size: 1em; marg
 </div>
 
 <div id="price"></div>
+
+<button onclick="addToCart()">In den Warenkorb</button>
+
 </div>
 
 <script>
 const data = {
   II: {
     storage: ["128 GB", "256 GB", "512 GB"],
-    colors: ["#000","orange","#e5e5e5","#00bfa5","#ff007f","#ffff00"], // 6 Farben
+    colors: ["#000","orange","#e5e5e5","#00bfa5","#ff007f","#ffff00"],
     pricesVIL: [899, 999, 1099]
   },
   Pro: {
@@ -116,77 +178,65 @@ const data = {
   }
 };
 
-const vilToEuro = vil => (vil*0.75).toFixed(2) + " €";
+const vilToEuro = vil => (vil * 0.75).toFixed(2) + " €";
 
 const modelSelect = document.getElementById("model");
 const storageSelect = document.getElementById("storage");
 const colorsDiv = document.getElementById("colors");
-const accessories = document.querySelectorAll("#accessories input[type=checkbox]");
+const accessories = document.querySelectorAll("#accessories input");
 const priceDiv = document.getElementById("price");
 
 let selectedColorIndex = 0;
 
 function updateStorage() {
-  const model = modelSelect.value;
   storageSelect.innerHTML = "";
-  data[model].storage.forEach((s,i) => {
-    let option = document.createElement("option");
-    option.value = i;
-    option.textContent = s;
-    storageSelect.appendChild(option);
+  data[modelSelect.value].storage.forEach((s, i) => {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = s;
+    storageSelect.appendChild(opt);
   });
-  selectedColorIndex = 0; // Reset color selection
+  selectedColorIndex = 0;
   updateColors();
   updatePrice();
 }
 
 function updateColors() {
-  const model = modelSelect.value;
   colorsDiv.innerHTML = "";
-  data[model].colors.forEach((c, i) => {
-    const swatch = document.createElement("div");
-    swatch.className = "color-swatch";
-    swatch.style.background = c;
-    if(i === selectedColorIndex) swatch.classList.add("selected");
-    swatch.addEventListener("click", () => {
+  data[modelSelect.value].colors.forEach((c, i) => {
+    const sw = document.createElement("div");
+    sw.className = "color-swatch" + (i === selectedColorIndex ? " selected" : "");
+    sw.style.background = c;
+    sw.onclick = () => {
       selectedColorIndex = i;
-      updateColors(); // Highlight selected
+      updateColors();
       updatePrice();
-    });
-    colorsDiv.appendChild(swatch);
+    };
+    colorsDiv.appendChild(sw);
   });
 }
 
 function updatePrice() {
-  const model = modelSelect.value;
-  const storageIndex = storageSelect.value;
-  let vil = data[model].pricesVIL[storageIndex];
-  accessories.forEach(a => { if(a.checked) vil += parseInt(a.value); });
+  let vil = data[modelSelect.value].pricesVIL[storageSelect.value];
+  accessories.forEach(a => {
+    if (a.checked) vil += parseInt(a.value);
+  });
   priceDiv.textContent = `Preis: ${vil} VIL (${vilToEuro(vil)})`;
 }
 
-modelSelect.addEventListener("change", updateStorage);
-storageSelect.addEventListener("change", updatePrice);
-accessories.forEach(a => a.addEventListener("change", updatePrice));
 function addToCart() {
-  const model = modelSelect.value;
-  const storage = data[model].storage[storageSelect.value];
-  const priceText = priceDiv.textContent;
-
-  let priceVIL = data[model].pricesVIL[storageSelect.value];
-  accessories.forEach(a => { if (a.checked) priceVIL += parseInt(a.value); });
-
-  const selectedAccessories = [];
+  let priceVIL = data[modelSelect.value].pricesVIL[storageSelect.value];
   accessories.forEach(a => {
-    if (a.checked) selectedAccessories.push(a.parentElement.innerText);
+    if (a.checked) priceVIL += parseInt(a.value);
   });
 
   const item = {
-    model,
-    storage,
-    accessories: selectedAccessories,
+    model: modelSelect.value,
+    storage: data[modelSelect.value].storage[storageSelect.value],
+    color: data[modelSelect.value].colors[selectedColorIndex],
+    accessories: [...accessories].filter(a => a.checked).map(a => a.parentElement.innerText.trim()),
     priceVIL,
-    priceText
+    priceText: `Preis: ${priceVIL} VIL (${vilToEuro(priceVIL)})`
   };
 
   const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
@@ -196,7 +246,11 @@ function addToCart() {
   window.location.href = "cart.html";
 }
 
-updateStorage(); // initial
+modelSelect.onchange = updateStorage;
+storageSelect.onchange = updatePrice;
+accessories.forEach(a => a.onchange = updatePrice);
+
+updateStorage();
 </script>
 
 </body>
