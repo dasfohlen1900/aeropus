@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Warenkorb – Aeropus</title>
+<title>Warenkorb – Aeropus Store</title>
 
 <style>
 @font-face {
@@ -14,9 +14,9 @@
 }
 
 body {
-  margin: 0;
   font-family: 'Aeropus UI II', Arial, sans-serif;
   background: #f4f4f4;
+  margin: 0;
   color: #222;
 }
 
@@ -44,75 +44,143 @@ body {
   color: #fff;
   font-size: 1.4em;
   text-decoration: none;
-  opacity: 0.6;
-  cursor: default;
 }
 
-/* Content */
-.container {
-  max-width: 600px;
-  margin: 70px auto;
-  background: #fff;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+/* Page Title */
+.page-header {
   text-align: center;
-}
-
-.product {
-  padding: 15px 0;
-  border-bottom: 1px solid #ddd;
-}
-
-.notice {
-  margin: 25px 0;
   padding: 20px;
-  background: #f5f5f5;
-  border: 2px dashed #999;
-  border-radius: 10px;
+  background: #111;
+  color: #fff;
 }
 
-.notice strong {
-  display: block;
-  margin-bottom: 8px;
+/* Container */
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+th { background: #222; color: #fff; }
+
+.color-circle {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-left: 5px;
+  vertical-align: middle;
+  border: 1px solid #000;
 }
 
 button {
-  margin-top: 10px;
-  padding: 12px 25px;
+  margin-top: 20px;
+  padding: 12px 20px;
   font-size: 1em;
+  background: #111;
+  color: #fff;
   border: none;
   border-radius: 10px;
-  background: #aaa;
-  color: #fff;
-  cursor: not-allowed;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.85;
 }
 </style>
 </head>
-
 <body>
 
 <header class="store-header">
   <a href="index.html" class="logo">Aeropus</a>
-  <span class="cart">🛒</span>
+  <a href="cart.html" class="cart">🛒</a>
 </header>
 
-<div class="container">
-  <h1>🛒 Dein Warenkorb</h1>
-
-  <div class="product">
-    <strong>AeroPhone II</strong><br>
-    Konfigurierte Variante
-  </div>
-
-  <div class="notice">
-    <strong>Demo-Store</strong>
-    Dieser Store dient ausschließlich zur Präsentation.<br>
-    Ein Kauf oder Checkout ist nicht möglich.
-  </div>
-
-  <button>Zur Kasse gehen</button>
+<div class="page-header">
+  <h1>Warenkorb</h1>
 </div>
+
+<div class="container">
+  <table id="cartTable">
+    <thead>
+      <tr>
+        <th>Produkt</th>
+        <th>Speicher</th>
+        <th>Farbe</th>
+        <th>Zubehör</th>
+        <th>Preis</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <div id="total" style="text-align:right; font-weight:bold; font-size:1.2em; margin-top:15px;"></div>
+
+  <button onclick="checkout()">Weiter zur Kasse</button>
+  <button onclick="clearCart()" style="background:#c00;margin-left:10px;">Warenkorb leeren</button>
+</div>
+
+<script>
+// Warenkorb laden
+function loadCart() {
+  const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+  const tbody = document.querySelector("#cartTable tbody");
+  tbody.innerHTML = "";
+
+  let total = 0;
+
+  cart.forEach(item => {
+    const tr = document.createElement("tr");
+
+    const accessoriesText = item.accessories.length ? item.accessories.join(", ") : "-";
+
+    tr.innerHTML = `
+      <td>${item.model}</td>
+      <td>${item.storage}</td>
+      <td>${item.color ? `<span class="color-circle" style="background:${item.color};"></span>` : "-"}</td>
+      <td>${accessoriesText}</td>
+      <td>${item.priceText}</td>
+    `;
+    tbody.appendChild(tr);
+
+    total += item.priceVIL;
+  });
+
+  document.getElementById("total").textContent = `Gesamt: ${total} VIL (${(total*0.75).toFixed(2)} €)`;
+}
+
+// Checkout Demo
+function checkout() {
+  alert("Danke für deinen Einkauf! \nDemo-Ende, kein echtes Bezahlen.");
+  localStorage.removeItem("aeropusCart");
+  location.reload();
+}
+
+// Warenkorb leeren
+function clearCart() {
+  localStorage.removeItem("aeropusCart");
+  location.reload();
+}
+
+// Initial
+loadCart();
+</script>
 
 </body>
 </html>
