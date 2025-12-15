@@ -20,11 +20,52 @@ select, input[type="checkbox"] { width: 100%; padding: 8px; font-size: 1em; marg
 .color-swatch { display: inline-block; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #000; margin-right: 5px; vertical-align: middle; cursor: pointer; transition: border 0.2s;}
 .color-swatch.selected { border: 3px solid #007bff; } /* blauer Ring */
 #price { font-size: 1.5em; font-weight: bold; margin-top: 20px; text-align: center; }
+ .store-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #111;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+}
+
+.logo {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.4em;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.cart {
+  color: #fff;
+  font-size: 1.4em;
+  text-decoration: none;
+}
+
+.cart:hover {
+  opacity: 0.8;
+}
 </style>
 </head>
 <body>
 
 <header>
+ <header class="store-header">
+  <a href="index.html" class="logo">Aeropus</a>
+
+  <a href="cart.html" class="cart">
+    🛒
+  </a>
+</header>
+
 <h1>AeroPhone II Konfigurator</h1>
 <p>Wähle Modell, Speicher, Farbe und Zubehör</p>
 </header>
