@@ -317,30 +317,23 @@
 </footer>
 
 <script>
-    function updateCartBadge(animated = true) {
-        const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
-        const badge = document.getElementById("cartBadge");
-        let totalItems = 0;
+   <script>
+ function updateCartBadge(animated = true) {
+  const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+  const badge = document.getElementById("cartBadge");
+  let totalItems = 0;
+  cart.forEach(item => totalItems += item.qty || 1);
+  badge.textContent = totalItems;
 
-        // Menge für jedes Produkt im Warenkorb berechnen
-        cart.forEach(item => {
-            totalItems += item.quantity || 1; // Falls keine `quantity` existiert, 1 annehmen
-        });
+  if(animated && totalItems > 0) {
+    badge.style.transform = "scale(1.5)";
+    setTimeout(() => { badge.style.transform = "scale(1)"; }, 200);
+  }
+}
 
-        // Badge-Text aktualisieren
-        badge.textContent = totalItems;
+// Aufrufen beim Laden der Seite
+updateCartBadge(); 
 
-        // Animation für das Badge
-        if (animated && totalItems > 0) {
-            badge.style.transform = "scale(1.5)";
-            setTimeout(() => {
-                badge.style.transform = "scale(1)";
-            }, 200);
-        }
-    }
-
-    // Update Badge beim Laden der Seite
-    window.onload = updateCartBadge;
 </script>
 
 </body>
