@@ -129,9 +129,7 @@
     <header class="store-header">
   <a href="index.html" class="logo">Aeropus</a>
 
-  <a href="cart.html" class="cart">
-    🛒
-  </a>
+   <a href="cart.html" class="cart"> 🛒 <span id="cartBadge" style=" display:inline-block; background:#c00; color:#fff; font-size:0.7em; width:18px; height:18px; line-height:18px; text-align:center; border-radius:50%; vertical-align:top; margin-left:5px; transition: transform 0.2s ease; ">0</span> </a> 
 </header>
 </head>
 <body>
@@ -323,6 +321,20 @@
 <footer>
     &copy; 2025 Aeropus – Alle Rechte vorbehalten
 </footer>
+<script>
+    function updateCartBadge(animated = true) {
+  const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+  const badge = document.getElementById("cartBadge");
+  let totalItems = 0;
+  cart.forEach(item => totalItems += item.qty || 1);
+  badge.textContent = totalItems;
+
+  if(animated && totalItems > 0) {
+    badge.style.transform = "scale(1.5)";
+    setTimeout(() => { badge.style.transform = "scale(1)"; }, 200);
+  }
+}
+</script>
 
 </body>
 </html>
