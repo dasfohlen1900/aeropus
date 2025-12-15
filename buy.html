@@ -168,6 +168,33 @@ function updatePrice() {
 modelSelect.addEventListener("change", updateStorage);
 storageSelect.addEventListener("change", updatePrice);
 accessories.forEach(a => a.addEventListener("change", updatePrice));
+function addToCart() {
+  const model = modelSelect.value;
+  const storage = data[model].storage[storageSelect.value];
+  const priceText = priceDiv.textContent;
+
+  let priceVIL = data[model].pricesVIL[storageSelect.value];
+  accessories.forEach(a => { if (a.checked) priceVIL += parseInt(a.value); });
+
+  const selectedAccessories = [];
+  accessories.forEach(a => {
+    if (a.checked) selectedAccessories.push(a.parentElement.innerText);
+  });
+
+  const item = {
+    model,
+    storage,
+    accessories: selectedAccessories,
+    priceVIL,
+    priceText
+  };
+
+  const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+  cart.push(item);
+  localStorage.setItem("aeropusCart", JSON.stringify(cart));
+
+  window.location.href = "cart.html";
+}
 
 updateStorage(); // initial
 </script>
