@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aeropus Store – Zubehör</title>
+<style>
+@font-face {
+  font-family: 'Aeropus UI II';
+  src: url('dasfohlen1900.github.io/mini-word/assets/fonts/AeropusUIII-Regular.otf') format('woff2');
+}
+body {
+  font-family: 'Aeropus UI II', Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  color: #222;
+}
+/* Header */
+.store-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #111;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+}
+.logo {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+.cart {
+  color: #fff;
+  font-size: 1.4em;
+  text-decoration: none;
+}
+#cartBadge {
+  display:inline-block;
+  background:#c00;
+  color:#fff;
+  font-size:0.7em;
+  width:18px;
+  height:18px;
+  line-height:18px;
+  text-align:center;
+  border-radius:50%;
+  vertical-align:top;
+  margin-left:5px;
+  transition: transform 0.2s ease;
+}
+/* Page Header */
+.page-header {
+  text-align: center;
+  padding: 20px;
+  background: #111;
+  color: #fff;
+}
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 30px auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+  gap: 20px;
+}
+/* Card */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+}
+.card p {
+  margin: 5px 0;
+}
+.color-circle {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  vertical-align: middle;
+  margin-left: 5px;
+}
+.card button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  font-size: 0.95em;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.card button:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+
+<header class="store-header">
+  <a href="index.html" class="logo">Aeropus</a>
+  <a href="cart.html" class="cart">
+    🛒 <span id="cartBadge">0</span>
+  </a>
+</header>
+
+<div class="page-header">
+  <h1>Zubehör & Add-Ons</h1>
+  <p>Kabel, Docks, Stifte, Hüllen und mehr für dein Aeropus Gerät</p>
+</div>
+
+<div class="container" id="addonsContainer">
+  <!-- Cards werden per JS eingefügt -->
+</div>
+
+<script>
+// Add-ons Daten
+const addons = [
+  { name: "USB-C Kabel 1,5m", price: 20, color: "#000" },
+  { name: "Ladestation Dock", price: 60, color: "#fff" },
+  { name: "Stylus Stift", price: 80 },
+  { name: "Schutzhülle", price: 50, color: "#e5e5e5" },
+  { name: "Displayschutzfolie", price: 30 },
+  { name: "Powerbank 10000 mAh", price: 150 },
+  { name: "Earbuds Pro", price: 100 }
+];
+
+const vilToEuro = vil => (vil*0.75).toFixed(2) + " €";
+
+const container = document.getElementById("addonsContainer");
+
+addons.forEach((addon, index) => {
+  const div = document.createElement("div");
+  div.className = "card";
+  div.innerHTML = `
+    <h3>${addon.name}</h3>
+    <p>Preis: ${addon.price} VIL (${vilToEuro(addon.price)})</p>
+    ${addon.color ? `<p>Farbe: <span class="color-circle" style="background:${addon.color};"></span></p>` : ""}
+    <button data-index="${index}">Zum Einkäufskorb</button>
+  `;
+  container.appendChild(div);
+});
+
+// Badge aktualisieren
+function updateCartBadge() {
+  const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+  const badge = document.getElementById("cartBadge");
+  const totalItems = cart.reduce((sum,item)=>sum+(item.qty||1),0);
+  badge.textContent = totalItems;
+}
+
+// Button Listener
+document.querySelectorAll(".card button").forEach(btn=>{
+  btn.addEventListener("click", e=>{
+    const idx = e.target.dataset.index;
+    const addon = addons[idx];
+    const item = {
+      model: addon.name,
+      storage: "-",
+      color: addon.color || "-",
+      accessories: [],
+      priceVIL: addon.price,
+      priceText: `Preis: ${addon.price} VIL (${vilToEuro(addon.price)})`,
+      qty: 1
+    };
+    const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+    cart.push(item);
+    localStorage.setItem("aeropusCart", JSON.stringify(cart));
+    updateCartBadge();
+    alert(`${addon.name} wurde zum Einkäufskorb hinzugefügt.`);
+  });
+});
+
+// initial
+updateCartBadge();
+</script>
+
+</body>
+</html>
