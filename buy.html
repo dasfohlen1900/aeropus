@@ -241,6 +241,21 @@ function updatePrice() {
   });
   priceDiv.textContent = `Preis: ${vil} VIL (${vilToEuro(vil)})`;
 }
+function updateCartBadge(animated = true) {
+  const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+  const badge = document.getElementById("cartBadge");
+  badge.textContent = cart.length;
+
+  if(animated && cart.length > 0) {
+    badge.style.transform = "scale(1.5)";
+    setTimeout(() => {
+      badge.style.transform = "scale(1)";
+    }, 200);
+  }
+}
+
+// initial aufrufen
+updateCartBadge(); // Badge animiert aktualisieren anstatt ohne Animation beim Laden
 
 function addToCart() {
   let priceVIL = data[modelSelect.value].pricesVIL[storageSelect.value];
