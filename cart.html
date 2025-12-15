@@ -117,7 +117,12 @@ button:hover { opacity: 0.85; }
 .qty-input {
   width: 40px;
   text-align: center;
-  font-size: 1em;
+}
+
+.qty-btn {
+  padding: 4px 10px;
+  margin: 0 2px;
+  font-weight: bold;
 }
 </style>
 </head>
@@ -178,7 +183,9 @@ function loadCart() {
       <td>${item.color ? `<span class="color-circle" style="background:${item.color};"></span>` : "-"}</td>
       <td>${accessoriesText}</td>
       <td>
-        <input type="number" class="qty-input" min="1" value="${item.qty || 1}" data-index="${index}">
+        <button class="qty-btn" data-index="${index}" data-action="minus">-</button>
+        <input type="number" class="qty-input" min="1" max="10" value="${item.qty || 1}" data-index="${index}">
+        <button class="qty-btn" data-index="${index}" data-action="plus">+</button>
       </td>
       <td>${item.priceText}</td>
       <td><button data-index="${index}" class="delete-btn">Löschen</button></td>
@@ -191,19 +198,37 @@ function loadCart() {
 
   updateCartBadge(false);
 
-  // EventListener für Menge ändern
+  // Menge Input Listener
   document.querySelectorAll(".qty-input").forEach(input => {
     input.addEventListener("change", e => {
       const idx = e.target.dataset.index;
-      const newQty = parseInt(e.target.value);
-      if(newQty < 1) e.target.value = 1;
-      cart[idx].qty = parseInt(e.target.value);
+      let newQty = parseInt(e.target.value);
+      if(newQty < 1) newQty = 1;
+      if(newQty > 10) newQty = 10;
+      e.target.value = newQty;
+      cart[idx].qty = newQty;
       localStorage.setItem("aeropusCart", JSON.stringify(cart));
-      loadCart(); // neu rendern
+      loadCart();
     });
   });
 
-  // EventListener für löschen
+  // +- Buttons Listener
+  document.querySelectorAll(".qty-btn").forEach(btn => {
+    btn.addEventListener("click", e => {
+      const idx = e.target.dataset.index;
+      let action = e.target.dataset.action;
+      let qty = cart[idx].qty || 1;
+
+      if(action === "plus" && qty < 10) qty++;
+      if(action === "minus" && qty > 1) qty--;
+
+      cart[idx].qty = qty;
+      localStorage.setItem("aeropusCart", JSON.stringify(cart));
+      loadCart();
+    });
+  });
+
+  // Löschen Listener
   document.querySelectorAll(".delete-btn").forEach(btn => {
     btn.addEventListener("click", e => {
       const idx = e.target.dataset.index;
@@ -216,7 +241,7 @@ function loadCart() {
 
 // Checkout Demo
 function checkout() {
-  alert("Danke für deinen Einkauf! \nDemo-Ende, kein echtes Bezahlen.");
+  alert("Danke für deinen Einkauf!\nDemo-Ende, kein echtes Bezahlen.");
   localStorage.removeItem("aeropusCart");
   loadCart();
 }
