@@ -164,6 +164,22 @@ updateCartBadge();
 <footer>
   &copy; 2025 Aeropus – Alle Rechte vorbehalten
 </footer>
+<script>
+ function updateCartBadge(animated = true) {
+  const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+  const badge = document.getElementById("cartBadge");
+  badge.textContent = cart.length;
 
+  if(animated && cart.length > 0) {
+    badge.style.transform = "scale(1.5)";
+    setTimeout(() => {
+      badge.style.transform = "scale(1)";
+    }, 200);
+  }
+}
+
+// Aufrufen beim Laden der Seite
+updateCartBadge(); 
+</script>
 </body>
 </html>
