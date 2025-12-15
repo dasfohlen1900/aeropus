@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AeroBook Konfigurator</title>
+<style>
+@font-face {
+  font-family: 'Aeropus UI II';
+  src: url('dasfohlen1900.github.io/mini-word/assets/fonts/AeropusUIII-Regular.otf') format('woff2');
+}
+body { font-family:'Aeropus UI II', Arial, sans-serif; background:#f4f4f4; margin:0; color:#222; }
+.store-header {
+  position: sticky; top:0; background:#111; color:#fff; display:flex; justify-content:space-between; align-items:center; padding:15px 30px; z-index:1000;
+}
+.logo { color:#fff; text-decoration:none; font-size:1.4em; font-weight:bold; }
+.cart { color:#fff; font-size:1.4em; text-decoration:none; }
+#cartBadge { display:inline-block; background:#c00; color:#fff; font-size:0.7em; width:18px; height:18px; line-height:18px; text-align:center; border-radius:50%; vertical-align:top; margin-left:5px; transition: transform 0.2s ease; }
+.container { max-width:800px; margin:20px auto; background:#fff; padding:20px; border-radius:8px; box-shadow:0 0 15px rgba(0,0,0,0.2);}
+label { display:block; margin:10px 0 5px; font-weight:bold; }
+select, input[type="checkbox"] { width:100%; padding:8px; font-size:1em; margin-bottom:15px; }
+.color-swatch { display:inline-block; width:25px; height:25px; border-radius:50%; border:1px solid #000; margin-right:5px; vertical-align:middle; cursor:pointer; transition:border 0.2s; }
+.color-swatch.selected { border:3px solid #007bff; }
+#price { font-size:1.5em; font-weight:bold; margin-top:20px; text-align:center; }
+button { margin-top:10px; padding:10px 15px; font-weight:bold; border:none; border-radius:8px; cursor:pointer; background:#111; color:#fff; }
+button:hover { opacity:0.85; }
+</style>
+</head>
+<body>
+
+<header class="store-header">
+  <a href="index.html" class="logo">Aeropus</a>
+  <a href="cart.html" class="cart">🛒<span id="cartBadge">0</span></a>
+</header>
+
+<div class="container">
+<h1>AeroBook Konfigurator</h1>
+<p>Wähle Modell, RAM, Speicher, Farbe und Zubehör</p>
+
+<label for="model">Modell:</label>
+<select id="model">
+  <option value="AeroBook">AeroBook</option>
+  <option value="AeroBookPro">AeroBook Pro</option>
+</select>
+
+<label for="ram">RAM:</label>
+<select id="ram">
+  <option value="8">8 GB</option>
+  <option value="12">12 GB</option>
+  <option value="16">16 GB</option>
+  <option value="24">24 GB</option>
+</select>
+
+<label for="storage">Speicher:</label>
+<select id="storage"></select>
+
+<label>Farbe:</label>
+<div id="colors"></div>
+
+<label>Zubehör:</label>
+<div id="accessories">
+  <label><input type="checkbox" value="50"> Schutzhülle (+50 VIL)</label>
+  <label><input type="checkbox" value="30"> Displayschutz (+30 VIL)</label>
+  <label><input type="checkbox" value="100"> Docking Station (+100 VIL)</label>
+  <label><input type="checkbox" value="60"> Maus (+60 VIL)</label>
+  <label><input type="checkbox" value="150"> Tastatur (+150 VIL)</label>
+</div>
+
+<div id="price"></div>
+<button onclick="addToCart()">In den Warenkorb</button>
+</div>
+
+<script>
+const data = {
+  AeroBook: {
+    storage: ["256 GB","512 GB","1 TB"],
+    colors: ["#000","#fff"],
+    pricesVIL: [1299,1499,1799]
+  },
+  AeroBookPro: {
+    storage: ["256 GB","512 GB","1 TB","2 TB","4 TB"],
+    colors: ["#000","#fff"],
+    pricesVIL: [1799,1999,2299,2699,3199]
+  }
+};
+
+const ramPrices = {8:0,12:100,16:200,24:400}; // Aufpreis pro RAM
+
+const vilToEuro = vil => (vil*0.75).toFixed(2)+" €";
+
+const modelSelect = document.getElementById("model");
+const ramSelect = document.getElementById("ram");
+const storageSelect = document.getElementById("storage");
+const colorsDiv = document.getElementById("colors");
+const accessories = document.querySelectorAll("#accessories input[type=checkbox]");
+const priceDiv = document.getElementById("price");
+
+let selectedColorIndex = 0;
+
+function updateStorage() {
+  const model = modelSelect.value;
+  storageSelect.innerHTML="";
+  data[model].storage.forEach((s,i)=>{
+    let option=document.createElement("option");
+    option.value=i;
+    option.textContent=s;
+    storageSelect.appendChild(option);
+  });
+  selectedColorIndex=0;
+  updateColors();
+  updatePrice();
+}
+
+function updateColors() {
+  const model = modelSelect.value;
+  colorsDiv.innerHTML="";
+  data[model].colors.forEach((c,i)=>{
+    const swatch=document.createElement("div");
+    swatch.className="color-swatch";
+    swatch.style.background=c;
+    if(i===selectedColorIndex) swatch.classList.add("selected");
+    swatch.addEventListener("click",()=>{
+      selectedColorIndex=i;
+      updateColors();
+      updatePrice();
+    });
+    colorsDiv.appendChild(swatch);
+  });
+}
+
+function updatePrice() {
+  const model = modelSelect.value;
+  const storageIndex = storageSelect.value;
+  let vil = data[model].pricesVIL[storageIndex];
+  vil += ramPrices[parseInt(ramSelect.value)];
+  accessories.forEach(a=>{if(a.checked) vil+=parseInt(a.value);});
+  priceDiv.textContent=`Preis: ${vil} VIL (${vilToEuro(vil)})`;
+}
+
+modelSelect.addEventListener("change", updateStorage);
+storageSelect.addEventListener("change", updatePrice);
+ramSelect.addEventListener("change", updatePrice);
+accessories.forEach(a=>a.addEventListener("change", updatePrice));
+
+function addToCart() {
+  const model=modelSelect.value;
+  const storage=data[model].storage[storageSelect.value];
+  const ram=ramSelect.value+" GB";
+  const color=data[model].colors[selectedColorIndex];
+  const selectedAccessories=[];
+  accessories.forEach(a=>{if(a.checked) selectedAccessories.push(a.parentElement.innerText);});
+
+  let priceVIL=data[model].pricesVIL[storageSelect.value]+ramPrices[parseInt(ramSelect.value)];
+  accessories.forEach(a=>{if(a.checked) priceVIL+=parseInt(a.value);});
+  const priceText=`${priceVIL} VIL (${vilToEuro(priceVIL)})`;
+
+  const item={model, storage, ram, color, accessories:selectedAccessories, priceVIL, priceText, qty:1};
+
+  const cart=JSON.parse(localStorage.getItem("aeropusCart"))||[];
+  cart.push(item);
+  localStorage.setItem("aeropusCart", JSON.stringify(cart));
+
+  // Badge animieren
+  const badge=document.getElementById("cartBadge");
+  badge.textContent=cart.length;
+  badge.style.transform="scale(1.5)";
+  setTimeout(()=>{badge.style.transform="scale(1)";},200);
+
+  window.location.href="cart.html";
+}
+
+updateStorage(); // initial
+</script>
+
+</body>
+</html>
