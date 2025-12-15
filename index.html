@@ -168,13 +168,13 @@ updateCartBadge();
  function updateCartBadge(animated = true) {
   const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
   const badge = document.getElementById("cartBadge");
-  badge.textContent = cart.length;
+  let totalItems = 0;
+  cart.forEach(item => totalItems += item.qty || 1);
+  badge.textContent = totalItems;
 
-  if(animated && cart.length > 0) {
+  if(animated && totalItems > 0) {
     badge.style.transform = "scale(1.5)";
-    setTimeout(() => {
-      badge.style.transform = "scale(1)";
-    }, 200);
+    setTimeout(() => { badge.style.transform = "scale(1)"; }, 200);
   }
 }
 
