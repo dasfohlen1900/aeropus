@@ -91,7 +91,48 @@
         text-align: center;
         padding: 15px;
     }
+    .store-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #111;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+}
+
+.logo {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.4em;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.cart {
+  color: #fff;
+  font-size: 1.4em;
+  text-decoration: none;
+}
+
+.cart:hover {
+  opacity: 0.8;
+}
+
 </style>
+    <header class="store-header">
+  <a href="index.html" class="logo">Aeropus</a>
+
+  <a href="cart.html" class="cart">
+    🛒
+  </a>
+</header>
 </head>
 <body>
 
