@@ -1,12 +1,71 @@
-<!DOCTYPE HTML>
-<html>
-  <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weiterleitung...</title>
-  <meta http-equiv="refresh" content="0; URL=aerophone.html">
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aeropus Store</title>
+<style>
+@font-face {
+  font-family: 'Aeropus UI II';
+  src: url('dasfohlen1900.github.io/mini-word/assets/fonts/AeropusUIII-Regular.otf') format('woff2');
+}
+body {
+  font-family: 'Aeropus UI II', Arial, sans-serif;
+  margin:0; padding:0;
+  background:#f4f4f4; color:#222;
+}
+header {
+  background:#111; color:#fff;
+  padding:20px; text-align:center;
+}
+h1 { margin:0; font-size:2em; }
+.container { max-width:1200px; margin:auto; padding:20px; display:flex; flex-wrap:wrap; justify-content:space-around; gap:20px; }
+.card {
+  background:#fff; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2);
+  padding:20px; width:300px; text-align:center; transition:transform 0.3s;
+}
+.card:hover { transform:scale(1.03); }
+.card h2 { margin-top:0; }
+.card p { margin:10px 0; }
+.button {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color:white; font-size:16px; font-weight:bold;
+  padding:12px 20px; border:none; border-radius:12px;
+  cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.2);
+  text-decoration:none; display:inline-block; margin:5px 0;
+}
+.button:hover { opacity:0.85; }
+footer {
+  background:#111; color:#fff; text-align:center; padding:15px; margin-top:40px;
+}
+</style>
 </head>
 <body>
-<p>Du wirst weitergeleitet…</p>
+
+<header>
+  <h1>Aeropus Store</h1>
+  <p>Wähle dein AeroPhone oder AeroBook</p>
+</header>
+
+<div class="container">
+  <div class="card">
+    <h2>AeroPhone II Serie</h2>
+    <p>Smartphones in verschiedenen Modellen, Farben und Speichergrößen</p>
+    <a class="button" href="aerophone.html">Datenblatt</a>
+    <a class="button" href="buy.html">Kaufän</a>
+  </div>
+
+  <div class="card">
+    <h2>AeroBook Serie</h2>
+    <p>Leistungsstarke Laptops mit RAM- und Speicheroptionen, in Schwarz oder Weiß</p>
+    <a class="button" href="aerobook.html">Datenblatt</a>
+    <a class="button" href="buy-aerobook.html">Kaufän</a>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 Aeropus – Alle Rechte vorbehalten
+</footer>
+
 </body>
 </html>
