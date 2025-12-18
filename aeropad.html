@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AeroPad – Produktübersicht</title>
+<style>
+    @font-face {
+      font-family: 'Aeropus UI II';
+      src: url('dasfohlen1900.github.io/mini-word/assets/fonts/AeropusUIII-Regular.otf') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    .button {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+    body {
+        font-family: 'Aeropus UI II', Arial, sans-serif;
+        background: #f4f4f4;
+        color: #222;
+        margin: 0;
+        padding: 0;
+    }
+    header {
+        background: #111;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+    h1 { margin: 0; font-size: 2em; }
+    .container {
+        max-width: 1400px;
+        margin: auto;
+        padding: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 40px;
+        background: #fff;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+        font-size: 0.9em;
+    }
+    th {
+        background: #222;
+        color: #fff;
+        font-size: 1em;
+    }
+    tr:nth-child(even) { background: #f9f9f9; }
+    .model-title {
+        background: #333;
+        color: #fff;
+        font-weight: bold;
+        text-align: left;
+        padding-left: 15px;
+    }
+    .color-swatch {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin: 0 3px;
+        border-radius: 50%;
+        border: 1px solid #000;
+        vertical-align: middle;
+    }
+    .Black { background: #000; }
+    .Silver { background: #c0c0c0; }
+    .ProGraphite { background: #444; }
+    footer {
+        background: #111;
+        color: #fff;
+        text-align: center;
+        padding: 15px;
+    }
+    .store-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: #111;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+    }
+    .logo {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+    }
+    .cart {
+        color: #fff;
+        font-size: 1.4em;
+        text-decoration: none;
+    }
+</style>
+<header class="store-header">
+    <a href="index.html" class="logo">Aeropus</a>
+    <a href="cart.html" class="cart"> 🛒 
+        <span id="cartBadge" style="display:inline-block; background:#c00; color:#fff; font-size:0.7em; width:18px; height:18px; line-height:18px; text-align:center; border-radius:50%; vertical-align:top; margin-left:5px; transition: transform 0.2s ease;">0</span> 
+    </a> 
+</header>
+</head>
+<body>
+
+<header>
+    <h1>AeroPad & Krakosoft Tablets – Übersicht</h1>
+    <p>Alle Modelle, Speicheroptionen und Preise auf einen Blick</p>
+</header>
+
+<div class="container">
+    <table>
+        <tr>
+            <th>Modell</th>
+            <th>Speicher</th>
+            <th>Preis (VIL)</th>
+            <th>Preis (€)</th>
+            <th>Display</th>
+            <th>Chip / RAM</th>
+            <th>Akku</th>
+            <th>Extras</th>
+            <th>Gehäuse</th>
+            <th>Farben</th>
+        </tr>
+
+        <tr class="model-title"><td colspan="10">AeroPad Pro</td></tr>
+        <tr>
+            <td>AeroPad Pro</td>
+            <td>256/512/1024 GB</td>
+            <td>899 / 1099 / 1299</td>
+            <td>674,25 € / 824,25 € / 974,25 €</td>
+            <td>12.9" Retina</td>
+            <td>AeroCore Tab / 12-16 GB</td>
+            <td>10.000 mAh</td>
+            <td>Pro Stift inkl.</td>
+            <td>Aluminium</td>
+            <td><span class="color-swatch ProGraphite"></span><span class="color-swatch Silver"></span></td>
+        </tr>
+
+        <tr class="model-title"><td colspan="10">Krakosoft Tablets (ältere Generationen)</td></tr>
+        <tr>
+            <td>Tablet 10</td>
+            <td>64/128/256 GB</td>
+            <td>399 / 449 / 499</td>
+            <td>299,25 € / 336,75 € / 374,25 €</td>
+            <td>10" LCD</td>
+            <td>K-Core / 4 GB</td>
+            <td>6.000 mAh</td>
+            <td>–</td>
+            <td>Kunststoff</td>
+            <td><span class="color-swatch Black"></span></td>
+        </tr>
+        <tr>
+            <td>Tablet 20</td>
+            <td>64/128/256 GB</td>
+            <td>549 / 599 / 649</td>
+            <td>411,75 € / 449,25 € / 486,75 €</td>
+            <td>10.5" LCD</td>
+            <td>K-Core+ / 6 GB</td>
+            <td>7.000 mAh</td>
+            <td>–</td>
+            <td>Kunststoff</td>
+            <td><span class="color-swatch Black"></span></td>
+        </tr>
+        <tr>
+            <td>Tablet 30</td>
+            <td>128/256 GB</td>
+            <td>699 / 799</td>
+            <td>524,25 € / 599,25 €</td>
+            <td>11" LCD</td>
+            <td>K-Core X / 8 GB</td>
+            <td>8.000 mAh</td>
+            <td>–</td>
+            <td>Aluminium</td>
+            <td><span class="color-swatch Black"></span></td>
+        </tr>
+        <tr>
+            <td>K4</td>
+            <td>256/512 GB</td>
+            <td>899 / 1099</td>
+            <td>674,25 € / 824,25 €</td>
+            <td>11" IPS</td>
+            <td>K-Core X2 / 12 GB</td>
+            <td>8.500 mAh</td>
+            <td>–</td>
+            <td>Aluminium</td>
+            <td><span class="color-swatch Black"></span></td>
+        </tr>
+        <tr>
+            <td>K5</td>
+            <td>256/512 GB</td>
+            <td>1099 / 1299</td>
+            <td>824,25 € / 974,25 €</td>
+            <td>12" IPS</td>
+            <td>K-Core X3 / 16 GB</td>
+            <td>9.200 mAh</td>
+            <td>–</td>
+            <td>Aluminium</td>
+            <td><span class="color-swatch Black"></span></td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <a class="button" href="buy-aeropad.html">Jetzt kaufän</a>
+</div>
+
+<footer>
+    &copy; 2025 Aeropus – Alle Rechte vorbehalten
+</footer>
+
+<script>
+    function updateCartBadge(animated = true) {
+        const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+        const badge = document.getElementById("cartBadge");
+        let totalItems = 0;
+        cart.forEach(item => totalItems += item.quantity || 1);
+        badge.textContent = totalItems;
+        if(animated && totalItems > 0) {
+            badge.style.transform = "scale(1.5)";
+            setTimeout(() => badge.style.transform = "scale(1)", 200);
+        }
+    }
+    window.onload = updateCartBadge;
+</script>
+
+</body>
+</html>
