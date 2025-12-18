@@ -5,42 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Infos – Aeropus</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f5f5f5;
-    color: #222;
-  }
-  header {
-    background: #222;
-    color: #fff;
-    padding: 20px 40px;
-    text-align: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  }
-  header h1 {
-    margin: 0;
-    font-size: 2rem;
-  }
-  main {
-    padding: 20px 40px;
-    max-width: 800px;
-    margin: auto;
-  }
-  article {
-    background: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-  }
-  article h2 {
-    margin-top: 0;
-    color: #111;
-  }
-  article p {
-    line-height: 1.6;
-  }
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; margin:0; background:#f0f2f5; color:#333; }
+  header { background: linear-gradient(90deg,#222,#555); color:#fff; padding:40px 20px; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.2); }
+  header h1 { margin:0; font-size:2.5rem; letter-spacing:1px; }
+  main { max-width:900px; margin:40px auto; padding:0 20px; }
+  .article, .overview { background:#fff; padding:20px; margin-bottom:15px; border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,0.1); }
+  .article:hover, .overview:hover { transform:translateY(-2px); box-shadow:0 6px 15px rgba(0,0,0,0.15); transition:0.2s; }
+  a { text-decoration:none; color:#222; font-weight:bold; }
 </style>
 </head>
 <body>
@@ -49,26 +20,46 @@
   <h1>Infos & Artikel</h1>
 </header>
 
-<main id="articles">
-  <!-- Artikel werden hier eingefügt -->
+<main id="content">
+  <!-- Übersicht oder Artikel werden hier geladen -->
 </main>
 
 <script>
-// Artikel direkt im Code, absteigend sortiert
+// Liste der vorhandenen Artikel (nur IDs und Titel für Übersicht)
 const articles = [
-  { id: 8759, title: "Support", content: "So erreichen Sie unseren Support bei Fragen." },
-  { id: 8758, title: "Tipps & Tricks", content: "Praktische Tipps für Ihre Nutzung von Aeropus." },
-  { id: 8757, title: "Neuigkeiten", content: "Hier finden Sie alle Neuigkeiten und Updates." },
-  { id: 8756, title: "Willkommen bei Aeropus", content: "Dies ist der erste Informationsartikel auf Ihrer Seite." }
+  { id: 8759, title: "Support" },
+  { id: 8758, title: "Tipps & Tricks" },
+  { id: 8757, title: "Neuigkeiten" },
+  { id: 8756, title: "Willkommen bei Aeropus" }
 ];
 
-// Artikel ins HTML einfügen
-const container = document.getElementById('articles');
-articles.forEach(article => {
-  const el = document.createElement('article');
-  el.innerHTML = `<h2>${article.title} (ID: ${article.id})</h2><p>${article.content}</p>`;
-  container.appendChild(el);
-});
+const container = document.getElementById('content');
+
+// Prüfen, ob ?article= vorhanden ist
+const params = new URLSearchParams(window.location.search);
+const articleID = params.get('article');
+
+if(articleID){
+  // Anzeige eines einzelnen Artikels
+  const articleDiv = document.createElement('div');
+  articleDiv.className = 'article';
+  articleDiv.innerHTML = `<p>Lade Artikel ${articleID}…</p>`;
+  container.appendChild(articleDiv);
+
+  fetch(`assets/blog/${articleID}.html`)
+    .then(res => res.ok ? res.text() : Promise.reject("nicht gefunden"))
+    .then(html => { articleDiv.innerHTML = html })
+    .catch(() => { articleDiv.innerHTML = `<h2>Artikel ${articleID} nicht gefunden</h2>` });
+
+} else {
+  // Anzeige Übersicht
+  articles.forEach(a => {
+    const el = document.createElement('div');
+    el.className = 'overview';
+    el.innerHTML = `<a href="infos.html?article=${a.id}">${a.title} (ID: ${a.id})</a>`;
+    container.appendChild(el);
+  });
+}
 </script>
 
 </body>
