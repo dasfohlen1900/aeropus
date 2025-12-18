@@ -9,126 +9,31 @@
   font-family: 'Aeropus UI II';
   src: url('dasfohlen1900.github.io/mini-word/assets/fonts/AeropusUIII-Regular.otf') format('woff2');
 }
-body {
-  font-family: 'Aeropus UI II', Arial, sans-serif;
-  background: #f4f4f4;
-  margin: 0;
-  color: #222;
-}
-/* Header */
-.store-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: #111;
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
-}
-.logo {
-  color: #fff;
-  text-decoration: none;
-  font-size: 1.4em;
-  font-weight: bold;
-}
-.cart {
-  color: #fff;
-  font-size: 1.4em;
-  text-decoration: none;
-}
-#cartBadge {
-  display:inline-block;
-  background:#c00;
-  color:#fff;
-  font-size:0.7em;
-  width:18px;
-  height:18px;
-  line-height:18px;
-  text-align:center;
-  border-radius:50%;
-  vertical-align:top;
-  margin-left:5px;
-  transition: transform 0.2s ease;
-}
-/* Page Header */
-.page-header {
-  text-align: center;
-  padding: 20px;
-  background: #111;
-  color: #fff;
-}
-/* Container */
-.container {
-  max-width: 1200px;
-  margin: 30px auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
-  gap: 20px;
-}
-/* Card */
-.card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.card h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.2em;
-}
-.card p {
-  margin: 5px 0;
-}
-.color-circle {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 1px solid #000;
-  vertical-align: middle;
-  margin-left: 5px;
-}
-.card button {
-  margin-top: 10px;
-  padding: 10px 15px;
-  font-size: 0.95em;
-  background: #111;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.card button:hover { opacity: 0.85; }
-
-/* Overlay */
-#cartOverlay {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #111;
-    color: #fff;
-    padding: 15px 25px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-    z-index: 2000;
-}
+body { font-family: 'Aeropus UI II', Arial, sans-serif; background: #f4f4f4; margin:0; color:#222; }
+.store-header { position: sticky; top:0; z-index:1000; background:#111; color:#fff; display:flex; justify-content:space-between; align-items:center; padding:15px 30px; }
+.logo { color:#fff; text-decoration:none; font-size:1.4em; font-weight:bold; }
+.cart { color:#fff; font-size:1.4em; text-decoration:none; }
+#cartBadge { display:inline-block; background:#c00; color:#fff; font-size:0.7em; width:18px; height:18px; line-height:18px; text-align:center; border-radius:50%; vertical-align:top; margin-left:5px; transition: transform 0.2s ease; }
+.page-header { text-align:center; padding:20px; background:#111; color:#fff; }
+.container { max-width: 1200px; margin:30px auto; display:grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap:20px; }
+.card { background:#fff; border-radius:12px; padding:20px; box-shadow:0 10px 25px rgba(0,0,0,0.1); display:flex; flex-direction:column; justify-content:space-between; }
+.card h3 { margin:0 0 10px 0; font-size:1.2em; }
+.card p { margin:5px 0; }
+.color-circle { display:inline-block; width:20px; height:20px; border-radius:50%; border:1px solid #000; vertical-align:middle; margin-left:5px; }
+.card button { margin-top:10px; padding:10px 15px; font-size:0.95em; background:#111; color:#fff; border:none; border-radius:8px; cursor:pointer; }
+.card button:hover { opacity:0.85; }
+#cartOverlay { position:fixed; bottom:20px; right:20px; background:#111; color:#fff; padding:15px 25px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.3); opacity:0; pointer-events:none; transition:opacity 0.4s ease; z-index:2000; }
+.pagination { text-align:center; margin:20px 0; }
+.pagination button { margin:0 5px; padding:8px 12px; font-size:1em; border:none; border-radius:5px; background:#111; color:#fff; cursor:pointer; }
+.pagination button:hover { opacity:0.8; }
+.pagination button.active { background:#007bff; }
 </style>
 </head>
 <body>
 
 <header class="store-header">
   <a href="index.html" class="logo">Aeropus</a>
-  <a href="cart.html" class="cart">
-    🛒 <span id="cartBadge">0</span>
-  </a>
+  <a href="cart.html" class="cart">🛒 <span id="cartBadge">0</span></a>
 </header>
 
 <div class="page-header">
@@ -136,89 +41,109 @@ body {
   <p>Kabel, Docks, Stifte, Hüllen und mehr für dein Aeropus Gerät</p>
 </div>
 
-<div class="container" id="addonsContainer">
-  <!-- Cards werden per JS eingefügt -->
-</div>
-
-<!-- Overlay -->
+<div class="container" id="addonsContainer"></div>
+<div class="pagination" id="pagination"></div>
 <div id="cartOverlay"></div>
 
 <script>
-// Add-ons Daten
+// --- Addons-Daten (24 Items) ---
 const addons = [
-  { name: "USB-C Kabel 1,5m", price: 20, color: "#000" },
-  { name: "Ladestation Dock", price: 60, color: "#fff" },
-  { name: "Stylus Stift", price: 80 },
-  { name: "Schutzhülle", price: 50, color: "#e5e5e5" },
-  { name: "Displayschutzfolie", price: 30 },
-  { name: "Powerbank 10000 mAh", price: 150 },
-  { name: "Earbuds Pro", price: 100 },
-  { name: "Pro Stift", price: 120, color: "#444" },
-  { name: "Magnetisches Ladepad", price: 90 },
-  { name: "USB-C auf Lightning Kabel", price: 25 },
-  { name: "Multi-Port Adapter", price: 75 }
+  {name:"USB-C Kabel 1,5m", price:20, color:"#000"},
+  {name:"USB-C Kabel 2m", price:25, color:"#000"},
+  {name:"Ladestation Dock", price:60, color:"#fff"},
+  {name:"Dock mit Wireless Charging", price:80, color:"#c0c0c0"},
+  {name:"Stylus Stift Standard", price:80, color:"#444"},
+  {name:"Stylus Stift Pro", price:120, color:"#444"},
+  {name:"Schutzhülle Schwarz", price:50, color:"#000"},
+  {name:"Schutzhülle Transparent", price:55, color:"#e5e5e5"},
+  {name:"Displayschutzfolie", price:30},
+  {name:"Powerbank 10000 mAh", price:150, color:"#00bfa5"},
+  {name:"Powerbank 20000 mAh", price:250, color:"#00bfa5"},
+  {name:"Earbuds Standard", price:100, color:"#fff"},
+  {name:"Earbuds Pro", price:150, color:"#fff"},
+  {name:"USB-C auf Lightning Adapter", price:35},
+  {name:"KFZ-Ladegerät", price:40, color:"#000"},
+  {name:"Autohalterung", price:70, color:"#222"},
+  {name:"Bluetooth Lautsprecher", price:120, color:"#ff007f"},
+  {name:"Externe SSD 512GB", price:200, color:"#444"},
+  {name:"Externe SSD 1TB", price:350, color:"#444"},
+  {name:"Tragetasche Tablet/Phone", price:60, color:"#a0d8ef"},
+  {name:"USB Hub 4-Port", price:45, color:"#000"},
+  {name:"Kopfhörer Over-Ear", price:90, color:"#000"},
+  {name:"Kamera Objektiv Clip", price:70, color:"#222"},
+  {name:"MicroSD 256GB", price:50, color:"#000"}
 ];
 
-const vilToEuro = vil => (vil*0.75).toFixed(2) + " €";
-
+const itemsPerPage = 8;
+const vilToEuro = vil => (vil*0.75).toFixed(2)+" €";
 const container = document.getElementById("addonsContainer");
+const paginationDiv = document.getElementById("pagination");
 
-// Cards erstellen
-addons.forEach((addon, index) => {
-  const div = document.createElement("div");
-  div.className = "card";
-  div.innerHTML = `
-    <h3>${addon.name}</h3>
-    <p>Preis: ${addon.price} VIL (${vilToEuro(addon.price)})</p>
-    ${addon.color ? `<p>Farbe: <span class="color-circle" style="background:${addon.color};"></span></p>` : ""}
-    <button data-index="${index}">Zum Einkäufskorb</button>
-  `;
-  container.appendChild(div);
-});
-
-// Overlay-Funktion
-function showOverlay(message, duration = 2000) {
-    const overlay = document.getElementById("cartOverlay");
-    overlay.textContent = message;
-    overlay.style.opacity = "1";
-    overlay.style.pointerEvents = "auto";
-    setTimeout(() => {
-        overlay.style.opacity = "0";
-        overlay.style.pointerEvents = "none";
-    }, duration);
+// --- Overlay ---
+function showOverlay(message,duration=2000){
+  const overlay=document.getElementById("cartOverlay");
+  overlay.textContent=message;
+  overlay.style.opacity="1";
+  overlay.style.pointerEvents="auto";
+  setTimeout(()=>{overlay.style.opacity="0"; overlay.style.pointerEvents="none";},duration);
 }
 
-// Badge aktualisieren
-function updateCartBadge() {
-  const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+// --- Badge ---
+function updateCartBadge(){
+  const cart = JSON.parse(localStorage.getItem("aeropusCart"))||[];
   const badge = document.getElementById("cartBadge");
   const totalItems = cart.reduce((sum,item)=>sum+(item.qty||1),0);
   badge.textContent = totalItems;
 }
 
-// Button Listener
-document.querySelectorAll(".card button").forEach(btn=>{
-  btn.addEventListener("click", e=>{
-    const idx = e.target.dataset.index;
-    const addon = addons[idx];
-    const item = {
-      model: addon.name,
-      storage: "-",
-      color: addon.color || "-",
-      accessories: [],
-      priceVIL: addon.price,
-      priceText: `Preis: ${addon.price} VIL (${vilToEuro(addon.price)})`,
-      qty: 1
-    };
-    const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
-    cart.push(item);
-    localStorage.setItem("aeropusCart", JSON.stringify(cart));
-    updateCartBadge();
-    showOverlay(`${addon.name} wurde zum Einkaufswagen hinzugefügt.`);
-  });
-});
+// --- Render Page ---
+function renderPage(page=1){
+  container.innerHTML="";
+  const start=(page-1)*itemsPerPage;
+  const pageItems=addons.slice(start,start+itemsPerPage);
 
-// initial
+  pageItems.forEach((addon,index)=>{
+    const div=document.createElement("div");
+    div.className="card";
+    div.innerHTML=`
+      <h3>${addon.name}</h3>
+      <p>Preis: ${addon.price} VIL (${vilToEuro(addon.price)})</p>
+      ${addon.color?`<p>Farbe: <span class="color-circle" style="background:${addon.color};"></span></p>`:""}
+      <button data-index="${start+index}">Zum Einkäufskorb</button>
+    `;
+    container.appendChild(div);
+  });
+
+  // Buttons Listener
+  document.querySelectorAll(".card button").forEach(btn=>{
+    btn.addEventListener("click",e=>{
+      const idx=e.target.dataset.index;
+      const addon=addons[idx];
+      const item={model:addon.name,storage:"-",color:addon.color||"-",accessories:[],priceVIL:addon.price,priceText:`Preis: ${addon.price} VIL (${vilToEuro(addon.price)})`,qty:1};
+      const cart=JSON.parse(localStorage.getItem("aeropusCart"))||[];
+      cart.push(item);
+      localStorage.setItem("aeropusCart",JSON.stringify(cart));
+      updateCartBadge();
+      showOverlay(`${addon.name} wurde zum Einkaufswagen hinzugefügt.`);
+    });
+  });
+
+  // Pagination rendern
+  const totalPages = Math.ceil(addons.length/itemsPerPage);
+  paginationDiv.innerHTML="";
+  for(let i=1;i<=totalPages;i++){
+    const btn=document.createElement("button");
+    btn.textContent=i;
+    if(i===page) btn.classList.add("active");
+    btn.onclick=()=>{renderPage(i); window.history.replaceState(null,null,`?page=${i}`);}
+    paginationDiv.appendChild(btn);
+  }
+}
+
+// --- Aktuelle Seite aus URL ---
+const urlParams=new URLSearchParams(window.location.search);
+let currentPage=parseInt(urlParams.get("page"))||1;
+renderPage(currentPage);
 updateCartBadge();
 </script>
 
