@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AeroPad / Krakosoft Tablet Konfigurator</title>
+<style>
+@font-face {
+  font-family: 'Aeropus UI II';
+  src: url('dasfohlen1900.github.io/mini-word/assets/fonts/AeropusUIII-Regular.otf') format('woff2');
+}
+body {
+  font-family: 'Aeropus UI II', Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  color: #222;
+}
+.store-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #111;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+}
+.logo { color:#fff; text-decoration:none; font-size:1.4em; font-weight:bold;}
+.cart { color:#fff; font-size:1.4em; text-decoration:none;}
+.page-header { background:#111; color:#fff; text-align:center; padding:20px;}
+.container { max-width:800px; margin:30px auto; background:#fff; padding:20px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+label { display:block; margin:10px 0 5px; font-weight:bold;}
+select, input[type="checkbox"] { width:100%; padding:8px; margin-bottom:15px; font-size:1em;}
+.color-swatch { display:inline-block; width:25px; height:25px; border-radius:50%; border:2px solid #000; margin-right:6px; cursor:pointer;}
+.color-swatch.selected { border:3px solid #007bff;}
+#price { font-size:1.5em; font-weight:bold; text-align:center; margin-top:20px;}
+button { width:100%; padding:15px; margin-top:20px; font-size:1.1em; background:#111; color:#fff; border:none; border-radius:10px; cursor:pointer;}
+button:hover { opacity:0.85;}
+</style>
+</head>
+<body>
+
+<header class="store-header">
+  <a href="index.html" class="logo">Aeropus</a>
+  <a href="cart.html" class="cart">
+    🛒
+    <span id="cartBadge" style="display:inline-block;background:#c00;color:#fff;font-size:0.7em;width:18px;height:18px;line-height:18px;text-align:center;border-radius:50%;vertical-align:top;margin-left:5px;transition: transform 0.2s ease;">0</span>
+  </a>
+</header>
+
+<div class="page-header">
+  <h1>Tablet Konfigurator</h1>
+  <p>Wähle Modell, Speicher, Farbe und Zubehör</p>
+</div>
+
+<div class="container">
+  <label for="model">Modell</label>
+  <select id="model"></select>
+
+  <label for="storage">Speicher</label>
+  <select id="storage"></select>
+
+  <label>Farbe</label>
+  <div id="colors"></div>
+
+  <label>Zubehör</label>
+  <div id="accessories"></div>
+
+  <div id="price"></div>
+
+  <button onclick="addToCart()">In den Warenkorb</button>
+</div>
+
+<script>
+const data = {
+  "AeroPad Pro": {
+    storage:["128 GB","256 GB","512 GB"],
+    colors:["#000","#444","#00bfa5"],
+    pricesVIL:[799,899,1099],
+    accessories:[
+      {name:"Pro Stift", price:80},
+      {name:"Hülle", price:50},
+      {name:"Displayschutz", price:30}
+    ]
+  },
+  "AeroPad 30": {
+    storage:["256 GB","512 GB"],
+    colors:["#000","#c0c0c0"],
+    pricesVIL:[699,849],
+    accessories:[
+      {name:"Hülle", price:50},
+      {name:"Displayschutz", price:30}
+    ]
+  },
+  "K4": {
+    storage:["256 GB","512 GB"],
+    colors:["#000"],
+    pricesVIL:[899,1099],
+    accessories:[
+      {name:"Hülle", price:50},
+      {name:"Displayschutz", price:30}
+    ]
+  },
+  "K5": {
+    storage:["256 GB","512 GB"],
+    colors:["#000"],
+    pricesVIL:[1099,1299],
+    accessories:[
+      {name:"Hülle", price:50},
+      {name:"Displayschutz", price:30}
+    ]
+  }
+};
+
+const vilToEuro = vil => (vil*0.75).toFixed(2)+" €";
+
+const modelSelect = document.getElementById("model");
+const storageSelect = document.getElementById("storage");
+const colorsDiv = document.getElementById("colors");
+const accessoriesDiv = document.getElementById("accessories");
+const priceDiv = document.getElementById("price");
+
+let selectedColorIndex = 0;
+
+function updateModelOptions() {
+  modelSelect.innerHTML="";
+  Object.keys(data).forEach(m=>{
+    const opt=document.createElement("option");
+    opt.value=m;
+    opt.textContent=m;
+    modelSelect.appendChild(opt);
+  });
+  selectedColorIndex=0;
+  updateStorage();
+}
+
+function updateStorage(){
+  storageSelect.innerHTML="";
+  data[modelSelect.value].storage.forEach((s,i)=>{
+    const opt=document.createElement("option");
+    opt.value=i;
+    opt.textContent=s;
+    storageSelect.appendChild(opt);
+  });
+  selectedColorIndex=0;
+  updateColors();
+  updateAccessories();
+  updatePrice();
+}
+
+function updateColors(){
+  colorsDiv.innerHTML="";
+  data[modelSelect.value].colors.forEach((c,i)=>{
+    const sw=document.createElement("div");
+    sw.className="color-swatch"+(i===selectedColorIndex?" selected":"");
+    sw.style.background=c;
+    sw.onclick=()=>{ selectedColorIndex=i; updateColors(); updatePrice(); };
+    colorsDiv.appendChild(sw);
+  });
+}
+
+function updateAccessories(){
+  accessoriesDiv.innerHTML="";
+  data[modelSelect.value].accessories.forEach(acc=>{
+    const label=document.createElement("label");
+    const input=document.createElement("input");
+    input.type="checkbox";
+    input.value=acc.price;
+    label.appendChild(input);
+    label.appendChild(document.createTextNode(" "+acc.name+" (+"+acc.price+" VIL)"));
+    input.onchange=updatePrice;
+    accessoriesDiv.appendChild(label);
+  });
+}
+
+function updatePrice(){
+  let vil=data[modelSelect.value].pricesVIL[storageSelect.value];
+  accessoriesDiv.querySelectorAll("input").forEach(i=>{
+    if(i.checked) vil+=parseInt(i.value);
+  });
+  priceDiv.textContent="Preis: "+vil+" VIL ("+vilToEuro(vil)+")";
+}
+
+function updateCartBadge(animated=true){
+  const cart = JSON.parse(localStorage.getItem("aeropusCart")) || [];
+  const badge=document.getElementById("cartBadge");
+  let totalItems=0;
+  cart.forEach(item=> totalItems+=item.qty||1);
+  badge.textContent=totalItems;
+  if(animated && totalItems>0){
+    badge.style.transform="scale(1.5)";
+    setTimeout(()=>{ badge.style.transform="scale(1)"; },200);
+  }
+}
+
+function addToCart(){
+  let vil=data[modelSelect.value].pricesVIL[storageSelect.value];
+  const selectedAccessories=[];
+  accessoriesDiv.querySelectorAll("input").forEach(i=>{
+    if(i.checked){
+      vil+=parseInt(i.value);
+      selectedAccessories.push(i.parentElement.innerText.trim());
+    }
+  });
+
+  const item={
+    model:modelSelect.value,
+    storage:data[modelSelect.value].storage[storageSelect.value],
+    color:data[modelSelect.value].colors[selectedColorIndex],
+    accessories:selectedAccessories,
+    priceVIL:vil,
+    priceText:"Preis: "+vil+" VIL ("+vilToEuro(vil)+")"
+  };
+
+  const cart=JSON.parse(localStorage.getItem("aeropusCart"))||[];
+  cart.push(item);
+  localStorage.setItem("aeropusCart",JSON.stringify(cart));
+  window.location.href="cart.html";
+}
+
+modelSelect.onchange=updateStorage;
+storageSelect.onchange=updatePrice;
+
+updateModelOptions();
+updateCartBadge();
+</script>
+</body>
+</html>
