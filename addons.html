@@ -15,7 +15,7 @@ body { font-family: 'Aeropus UI II', Arial, sans-serif; background: #f4f4f4; mar
 .cart { color:#fff; font-size:1.4em; text-decoration:none; }
 #cartBadge { display:inline-block; background:#c00; color:#fff; font-size:0.7em; width:18px; height:18px; line-height:18px; text-align:center; border-radius:50%; vertical-align:top; margin-left:5px; transition: transform 0.2s ease; }
 .page-header { text-align:center; padding:20px; background:#111; color:#fff; }
-.container { max-width: 1200px; margin:30px auto; display:grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap:20px; }
+.container { max-width: 1200px; margin:20px auto; display:grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap:20px; }
 .card { background:#fff; border-radius:12px; padding:20px; box-shadow:0 10px 25px rgba(0,0,0,0.1); display:flex; flex-direction:column; justify-content:space-between; }
 .card h3 { margin:0 0 10px 0; font-size:1.2em; }
 .card p { margin:5px 0; }
@@ -27,6 +27,8 @@ body { font-family: 'Aeropus UI II', Arial, sans-serif; background: #f4f4f4; mar
 .pagination button { margin:0 5px; padding:8px 12px; font-size:1em; border:none; border-radius:5px; background:#111; color:#fff; cursor:pointer; }
 .pagination button:hover { opacity:0.8; }
 .pagination button.active { background:#007bff; }
+.items-per-page { text-align:center; margin:10px 0; }
+.items-per-page select { padding:5px 10px; font-size:1em; }
 </style>
 </head>
 <body>
@@ -39,6 +41,15 @@ body { font-family: 'Aeropus UI II', Arial, sans-serif; background: #f4f4f4; mar
 <div class="page-header">
   <h1>Zubehör & Add-Ons</h1>
   <p>Kabel, Docks, Stifte, Hüllen und mehr für dein Aeropus Gerät</p>
+</div>
+
+<div class="items-per-page">
+  Items pro Seite: 
+  <select id="itemsPerPageSelect">
+    <option value="8">8</option>
+    <option value="16">16</option>
+    <option value="24">24</option>
+  </select>
 </div>
 
 <div class="container" id="addonsContainer"></div>
@@ -74,7 +85,7 @@ const addons = [
   {name:"MicroSD 256GB", price:50, color:"#000"}
 ];
 
-const itemsPerPage = 8;
+let itemsPerPage = parseInt(document.getElementById("itemsPerPageSelect").value);
 const vilToEuro = vil => (vil*0.75).toFixed(2)+" €";
 const container = document.getElementById("addonsContainer");
 const paginationDiv = document.getElementById("pagination");
@@ -114,7 +125,6 @@ function renderPage(page=1){
     container.appendChild(div);
   });
 
-  // Buttons Listener
   document.querySelectorAll(".card button").forEach(btn=>{
     btn.addEventListener("click",e=>{
       const idx=e.target.dataset.index;
@@ -128,7 +138,7 @@ function renderPage(page=1){
     });
   });
 
-  // Pagination rendern
+  // Pagination
   const totalPages = Math.ceil(addons.length/itemsPerPage);
   paginationDiv.innerHTML="";
   for(let i=1;i<=totalPages;i++){
@@ -143,6 +153,14 @@ function renderPage(page=1){
 // --- Aktuelle Seite aus URL ---
 const urlParams=new URLSearchParams(window.location.search);
 let currentPage=parseInt(urlParams.get("page"))||1;
+
+// --- Items pro Seite Selector ---
+document.getElementById("itemsPerPageSelect").onchange = (e)=>{
+  itemsPerPage = parseInt(e.target.value);
+  renderPage(1);
+  window.history.replaceState(null,null,'?page=1');
+};
+
 renderPage(currentPage);
 updateCartBadge();
 </script>
