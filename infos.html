@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infos – Aeropus</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; background: #f8f8f8; color: #111; }
+  .article { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  h1 { margin-top: 0; }
+</style>
+</head>
+<body>
+<div class="article" id="article">
+  <h1>Lade Artikel…</h1>
+  <p>Bitte warten Sie.</p>
+</div>
+
+<script>
+// Beispiel-Artikel-Daten
+const articles = {
+    8756: { title: "Willkommen bei Aeropus", content: "Dies ist der erste Informationsartikel auf Ihrer Seite." },
+    8757: { title: "Neuigkeiten", content: "Hier finden Sie alle Neuigkeiten und Updates." },
+    8758: { title: "Tipps & Tricks", content: "Praktische Tipps für Ihre Nutzung von Aeropus." },
+    8759: { title: "Support", content: "So erreichen Sie unseren Support bei Fragen." }
+};
+
+// Artikel-ID aus URL lesen
+const params = new URLSearchParams(window.location.search);
+const id = parseInt(params.get('article'), 10);
+
+// Artikel anzeigen
+const articleDiv = document.getElementById('article');
+if(articles[id]){
+    articleDiv.innerHTML = `<h1>${articles[id].title}</h1><p>${articles[id].content}</p>`;
+} else {
+    articleDiv.innerHTML = `<h1>Artikel nicht gefunden</h1><p>Der Artikel mit der ID ${id} existiert nicht.</p>`;
+}
+</script>
+</body>
+</html>
