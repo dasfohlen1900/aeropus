@@ -153,6 +153,8 @@ button:hover {
   <option value="II">AeroPhone II</option>
   <option value="Pro">AeroPhone II Pro</option>
   <option value="Premium">AeroPhone II Premium</option>
+  <option value="IIa">AeroPhone IIa</option>
+  <option value="IIaMini">AeroPhone IIa Mini</option>
 </select>
 
 <label for="storage">Speicher</label>
@@ -193,7 +195,18 @@ const data = {
     storage: ["256 GB", "512 GB", "1 TB", "2 TB"],
     colors: ["#111","#c0c0c0","#009966"],
     pricesVIL: [1449, 1899, 1999, 2499]
+  },
+  IIa: {
+    storage: ["128 GB", "256 GB", "512 GB"],
+    colors: ["#111","#c0c0c0","#009966"],
+    pricesVIL: [499, 699, 899]
   }
+  IIaMini: {
+    storage: ["128 GB", "256 GB", "512 GB"],
+    colors: ["#111","#c0c0c0","#009966"],
+    pricesVIL: [469, 669, 869]
+  }
+
 };
 
 const vilToEuro = vil => (vil * 0.75).toFixed(2) + " €";
