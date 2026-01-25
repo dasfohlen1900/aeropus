@@ -1,1 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aeropus Fonts Showcase</title>
+
+<style>
+/* ===== Fonts einbinden (im gleichen Ordner) ===== */
+@font-face { font-family: 'Aeropus UI II'; src: url('AeropusUIIIRegular.otf') format('opentype'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'Aeropus Terminal II'; src: url('AeropusTerminalIIRegular.otf') format('opentype'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'Aeropus Hand'; src: url('AeropusHandRegular.ttf') format('truetype'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'Aeropus Icons II'; src: url('AeropusIconsIIRegular.ttf') format('truetype'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'Lukovic One Mono'; src: url('LukovicOneMonoRegular.otf') format('opentype'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'RetroStyle'; src: url('RetroStyle.ttf') format('truetype'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'Notebook'; src: url('NotebookRegular.otf') format('opentype'); font-weight: 400; font-style: normal; }
+
+/* ===== Grundlayout ===== */
+body {
+    font-family: 'Aeropus UI II', sans-serif;
+    background-color: #121212;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+header {
+    text-align: center;
+    padding: 2rem;
+    background-color: #1e1e1e;
+}
+h1 { color: #00ff99; font-size: 3rem; }
+section { max-width: 900px; margin: 2rem auto; padding: 1rem; }
+.font-block { margin-bottom: 2rem; padding: 1rem; background: #1a1a1a; border-radius: 10px; }
+.font-name { font-size: 1.5rem; color: #00ff99; margin-bottom: 0.5rem; }
+.demo-text { font-size: 1.5rem; margin: 0.5rem 0; line-height: 1.5; }
+
+/* ===== Eingabefeld für Live-Demo ===== */
+input[type="text"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+}
+
+/* ===== Download Button ===== */
+.download-btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #00ff99;
+    color: #121212;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.download-btn:hover {
+    background-color: #00cc77;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1 href="/">Aeropus Fonts & More</h1>
+    <p>Alle Fonts auf einen Blick mit Live-Demo</p>
+</header>
+
+<section>
+    <!-- Aeropus UI II -->
+    <div class="font-block">
+        <div class="font-name">Aeropus UI II</div>
+        <p class="demo-text" style="font-family:'Aeropus UI II'">Dies ist ein Beispieltext in Aeropus UI II.</p>
+        <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
+        <p class="demo-text" style="font-family:'Aeropus UI II'"></p>
+        <a href="AeropusUIIIRegular.otf" download class="download-btn">Download</a>
+    </div>
+
+    <!-- Aeropus Terminal II -->
+    <div class="font-block">
+        <div class="font-name">Aeropus Terminal II</div>
+        <p class="demo-text" style="font-family:'Aeropus Terminal II'">Dies ist ein Beispieltext in Aeropus Terminal II.</p>
+        <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
+        <p class="demo-text" style="font-family:'Aeropus Terminal II'"></p>
+        <a href="AeropusTerminalIIRegular.otf" download class="download-btn">Download</a>
+    </div>
+
+    <!-- Aeropus Hand -->
+    <div class="font-block">
+        <div class="font-name">Aeropus Hand</div>
+        <p class="demo-text" style="font-family:'Aeropus Hand'">Dies ist ein Beispieltext in Aeropus Hand.</p>
+        <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
+        <p class="demo-text" style="font-family:'Aeropus Hand'"></p>
+        <a href="AeropusHandRegular.ttf" download class="download-btn">Download</a>
+    </div>
+
+    <!-- Aeropus Icons II -->
+    <div class="font-block">
+        <div class="font-name">Aeropus Icons II</div>
+        <p class="demo-text" style="font-family:'Aeropus Icons II'"> (Beispiel-Icons)</p>
+        <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
+        <p class="demo-text" style="font-family:'Aeropus Icons II'"></p>
+        <a href="AeropusIconsIIRegular.ttf" download class="download-btn">Download</a>
+    </div>
+
+    <!-- Lukovic One Mono -->
+    <div class="font-block">
+        <div class="font-name">Lukovic One Mono</div>
+        <p class="demo-text" style="font-family:'Lukovic One Mono'">Dies ist ein Beispieltext in Lukovic One Mono.</p>
+        <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
+        <p class="demo-text" style="font-family:'Lukovic One Mono'"></p>
+        <a href="LukovicOneMonoRegular.otf" download class="download-btn">Download</a>
+    </div>
+
+    <!-- RetroStyle -->
+    <div class="font-block">
+        <div class="font-name">RetroStyle</div>
+        <p class="demo-text" style="font-family:'RetroStyle'">Dies ist ein Beispieltext in RetroStyle.</p>
+        <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
+        <p class="demo-text" style="font-family:'RetroStyle'"></p>
+        <a href="RetroStyle.ttf" download class="download-btn">Download</a>
+    </div>
+
+    <!-- Notebook -->
+    <div class="font-block">
+        <div class="font-name">Notebook</div>
+        <p class="demo-text" style="font-family:'Notebook'">Dies ist ein Beispieltext in Notebook.</p>
+        <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
+        <p class="demo-text" style="font-family:'Notebook'"></p>
+        <a href="NotebookRegular.otf" download class="download-btn">Download</a>
+    </div>
+</section>
+
+<footer>
+    &copy; 2026 Aeropus Fonts & Co.
+</footer>
+
+</body>
+</html>
 
