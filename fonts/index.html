@@ -17,7 +17,7 @@
 
 /* ===== Grundlayout ===== */
 body {
-    font-family: 'Aeropus UI II', sans-serif;
+    font-family: sans-serif;
     background-color: #121212;
     color: #fff;
     margin: 0;
@@ -55,6 +55,7 @@ input[type="text"] {
     border-radius: 5px;
     font-weight: bold;
     transition: background 0.2s;
+    cursor: pointer;
 }
 .download-btn:hover {
     background-color: #00cc77;
@@ -64,7 +65,7 @@ input[type="text"] {
 <body>
 
 <header>
-    <h1 href="/">Aeropus Fonts & More</h1>
+    <h1>Aeropus Fonts & More</h1>
     <p>Alle Fonts auf einen Blick mit Live-Demo</p>
 </header>
 
@@ -75,7 +76,7 @@ input[type="text"] {
         <p class="demo-text" style="font-family:'Aeropus UI II'">Dies ist ein Beispieltext in Aeropus UI II.</p>
         <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
         <p class="demo-text" style="font-family:'Aeropus UI II'"></p>
-        <a href="AeropusUIIIRegular.otf" download class="download-btn">Download</a>
+        <span class="download-btn" onclick="forceDownload('AeropusUIIIRegular.otf')">Download</span>
     </div>
 
     <!-- Aeropus Terminal II -->
@@ -84,7 +85,7 @@ input[type="text"] {
         <p class="demo-text" style="font-family:'Aeropus Terminal II'">Dies ist ein Beispieltext in Aeropus Terminal II.</p>
         <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
         <p class="demo-text" style="font-family:'Aeropus Terminal II'"></p>
-        <a href="AeropusTerminalIIRegular.otf" download class="download-btn">Download</a>
+        <span class="download-btn" onclick="forceDownload('AeropusTerminalIIRegular.otf')">Download</span>
     </div>
 
     <!-- Aeropus Hand -->
@@ -93,7 +94,7 @@ input[type="text"] {
         <p class="demo-text" style="font-family:'Aeropus Hand'">Dies ist ein Beispieltext in Aeropus Hand.</p>
         <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
         <p class="demo-text" style="font-family:'Aeropus Hand'"></p>
-        <a href="AeropusHandRegular.ttf" download class="download-btn">Download</a>
+        <span class="download-btn" onclick="forceDownload('AeropusHandRegular.ttf')">Download</span>
     </div>
 
     <!-- Aeropus Icons II -->
@@ -102,7 +103,7 @@ input[type="text"] {
         <p class="demo-text" style="font-family:'Aeropus Icons II'"> (Beispiel-Icons)</p>
         <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
         <p class="demo-text" style="font-family:'Aeropus Icons II'"></p>
-        <a href="AeropusIconsIIRegular.ttf" download class="download-btn">Download</a>
+        <span class="download-btn" onclick="forceDownload('AeropusIconsIIRegular.ttf')">Download</span>
     </div>
 
     <!-- Lukovic One Mono -->
@@ -111,7 +112,7 @@ input[type="text"] {
         <p class="demo-text" style="font-family:'Lukovic One Mono'">Dies ist ein Beispieltext in Lukovic One Mono.</p>
         <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
         <p class="demo-text" style="font-family:'Lukovic One Mono'"></p>
-        <a href="LukovicOneMonoRegular.otf" download class="download-btn">Download</a>
+        <span class="download-btn" onclick="forceDownload('LukovicOneMonoRegular.otf')">Download</span>
     </div>
 
     <!-- RetroStyle -->
@@ -120,7 +121,7 @@ input[type="text"] {
         <p class="demo-text" style="font-family:'RetroStyle'">Dies ist ein Beispieltext in RetroStyle.</p>
         <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
         <p class="demo-text" style="font-family:'RetroStyle'"></p>
-        <a href="RetroStyle.ttf" download class="download-btn">Download</a>
+        <span class="download-btn" onclick="forceDownload('RetroStyle.ttf')">Download</span>
     </div>
 
     <!-- Notebook -->
@@ -129,7 +130,7 @@ input[type="text"] {
         <p class="demo-text" style="font-family:'Notebook'">Dies ist ein Beispieltext in Notebook.</p>
         <input type="text" placeholder="Eigenen Text eingeben" oninput="this.nextElementSibling.textContent=this.value" />
         <p class="demo-text" style="font-family:'Notebook'"></p>
-        <a href="NotebookRegular.otf" download class="download-btn">Download</a>
+        <span class="download-btn" onclick="forceDownload('NotebookRegular.otf')">Download</span>
     </div>
 </section>
 
@@ -137,6 +138,17 @@ input[type="text"] {
     &copy; 2026 Aeropus Fonts & Co.
 </footer>
 
+<!-- ===== JavaScript für Downloads ===== -->
+<script>
+function forceDownload(file) {
+    const a = document.createElement('a');
+    a.href = file;
+    a.download = file;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+</script>
+
 </body>
 </html>
-
