@@ -13,17 +13,404 @@
 
 <!-- JSX Code -->
 <script type="text/babel">
-  function App() {
-    return (
-      <div>
-        <h1>Hallo Luković 👋</h1>
-        <p>JSX läuft direkt im Browser!</p>
-      </div>
-    );
-  }
+import React, { useState, useEffect } from 'react';
+import { ArrowUp, ArrowDown, Users, AlertCircle, Star } from 'lucide-react';
 
-  const root = ReactDOM.createRoot(document.getElementById("root"));
-  root.render(<App />);
+export default function ElevatorGame() {
+  const [floor, setFloor] = useState(1);
+  const [targetFloor, setTargetFloor] = useState(1);
+  const [passengers, setPassengers] = useState([]);
+  const [waitingPassengers, setWaitingPassengers] = useState({});
+  const [score, setScore] = useState(0);
+  const [time, setTime] = useState(60);
+  const [isMoving, setIsMoving] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+  const [level, setLevel] = useState(1);
+  const [capacity, setCapacity] = useState(6);
+  const [message, setMessage] = useState('');
+
+  const FLOORS = 10;
+  const PASSENGER_SPAWN_RATE = 2000;
+
+  // Passagier generieren
+  const generatePassenger = () => {
+    const currentFloors = Object.keys(waitingPassengers).map(Number);
+    const availableFloors = Array.from({ length: FLOORS }, (_, i) => i + 1)
+      .filter(f => !currentFloors.includes(f) || waitingPassengers[f].length < 3);
+    
+    if (availableFloors.length === 0) return;
+
+    const spawnFloor = availableFloors[Math.floor(Math.random() * availableFloors.length)];
+    let destination;
+    do {
+      destination = Math.floor(Math.random() * FLOORS) + 1;
+    } while (destination === spawnFloor);
+
+    const passenger = {
+      id: Date.now() + Math.random(),
+      destination,
+      patience: 20 + level * 5,
+      maxPatience: 20 + level * 5,
+    };
+
+    setWaitingPassengers(prev => ({
+      ...prev,
+      [spawnFloor]: [...(prev[spawnFloor] || []), passenger],
+    }));
+  };
+
+  // Timer und Passagier-Spawning
+  useEffect(() => {
+    if (gameOver || time <= 0) return;
+
+    const timer = setInterval(() => {
+      setTime(prev => {
+        if (prev <= 1) {
+          setGameOver(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [gameOver, time]);
+
+  useEffect(() => {
+    if (gameOver) return;
+
+    const spawner = setInterval(() => {
+      if (Math.random() < 0.7) {
+        generatePassenger();
+      }
+    }, PASSENGER_SPAWN_RATE / level);
+
+    return () => clearInterval(spawner);
+  }, [gameOver, level, waitingPassengers]);
+
+  // Geduld reduzieren
+  useEffect(() => {
+    if (gameOver) return;
+
+    const patienceTimer = setInterval(() => {
+      setWaitingPassengers(prev => {
+        const updated = { ...prev };
+        let lost = false;
+
+        Object.keys(updated).forEach(floorKey => {
+          updated[floorKey] = updated[floorKey]
+            .map(p => ({ ...p, patience: p.patience - 1 }))
+            .filter(p => {
+              if (p.patience <= 0) {
+                lost = true;
+                return false;
+              }
+              return true;
+            });
+
+          if (updated[floorKey].length === 0) {
+            delete updated[floorKey];
+          }
+        });
+
+        if (lost) {
+          setScore(prev => Math.max(0, prev - 5));
+          setMessage('❌ Passagier verloren!');
+          setTimeout(() => setMessage(''), 2000);
+        }
+
+        return updated;
+      });
+    }, 1000);
+
+    return () => clearInterval(patienceTimer);
+  }, [gameOver]);
+
+  // Aufzug bewegen
+  useEffect(() => {
+    if (!isMoving || floor === targetFloor) {
+      setIsMoving(false);
+      return;
+    }
+
+    const moveTimer = setTimeout(() => {
+      setFloor(prev => prev < targetFloor ? prev + 1 : prev - 1);
+    }, 500);
+
+    return () => clearTimeout(moveTimer);
+  }, [isMoving, floor, targetFloor]);
+
+  const moveToFloor = (newFloor) => {
+    if (isMoving || floor === newFloor) return;
+    setTargetFloor(newFloor);
+    setIsMoving(true);
+  };
+
+  const pickupPassengers = () => {
+    if (isMoving) return;
+
+    const waiting = waitingPassengers[floor] || [];
+    const availableSpace = capacity - passengers.length;
+
+    if (waiting.length === 0) {
+      setMessage('Keine wartenden Passagiere');
+      setTimeout(() => setMessage(''), 1500);
+      return;
+    }
+
+    const toPickup = waiting.slice(0, availableSpace);
+    const remaining = waiting.slice(availableSpace);
+
+    setPassengers(prev => [...prev, ...toPickup]);
+    setWaitingPassengers(prev => {
+      const updated = { ...prev };
+      if (remaining.length === 0) {
+        delete updated[floor];
+      } else {
+        updated[floor] = remaining;
+      }
+      return updated;
+    });
+
+    setScore(prev => prev + toPickup.length * 2);
+    setMessage(`✓ ${toPickup.length} Passagier(e) eingestiegen`);
+    setTimeout(() => setMessage(''), 1500);
+  };
+
+  const dropoffPassengers = () => {
+    if (isMoving) return;
+
+    const toDropoff = passengers.filter(p => p.destination === floor);
+    const remaining = passengers.filter(p => p.destination !== floor);
+
+    if (toDropoff.length === 0) {
+      setMessage('Kein Passagier möchte hier aussteigen');
+      setTimeout(() => setMessage(''), 1500);
+      return;
+    }
+
+    setPassengers(remaining);
+    const points = toDropoff.reduce((sum, p) => {
+      const bonus = Math.floor(p.patience / 2);
+      return sum + 10 + bonus;
+    }, 0);
+    
+    setScore(prev => prev + points);
+    setMessage(`✓ ${toDropoff.length} Passagier(e) ausgestiegen (+${points})`);
+    setTimeout(() => setMessage(''), 1500);
+
+    // Level up
+    if (score + points > level * 100) {
+      setLevel(prev => prev + 1);
+      setTime(prev => prev + 30);
+      setMessage('🎉 Level Up! +30 Sekunden');
+      setTimeout(() => setMessage(''), 2000);
+    }
+  };
+
+  const resetGame = () => {
+    setFloor(1);
+    setTargetFloor(1);
+    setPassengers([]);
+    setWaitingPassengers({});
+    setScore(0);
+    setTime(60);
+    setIsMoving(false);
+    setGameOver(false);
+    setLevel(1);
+    setMessage('');
+  };
+
+  const totalWaiting = Object.values(waitingPassengers).reduce((sum, arr) => sum + arr.length, 0);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
+      <div className="max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="bg-slate-800/50 backdrop-blur rounded-xl p-6 mb-6 border border-slate-700">
+          <h1 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            🏢 Aufzug-Simulator
+          </h1>
+          
+          <div className="grid grid-cols-4 gap-4 text-center">
+            <div className="bg-slate-700/50 rounded-lg p-3">
+              <div className="text-slate-400 text-sm">Score</div>
+              <div className="text-2xl font-bold text-blue-400">{score}</div>
+            </div>
+            <div className="bg-slate-700/50 rounded-lg p-3">
+              <div className="text-slate-400 text-sm">Zeit</div>
+              <div className={`text-2xl font-bold ${time < 10 ? 'text-red-400' : 'text-green-400'}`}>
+                {time}s
+              </div>
+            </div>
+            <div className="bg-slate-700/50 rounded-lg p-3">
+              <div className="text-slate-400 text-sm">Level</div>
+              <div className="text-2xl font-bold text-purple-400">{level}</div>
+            </div>
+            <div className="bg-slate-700/50 rounded-lg p-3">
+              <div className="text-slate-400 text-sm">Wartend</div>
+              <div className="text-2xl font-bold text-yellow-400">{totalWaiting}</div>
+            </div>
+          </div>
+
+          {message && (
+            <div className="mt-4 text-center text-lg font-semibold text-white bg-blue-600/30 rounded-lg p-2">
+              {message}
+            </div>
+          )}
+        </div>
+
+        <div className="grid grid-cols-3 gap-6">
+          {/* Gebäude */}
+          <div className="col-span-2 bg-slate-800/50 backdrop-blur rounded-xl p-6 border border-slate-700">
+            <div className="space-y-2">
+              {Array.from({ length: FLOORS }, (_, i) => FLOORS - i).map(f => {
+                const waiting = waitingPassengers[f] || [];
+                const isCurrentFloor = f === floor;
+
+                return (
+                  <div
+                    key={f}
+                    className={`relative h-16 rounded-lg border-2 transition-all ${
+                      isCurrentFloor
+                        ? 'bg-blue-500/20 border-blue-400'
+                        : 'bg-slate-700/30 border-slate-600'
+                    }`}
+                  >
+                    {/* Stockwerk-Nummer */}
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-2xl font-bold text-slate-400">
+                      {f}
+                    </div>
+
+                    {/* Wartende Passagiere */}
+                    <div className="absolute left-16 top-1/2 -translate-y-1/2 flex gap-2">
+                      {waiting.map((p, idx) => {
+                        const patiencePercent = (p.patience / p.maxPatience) * 100;
+                        return (
+                          <div key={p.id} className="relative">
+                            <Users className={`w-8 h-8 ${
+                              patiencePercent > 50 ? 'text-green-400' :
+                              patiencePercent > 25 ? 'text-yellow-400' : 'text-red-400'
+                            }`} />
+                            <div className="absolute -top-1 -right-1 bg-slate-900 rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold text-white">
+                              {p.destination}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Aufzug */}
+                    {isCurrentFloor && (
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-3 w-48">
+                        <div className="flex items-center justify-between">
+                          <div className="flex gap-1">
+                            {passengers.slice(0, 6).map(p => (
+                              <div key={p.id} className="relative">
+                                <Users className="w-6 h-6 text-white" />
+                                <div className="absolute -bottom-1 -right-1 bg-yellow-400 rounded-full w-3 h-3 flex items-center justify-center text-xs font-bold text-black">
+                                  {p.destination}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="text-white text-sm font-bold">
+                            {passengers.length}/{capacity}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Steuerung */}
+          <div className="space-y-4">
+            <div className="bg-slate-800/50 backdrop-blur rounded-xl p-6 border border-slate-700">
+              <h3 className="text-xl font-bold text-white mb-4">Steuerung</h3>
+              
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                {Array.from({ length: FLOORS }, (_, i) => FLOORS - i).map(f => (
+                  <button
+                    key={f}
+                    onClick={() => moveToFloor(f)}
+                    disabled={isMoving || floor === f}
+                    className={`p-3 rounded-lg font-bold transition-all ${
+                      floor === f
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
+
+              <div className="space-y-2">
+                <button
+                  onClick={pickupPassengers}
+                  disabled={isMoving}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  <ArrowDown className="w-5 h-5" />
+                  Einsteigen
+                </button>
+                
+                <button
+                  onClick={dropoffPassengers}
+                  disabled={isMoving}
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  <ArrowUp className="w-5 h-5" />
+                  Aussteigen
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-slate-800/50 backdrop-blur rounded-xl p-6 border border-slate-700">
+              <h3 className="text-lg font-bold text-white mb-2">Anleitung</h3>
+              <ul className="text-sm text-slate-300 space-y-1">
+                <li>• Fahre zu Stockwerken</li>
+                <li>• Lass Passagiere einsteigen</li>
+                <li>• Bringe sie zu ihrem Ziel</li>
+                <li>• Kapazität: {capacity} Personen</li>
+                <li>• Schnell sein = Bonus!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Game Over */}
+        {gameOver && (
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+            <div className="bg-slate-800 rounded-2xl p-8 max-w-md text-center border-2 border-slate-600">
+              <h2 className="text-4xl font-bold text-white mb-4">Spiel vorbei!</h2>
+              <div className="space-y-3 mb-6">
+                <div className="text-slate-300">
+                  <Star className="w-12 h-12 mx-auto mb-2 text-yellow-400" />
+                  <div className="text-3xl font-bold text-blue-400">{score}</div>
+                  <div className="text-sm">Punkte</div>
+                </div>
+                <div className="text-slate-300">
+                  <div className="text-2xl font-bold text-purple-400">Level {level}</div>
+                  <div className="text-sm">Erreicht</div>
+                </div>
+              </div>
+              <button
+                onClick={resetGame}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-lg transition-all text-lg"
+              >
+                Nochmal spielen
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 </script>
 
 </body>
