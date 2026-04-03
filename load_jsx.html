@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>JSX Test</title>
+</head>
+<body>
+
+<div id="root"></div>
+
+<!-- Dein Loader -->
+<script src="jsx-runner.js"></script>
+
+<!-- JSX Code -->
+<script type="text/babel">
+  function App() {
+    return (
+      <div>
+        <h1>Hallo Luković 👋</h1>
+        <p>JSX läuft direkt im Browser!</p>
+      </div>
+    );
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(<App />);
+</script>
+
+</body>
+</html>
