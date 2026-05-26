@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aeropus CSS — 10 Drop-in Themes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&family=Work+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink:        #0e0e0e;
+      --ink-2:      #4a4a4a;
+      --ink-3:      #888;
+      --paper:      #f8f6f1;
+      --paper-2:    #efecea;
+      --paper-3:    #e4e1db;
+      --line:       #d8d4cc;
+      --accent:     #1a1a1a;
+      --green:      #2d6a44;
+      --green-l:    #e8f2ec;
+      --amber:      #a06c10;
+      --amber-l:    #fdf3e0;
+      --radius:     8px;
+      --radius-lg:  14px;
+      --mono:       'Space Mono', monospace;
+      --head:       'Raleway', sans-serif;
+      --body:       'Work Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 24px; height: 58px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--head);
+      font-weight: 900; font-size: 1.15rem;
+      letter-spacing: -0.02em; color: var(--ink);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      display: inline-block;
+    }
+    .header-nav {
+      display: flex; gap: 28px; list-style: none;
+    }
+    .header-nav a {
+      font-size: 0.82rem; font-weight: 500; color: var(--ink-2);
+      text-decoration: none; letter-spacing: 0.03em;
+      transition: color 0.15s;
+    }
+    .header-nav a:hover { color: var(--ink); }
+
+    .header-cta {
+      font-family: var(--head);
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      background: var(--ink); color: var(--paper);
+      padding: 8px 18px; border-radius: var(--radius);
+      text-decoration: none; transition: opacity 0.15s;
+    }
+    .header-cta:hover { opacity: 0.8; }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 1100px; margin: 0 auto;
+      padding: 88px 24px 80px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center;
+    }
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.72rem; color: var(--green);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block;
+      width: 24px; height: 1px; background: var(--green);
+    }
+    .hero h1 {
+      font-family: var(--head);
+      font-size: 3.6rem; font-weight: 900;
+      line-height: 1.05; letter-spacing: -0.035em;
+      color: var(--ink); margin-bottom: 24px;
+    }
+    .hero h1 em {
+      font-style: normal; color: var(--green);
+    }
+    .hero-desc {
+      font-size: 1.05rem; color: var(--ink-2);
+      line-height: 1.75; margin-bottom: 36px;
+      max-width: 460px;
+    }
+    .hero-actions {
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    .btn-hero-primary {
+      font-family: var(--head);
+      font-weight: 700; font-size: 0.88rem;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      background: var(--ink); color: var(--paper);
+      padding: 13px 28px; border-radius: var(--radius);
+      text-decoration: none; transition: opacity 0.15s;
+    }
+    .btn-hero-primary:hover { opacity: 0.8; }
+    .btn-hero-secondary {
+      font-family: var(--head);
+      font-weight: 700; font-size: 0.88rem;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      background: transparent; color: var(--ink);
+      padding: 13px 28px; border-radius: var(--radius);
+      border: 1.5px solid var(--line);
+      text-decoration: none; transition: border-color 0.15s;
+    }
+    .btn-hero-secondary:hover { border-color: var(--ink-3); }
+
+    /* ── HERO PREVIEW CARD ── */
+    .hero-preview {
+      position: relative;
+    }
+    .preview-card {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .preview-bar {
+      background: var(--paper-3);
+      padding: 10px 16px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .preview-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .preview-url {
+      flex: 1;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 4px 10px;
+      font-family: var(--mono);
+      font-size: 0.7rem; color: var(--ink-3);
+    }
+    .preview-content {
+      padding: 20px;
+    }
+    .preview-theme-row {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 8px; margin-bottom: 14px;
+    }
+    .preview-theme-chip {
+      border-radius: 6px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.62rem; font-weight: 700;
+      font-family: var(--head); letter-spacing: 0.04em;
+      cursor: pointer; transition: transform 0.15s;
+      text-transform: uppercase;
+    }
+    .preview-theme-chip:hover { transform: scale(1.04); }
+
+    .preview-mini-ui {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+    .preview-mini-btns { display: flex; gap: 6px; margin-bottom: 10px; }
+    .pmb {
+      flex: 1; height: 30px; border-radius: 5px;
+      border: none; cursor: pointer; font-size: 0.7rem;
+      font-family: var(--head); font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .preview-mini-bar { height: 5px; border-radius: 3px; background: var(--line); overflow: hidden; }
+    .preview-mini-bar-fill { height: 100%; width: 70%; border-radius: 3px; }
+
+    /* ── SECTION WRAPPER ── */
+    .section { max-width: 1100px; margin: 0 auto; padding: 80px 24px; }
+    .section + .section { padding-top: 0; }
+    .section-divider {
+      max-width: 1100px; margin: 0 auto;
+      border: none; border-top: 1px solid var(--line);
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.68rem; color: var(--ink-3);
+      letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--head);
+      font-size: 2rem; font-weight: 800;
+      letter-spacing: -0.025em; color: var(--ink);
+      margin-bottom: 16px; line-height: 1.15;
+    }
+    .section-desc {
+      font-size: 0.97rem; color: var(--ink-2);
+      max-width: 560px; line-height: 1.75;
+    }
+
+    /* ── THEMES GRID ── */
+    .themes-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; gap: 16px;
+    }
+    .themes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .theme-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .theme-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+
+    .theme-card-swatch {
+      height: 80px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 0 20px;
+    }
+    .swatch-circle {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.2);
+      flex-shrink: 0;
+    }
+    .swatch-bar {
+      flex: 1; height: 8px; border-radius: 4px;
+      opacity: 0.4;
+    }
+    .theme-card-body {
+      background: var(--paper);
+      padding: 18px 20px;
+      border-top: 1px solid var(--line);
+    }
+    .theme-card-name {
+      font-family: var(--head);
+      font-weight: 800; font-size: 0.95rem;
+      letter-spacing: -0.01em; color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .theme-card-desc {
+      font-size: 0.8rem; color: var(--ink-3);
+      margin-bottom: 14px; line-height: 1.5;
+    }
+    .theme-card-tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .tag {
+      font-size: 0.65rem; font-weight: 600;
+      font-family: var(--head); letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 10px; border-radius: 99px;
+      background: var(--paper-2); color: var(--ink-3);
+      border: 1px solid var(--line);
+    }
+    .theme-url-row {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .theme-url {
+      flex: 1;
+      font-family: var(--mono);
+      font-size: 0.67rem; color: var(--ink-2);
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 7px 10px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .copy-btn {
+      font-size: 0.68rem; font-weight: 700; font-family: var(--head);
+      letter-spacing: 0.05em; text-transform: uppercase;
+      background: var(--ink); color: var(--paper);
+      border: none; border-radius: var(--radius);
+      padding: 7px 12px; cursor: pointer;
+      transition: opacity 0.15s; white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .copy-btn:hover { opacity: 0.75; }
+    .copy-btn.copied { background: var(--green); }
+
+    /* ── USAGE ── */
+    .usage-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-top: 40px;
+    }
+    .usage-card {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+    .usage-card-num {
+      font-family: var(--mono);
+      font-size: 0.68rem; color: var(--ink-3);
+      letter-spacing: 0.1em; margin-bottom: 12px;
+    }
+    .usage-card-title {
+      font-family: var(--head);
+      font-weight: 800; font-size: 1.05rem;
+      letter-spacing: -0.01em; margin-bottom: 10px;
+    }
+    .usage-card-desc {
+      font-size: 0.85rem; color: var(--ink-2);
+      line-height: 1.65; margin-bottom: 20px;
+    }
+
+    /* ── CODE BLOCKS ── */
+    .code-block {
+      background: #1a1a1a;
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      overflow-x: auto;
+      position: relative;
+    }
+    .code-block code {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: #d4d0c8;
+      line-height: 1.7;
+      white-space: pre;
+      display: block;
+    }
+    .code-lang {
+      position: absolute; top: 10px; right: 12px;
+      font-family: var(--mono); font-size: 0.6rem;
+      color: #555; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .code-k  { color: #c792ea; }  /* keyword */
+    .code-s  { color: #c3e88d; }  /* string */
+    .code-c  { color: #546e7a; }  /* comment */
+    .code-a  { color: #82aaff; }  /* attr */
+    .code-v  { color: #f78c6c; }  /* value/url */
+
+    /* ── CLASSES TABLE ── */
+    .classes-section { margin-top: 40px; }
+    .classes-intro {
+      font-size: 0.9rem; color: var(--ink-2);
+      margin-bottom: 24px; line-height: 1.7;
+    }
+    .classes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .classes-group {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+    .classes-group-title {
+      font-family: var(--head);
+      font-size: 0.72rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--ink); margin-bottom: 12px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--line);
+    }
+    .class-item {
+      display: flex; align-items: flex-start; gap: 8px;
+      margin-bottom: 8px;
+    }
+    .class-item:last-child { margin-bottom: 0; }
+    .class-name {
+      font-family: var(--mono);
+      font-size: 0.68rem; color: var(--green);
+      background: var(--green-l);
+      padding: 2px 7px; border-radius: 4px;
+      flex-shrink: 0; line-height: 1.8;
+    }
+    .class-desc {
+      font-size: 0.75rem; color: var(--ink-3);
+      line-height: 1.6;
+    }
+
+    /* ── CSS VARIABLES ── */
+    .vars-section { margin-top: 40px; }
+    .vars-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 12px; margin-top: 24px;
+    }
+    .var-group {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+    .var-group-title {
+      font-family: var(--head);
+      font-size: 0.72rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--ink); margin-bottom: 12px;
+    }
+    .var-row {
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 5px 0;
+      border-bottom: 1px solid var(--line); gap: 12px;
+    }
+    .var-row:last-child { border-bottom: none; }
+    .var-name {
+      font-family: var(--mono); font-size: 0.68rem;
+      color: var(--amber);
+    }
+    .var-note {
+      font-size: 0.72rem; color: var(--ink-3);
+      text-align: right;
+    }
+
+    /* ── FAQ / CALLOUT ── */
+    .callout {
+      background: var(--green-l);
+      border: 1px solid #b8d9c4;
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin-top: 40px;
+    }
+    .callout-title {
+      font-family: var(--head);
+      font-weight: 800; font-size: 1rem;
+      color: var(--green); margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .callout-text {
+      font-size: 0.88rem; color: #2a5a3a;
+      line-height: 1.7;
+    }
+    .callout-text code {
+      font-family: var(--mono); font-size: 0.82em;
+      background: rgba(45,106,68,0.1);
+      padding: 1px 6px; border-radius: 4px;
+      color: var(--green);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--line);
+      background: var(--paper-2);
+      margin-top: 80px;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 40px 24px;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 20px;
+    }
+    .footer-left .footer-brand {
+      font-family: var(--head);
+      font-weight: 900; font-size: 1rem;
+      letter-spacing: -0.02em; color: var(--ink);
+      display: flex; align-items: center; gap: 8px;
+      text-decoration: none;
+    }
+    .footer-tagline {
+      font-size: 0.78rem; color: var(--ink-3);
+      margin-top: 4px;
+    }
+    .footer-links {
+      display: flex; gap: 24px; list-style: none;
+    }
+    .footer-links a {
+      font-size: 0.8rem; color: var(--ink-3);
+      text-decoration: none; transition: color 0.15s;
+    }
+    .footer-links a:hover { color: var(--ink); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; gap: 40px; padding: 56px 24px 48px; }
+      .hero h1 { font-size: 2.6rem; }
+      .header-nav { display: none; }
+      .themes-grid { grid-template-columns: 1fr; }
+      .usage-grid { grid-template-columns: 1fr; }
+      .classes-grid { grid-template-columns: 1fr 1fr; }
+      .vars-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .classes-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <span class="logo-dot"></span>
+      aeropus<span style="color:var(--ink-3);font-weight:400">.css</span>
+    </a>
+    <ul class="header-nav">
+      <li><a href="#themes">Themes</a></li>
+      <li><a href="#einbindung">Einbindung</a></li>
+      <li><a href="#klassen">Klassen</a></li>
+      <li><a href="#variablen">Variablen</a></li>
+    </ul>
+    <a href="Test.html" class="header-cta" target="_blank">Live-Demo →</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">CSS Design System</div>
+    <h1>10 Themes.<br>Ein <em>Link.</em><br>Fertig.</h1>
+    <p class="hero-desc">Aeropus CSS liefert produktionsreife Design-Themes als einzelne CSS-Datei — per CDN eingebunden, sofort einsatzbereit. Kein Build-Schritt, kein npm, keine Konfiguration.</p>
+    <div class="hero-actions">
+      <a href="#einbindung" class="btn-hero-primary">Jetzt einbinden</a>
+      <a href="#themes" class="btn-hero-secondary">Themes ansehen</a>
+    </div>
+  </div>
+  <div class="hero-preview">
+    <div class="preview-card">
+      <div class="preview-bar">
+        <div class="preview-dot" style="background:#e74c3c"></div>
+        <div class="preview-dot" style="background:#f39c12"></div>
+        <div class="preview-dot" style="background:#2ecc71"></div>
+        <div class="preview-url">aeropus.vercel.app/cssapi/Dark_Forest</div>
+      </div>
+      <div class="preview-content">
+        <div class="preview-theme-row">
+          <div class="preview-theme-chip" style="background:#0d1a12;color:#4ecb6e">Forest</div>
+          <div class="preview-theme-chip" style="background:#18160f;color:#c8a83c">Ember</div>
+          <div class="preview-theme-chip" style="background:#0b0b1a;color:#a78bfa">Modern</div>
+          <div class="preview-theme-chip" style="background:#f7f4ee;color:#4a7c59;border:1px solid #ddd8cc">Sage</div>
+          <div class="preview-theme-chip" style="background:#faf7f0;color:#d4a017;border:1px solid #e4dcc8">Solar</div>
+        </div>
+        <div class="preview-mini-ui">
+          <div class="preview-mini-btns">
+            <button class="pmb" style="background:#4ecb6e;color:#0d1a12">Primary</button>
+            <button class="pmb" style="background:transparent;color:#4ecb6e;border:1.5px solid #4ecb6e">Outline</button>
+            <button class="pmb" style="background:#f0b429;color:#0d1a12">Secondary</button>
+          </div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:#555;margin-bottom:8px">// Aktives Theme: Dark_Forest</div>
+          <div class="preview-mini-bar"><div class="preview-mini-bar-fill" style="background:#4ecb6e"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- THEMES -->
+<section class="section" id="themes">
+  <div class="themes-header">
+    <div>
+      <div class="section-label">01 — Themes</div>
+      <h2 class="section-title">10 fertige Designs</h2>
+      <p class="section-desc">Fünf dunkle, fünf helle Themes — jedes mit eigenem Charakter, konsistenter Klassen-API und sofort kopierbertem CDN-Link.</p>
+    </div>
+  </div>
+
+  <div class="themes-grid">
+
+    <!-- Dark_Bold -->
+    <div class="theme-card">
+      <div class="theme-card-swatch" style="background:#0d0d0d">
+        <div class="swatch-circle" style="background:#ff3333"></div>
+        <div class="swatch-circle" style="background:#ff6b35"></div>
+        <div class="swatch-circle" style="background:#ffd700"></div>
+        <div class="swatch-bar" style="background:#ff3333"></div>
+      </div>
+      <div class="theme-card-body">
+        <div class="theme-card-name">Dark Bold</div>
+        <div class="theme-card-desc">Neo-Brutalism. Harte Kanten, kein Border-Radius, Box-Shadows in Schwarz. Poppins 900.</div>
+        <div class="theme-card-tag-row">
+          <span class="tag">Dark</span>
+          <span class="tag">Brutalist</span>
+          <span class="tag">Poppins</span>
+        </div>
+        <div class="theme-url-row">
+          <div class="theme-url">aeropus.vercel.app/cssapi/Dark_Bold</div>
+          <button class="copy-btn" onclick="copyUrl(this,'https://aeropus.vercel.app/cssapi/Dark_Bold')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dark_Modern -->
+    <div class="theme-card">
+      <div class="theme-card-swatch" style="background:#0b0b1a">
+        <div class="swatch-circle" style="background:#7c3aed"></div>
+        <div class="swatch-circle" style="background:#38bdf8"></div>
+        <div class="swatch-circle" style="background:#f59e0b"></div>
+        <div class="swatch-bar" style="background:#7c3aed"></div>
+      </div>
+      <div class="theme-card-body">
+        <div class="theme-card-name">Dark Modern</div>
+        <div class="theme-card-desc">Editorial-Dark. Glassmorphism-Navbar, Lila-Gradient-Buttons, Playfair Display als Headline.</div>
+        <div class="theme-card-tag-row">
+          <span class="tag">Dark</span>
+          <span class="tag">Editorial</span>
+          <span class="tag">Playfair</span>
+        </div>
+        <div class="theme-url-row">
+          <div class="theme-url">aeropus.vercel.app/cssapi/Dark_Modern</div>
+          <button class="copy-btn" onclick="copyUrl(this,'https://aeropus.vercel.app/cssapi/Dark_Modern')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dark_Sporty -->
+    <div class="theme-card">
+      <div class="theme-card-swatch" style="background:#0f0f1a">
+        <div class="swatch-circle" style="background:#e94560"></div>
+        <div class="swatch-circle" style="background:#f5a623"></div>
+        <div class="swatch-circle" style="background:#00d2ff"></div>
+        <div class="swatch-bar" style="background:#e94560"></div>
+      </div>
+      <div class="theme-card-body">
+        <div class="theme-card-name">Dark Sporty</div>
+        <div class="theme-card-desc">High-Energy. Barlow Condensed, Scale-Hover-Buttons, starke Kontraste für Action-Interfaces.</div>
+        <div class="theme-card-tag-row">
+          <span class="tag">Dark</span>
+          <span class="tag">Sporty</span>
+          <span class="tag">Barlow</span>
+        </div>
+        <div class="theme-url-row">
+          <div class="theme-url">aeropus.vercel.app/cssapi/Dark_Sporty</div>
+          <button class="copy-btn" onclick="copyUrl(this,'https://aeropus.vercel.app/cssapi/Dark_Sporty')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dark_Forest -->
+    <div class="theme-card">
+      <div class="theme-card-swatch" style="background:#0d1a12">
+        <div class="swatch-circle" style="background:#4ecb6e"></div>
+        <div class="swatch-circle" style="background:#f0b429"></div>
+        <div class="swatch-circle" style="background:#a8e6a0"></div>
+        <div class="swatch-bar" style="background:#4ecb6e"></div>
+      </div>
+      <div class="theme-card-body">
+        <div class="theme-card-name">Dark Forest</div>
+        <div class="theme-card-desc">Tiefes Tannengrün, Mint-Akzente, Bernstein-Secondary. Raleway + Work Sans. Natürlich, satt.</div>
+        <div class="theme-card-tag-row">
+          <span class="tag">Dark</span>
+          <span class="tag">Grün</span>
+          <span class="tag">Raleway</span>
+        </div>
+        <div class="theme-url-row">
+          <div class="theme-url">aeropus.vercel.app/cssapi/Dark_Forest</div>
+          <button class="copy-btn" onclick="copyUrl(this,'https://aeropus.vercel.app/cssapi/Dark_Forest')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dark_Ember -->
+    <div class="theme-card">
+      <div class="theme-card-swatch" style="background:#18160f">
+        <div class="swatch-circle" style="background:#c8a83c"></div>
+        <div class="swatch-circle" style="background:#8aaa44"></div>
+        <div class="swatch-circle" style="background:#e08030"></div>
+        <div class="swatch-bar" style="background:#c8a83c"></div>
+      </div>
+      <div class="theme-card-body">
+        <div class="theme-card-name">Dark Ember</div>
+        <div class="theme-card-desc">Anthrazit-Braun, Khaki/Amber Primary, Olivgrün Secondary. Industriell-warm, geerdet.</div>
+        <div class="theme-card-tag-row">
+          <span class="tag">Dark</span>
+          <span class="tag">Amber</span>
+          <span class="tag">Raleway</span>
+        </div>
+        <div class="theme-url-row">
+          <div class="theme-url">aeropus.vercel.app/cssapi/Dark_Ember</div>
+          <button class="copy-btn" onclick="copyUrl(this,'https://aeropus.vercel.app/cssapi/Dark_Ember')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light_Airy -->
+    <div class="theme-card">
+      <div class="theme-card-swatch" style="background:#f0f2f5">
+        <div class="swatch-circle" style="background:#6c5ce7;border-color:rgba(0,0,0,0.1)"></div>
+        <div class="swatch-circle" style="background:#00cec9;border-color:rgba(0,0,0,0.1)"></div>
+        <div class="swatch-circle" style="background:#fd79a8;border-color:rgba(0,0,0,0.1)"></div>
+        <div class="swatch-bar" style="background:#6c5ce7;opacity:0.6"></div>
+      </div>
+      <div class="theme-card-body">
+        <div class="theme-card-name">Light Airy</div>
+        <div class="theme-card-desc">Soft-Purple, Türkis und Rosa auf Grau-Weiß. Glassmorphism-Navbar. Poppins + Nunito.</div>
+        <div class="theme-card-tag-row">
+          <span class="tag">Light</span>
+          <span class="tag">Airy</span>
+          <span class="tag">Poppins</span>
+        </div>
+        <div class="theme-url-row">
+          <div class="theme-url">aeropus.vercel.app/cssapi/Light_Airy</div>
+          <button class="copy-btn" onclick="copyUrl(this,'https://aeropus.vercel.app/cssapi/Light_Airy')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light_Clean -->
+    <div class="theme-card">
+      <div class="theme-card-swatch" style="background:#ffffff;border-bottom:1px solid #e8e8e8">
+        <div class="swatch-circle" style="background:#4361ee;border-color:rgba(0,0,0,0.1)"></div>
+        <div class="swatch-circle" style="background:#06d6a0;border-color:rgba(0,0,0,0.1)"></div>
+        <div class="swatch-circle" style="background:#f72585;border-color:rgba(0,0,0,0.1)"></div>
+        <div class="swatch-bar" style="background:#4361ee;opacity:0.5"></div>
+      </div>
+      <div class="theme-card-body">
+        <div class="theme-card-name">Light Clean</div>
+        <div class="theme-card-desc">Reines Weiß, Pill-Buttons, Floating-Navbar. Maximale Klarheit. Nunito durchgehend.</div>
+        <div class="theme-card-tag-row">
+          <span class="tag">Light</span>
+          <span class="tag">Clean</span>
+          <span class="tag">Nunito</span>
+        </div>
+        <div class="theme-url-row">
+          <div class="theme-url">aeropus.vercel.app/cssapi/Light_Clean</div>
+          <button class="copy-btn" onclick="copyUrl(this,'https://aeropus.vercel.app/cssapi/Light_Clean')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light_Elegant -->
+    <div class="theme-card">
+      <div class="theme-card-swatch" style="background:#faf6f0">
+        <div class="swatch-circle" style="background:#8b4513;border-color:rgba(0,0,0,0.08)"></div>
+        <div class="swatch-circle" style="background:#c4a882;border-color:rgba(0,0,0,0.08)"></div>
+        <div class="swatch-circle" style="background:#800020;border-color:rgba(0,0,0,0.08)"></div>
+        <div class="swatch-bar" style="background:#8b4513;opacity:0.5"></div>
+      </div>
+      <div class="theme-card-body">
+        <div class="theme-card-name">Light Elegant</div>
+        <div class="theme-card-desc">Cremig-warm, Brauntöne und Bordeaux. Playfair Display für Serif-Editorial-Charakter.</div>
+        <div class="theme-card-tag-row">
+          <span class="tag">Light</span>
+          <span class="tag">Elegant</span>
+          <span class="tag">Playfair</span>
+        </div>
+        <div class="theme-url-row">
+          <div class="theme-url">aeropus.vercel.app/cssapi/Light_Elegant</div>
+          <button class="copy-btn" onclick="copyUrl(this,'https://aeropus.vercel.app/cssapi/Light_Elegant')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light_Sage -->
+    <div class="theme-card">
+      <div class="theme-card-swatch" style="background:#f7f4ee">
+        <div class="swatch-circle" style="background:#4a7c59;border-color:rgba(0,0,0,0.08)"></div>
+        <div class="swatch-circle" style="background:#c8a84b;border-color:rgba(0,0,0,0.08)"></div>
+        <div class="swatch-circle" style="background:#e07b3a;border-color:rgba(0,0,0,0.08)"></div>
+        <div class="swatch-bar" style="background:#4a7c59;opacity:0.5"></div>
+      </div>
+      <div class="theme-card-body">
+        <div class="theme-card-name">Light Sage</div>
+        <div class="theme-card-desc">Cremeweiß, Salbeigrün und Goldgelb. Organisch, editorial, ruhig. Raleway + Work Sans.</div>
+        <div class="theme-card-tag-row">
+          <span class="tag">Light</span>
+          <span class="tag">Grün</span>
+          <span class="tag">Raleway</span>
+        </div>
+        <div class="theme-url-row">
+          <div class="theme-url">aeropus.vercel.app/cssapi/Light_Sage</div>
+          <button class="copy-btn" onclick="copyUrl(this,'https://aeropus.vercel.app/cssapi/Light_Sage')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light_Solar -->
+    <div class="theme-card">
+      <div class="theme-card-swatch" style="background:#faf7f0">
+        <div class="swatch-circle" style="background:#d4a017;border-color:rgba(0,0,0,0.08)"></div>
+        <div class="swatch-circle" style="background:#5c7a2a;border-color:rgba(0,0,0,0.08)"></div>
+        <div class="swatch-circle" style="background:#c75a2a;border-color:rgba(0,0,0,0.08)"></div>
+        <div class="swatch-bar" style="background:#d4a017;opacity:0.6"></div>
+      </div>
+      <div class="theme-card-body">
+        <div class="theme-card-name">Light Solar</div>
+        <div class="theme-card-desc">Warmes Off-White, Sonnengelb als Primary mit dunklem Text, Olivgrün. Uppercase-Heavy.</div>
+        <div class="theme-card-tag-row">
+          <span class="tag">Light</span>
+          <span class="tag">Gelb</span>
+          <span class="tag">Raleway</span>
+        </div>
+        <div class="theme-url-row">
+          <div class="theme-url">aeropus.vercel.app/cssapi/Light_Solar</div>
+          <button class="copy-btn" onclick="copyUrl(this,'https://aeropus.vercel.app/cssapi/Light_Solar')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /themes-grid -->
+</section>
+
+<hr class="section-divider">
+
+<!-- EINBINDUNG -->
+<section class="section" id="einbindung">
+  <div class="section-label">02 — Einbindung</div>
+  <h2 class="section-title">In 60 Sekunden live</h2>
+  <p class="section-desc">Einen Link in den <code style="font-family:'Space Mono',monospace;font-size:0.85em;background:var(--paper-2);padding:2px 7px;border-radius:4px">&lt;head&gt;</code> einfügen — das war's. Kein npm, kein Build, kein PostCSS.</p>
+
+  <div class="usage-grid">
+
+    <div class="usage-card">
+      <div class="usage-card-num">01</div>
+      <div class="usage-card-title">Theme per Link einbinden</div>
+      <div class="usage-card-desc">Tausche <code style="font-family:'Space Mono',monospace;font-size:0.85em;background:var(--paper-3);padding:2px 6px;border-radius:3px">[Theme]</code> gegen einen der 10 Theme-Namen aus. Groß-/Kleinschreibung beachten.</div>
+      <div class="code-block">
+        <span class="code-lang">html</span>
+        <code><span class="code-c">&lt;!-- Im &lt;head&gt; deiner HTML-Datei --&gt;</span>
+<span class="code-k">&lt;link</span> <span class="code-a">rel</span>=<span class="code-s">"stylesheet"</span>
+      <span class="code-a">href</span>=<span class="code-s">"<span class="code-v">https://aeropus.vercel.app/cssapi/Dark_Forest</span>"</span><span class="code-k">&gt;</span></code>
+      </div>
+    </div>
+
+    <div class="usage-card">
+      <div class="usage-card-num">02</div>
+      <div class="usage-card-title">Theme wechseln</div>
+      <div class="usage-card-desc">Einfach den Theme-Namen im href tauschen — alle Klassen bleiben identisch, nur die Design-Token ändern sich.</div>
+      <div class="code-block">
+        <span class="code-lang">html</span>
+        <code><span class="code-c">&lt;!-- Vorher --&gt;</span>
+<span class="code-k">&lt;link</span> <span class="code-a">href</span>=<span class="code-s">"<span class="code-v">…/Dark_Forest</span>"</span><span class="code-k">&gt;</span>
+
+<span class="code-c">&lt;!-- Nachher --&gt;</span>
+<span class="code-k">&lt;link</span> <span class="code-a">href</span>=<span class="code-s">"<span class="code-v">…/Light_Sage</span>"</span><span class="code-k">&gt;</span></code>
+      </div>
+    </div>
+
+    <div class="usage-card">
+      <div class="usage-card-num">03</div>
+      <div class="usage-card-title">Theme per JavaScript wechseln</div>
+      <div class="usage-card-desc">Dynamischer Theme-Switch zur Laufzeit — ideal für einen Dark/Light-Toggle oder User-Präferenzen.</div>
+      <div class="code-block">
+        <span class="code-lang">js</span>
+        <code><span class="code-k">function</span> <span class="code-a">setTheme</span>(name) {
+  <span class="code-k">const</span> link = document
+    .querySelector(<span class="code-s">'link[rel="stylesheet"]'</span>);
+  link.href =
+    <span class="code-s">`https://aeropus.vercel.app/cssapi/<span class="code-v">${name}</span>`</span>;
+}
+
+<span class="code-c">// Beispiel</span>
+setTheme(<span class="code-s">'Dark_Ember'</span>);</code>
+      </div>
+    </div>
+
+    <div class="usage-card">
+      <div class="usage-card-num">04</div>
+      <div class="usage-card-title">Vollständiges Seiten-Template</div>
+      <div class="usage-card-desc">Minimales Grundgerüst mit Navbar, Main-Container und Footer — alle semantischen Klassen vorbelegt.</div>
+      <div class="code-block">
+        <span class="code-lang">html</span>
+        <code><span class="code-k">&lt;link</span> <span class="code-a">href</span>=<span class="code-s">"<span class="code-v">…/Light_Sage</span>"</span> <span class="code-a">rel</span>=<span class="code-s">"stylesheet"</span><span class="code-k">&gt;</span>
+
+<span class="code-k">&lt;nav</span> <span class="code-a">class</span>=<span class="code-s">"navbar"</span><span class="code-k">&gt;</span>
+  <span class="code-k">&lt;div</span> <span class="code-a">class</span>=<span class="code-s">"navbar-inner"</span><span class="code-k">&gt;</span>
+    <span class="code-k">&lt;a</span> <span class="code-a">class</span>=<span class="code-s">"navbar-brand"</span><span class="code-k">&gt;</span>Brand<span class="code-k">&lt;/a&gt;</span>
+  <span class="code-k">&lt;/div&gt;</span>
+<span class="code-k">&lt;/nav&gt;</span>
+
+<span class="code-k">&lt;main&gt;&lt;div</span> <span class="code-a">class</span>=<span class="code-s">"container"</span><span class="code-k">&gt;</span>
+  <span class="code-c">&lt;!-- Inhalt --&gt;</span>
+<span class="code-k">&lt;/div&gt;&lt;/main&gt;</span>
+
+<span class="code-k">&lt;footer</span> <span class="code-a">class</span>=<span class="code-s">"footer"</span><span class="code-k">&gt;</span>...<span class="code-k">&lt;/footer&gt;</span></code>
+      </div>
+    </div>
+
+  </div><!-- /usage-grid -->
+
+  <div class="callout">
+    <div class="callout-title">Alle Theme-Namen</div>
+    <div class="callout-text">
+      Verfügbare Werte für <code>[Theme]</code> in der URL <code>aeropus.vercel.app/cssapi/[Theme]</code>:<br><br>
+      <code>Dark_Bold</code> · <code>Dark_Modern</code> · <code>Dark_Sporty</code> · <code>Dark_Forest</code> · <code>Dark_Ember</code><br>
+      <code>Light_Airy</code> · <code>Light_Clean</code> · <code>Light_Elegant</code> · <code>Light_Sage</code> · <code>Light_Solar</code>
+    </div>
+  </div>
+
+</section>
+
+<hr class="section-divider">
+
+<!-- KLASSEN -->
+<section class="section" id="klassen">
+  <div class="section-label">03 — Komponenten</div>
+  <h2 class="section-title">Alle CSS-Klassen</h2>
+  <p class="classes-intro">Jedes Theme stellt dieselben Klassen bereit — ein Theme-Wechsel ändert nur die Design-Token, nie den Markup.</p>
+
+  <div class="classes-grid">
+
+    <div class="classes-group">
+      <div class="classes-group-title">Layout</div>
+      <div class="class-item"><span class="class-name">.container</span><span class="class-desc">Zentrierter Inhalts-Wrapper, max. 1200 px</span></div>
+      <div class="class-item"><span class="class-name">.grid-2/3/4</span><span class="class-desc">Responsive Grid mit 2, 3 oder 4 Spalten</span></div>
+      <div class="class-item"><span class="class-name">.flex</span><span class="class-desc">Flexbox-Container + Modifier-Klassen</span></div>
+      <div class="class-item"><span class="class-name">.w-full</span><span class="class-desc">Volle Breite (width: 100%)</span></div>
+    </div>
+
+    <div class="classes-group">
+      <div class="classes-group-title">Buttons</div>
+      <div class="class-item"><span class="class-name">.btn</span><span class="class-desc">Basis-Button (immer erforderlich)</span></div>
+      <div class="class-item"><span class="class-name">.btn-primary</span><span class="class-desc">Primäre Aktion, Hauptfarbe</span></div>
+      <div class="class-item"><span class="class-name">.btn-secondary</span><span class="class-desc">Sekundäre Aktion</span></div>
+      <div class="class-item"><span class="class-name">.btn-accent</span><span class="class-desc">Akzentfarbe, für Highlights</span></div>
+      <div class="class-item"><span class="class-name">.btn-outline</span><span class="class-desc">Transparenter Button mit Rahmen</span></div>
+      <div class="class-item"><span class="class-name">.btn-ghost</span><span class="class-desc">Unsichtbarer Button, nur Text</span></div>
+      <div class="class-item"><span class="class-name">.btn-sm / -lg</span><span class="class-desc">Kleinere / größere Variante</span></div>
+    </div>
+
+    <div class="classes-group">
+      <div class="classes-group-title">Formulare</div>
+      <div class="class-item"><span class="class-name">.form-group</span><span class="class-desc">Wrapper mit Abstand nach unten</span></div>
+      <div class="class-item"><span class="class-name">.form-hint</span><span class="class-desc">Hilfetext unter dem Eingabefeld</span></div>
+      <div class="class-item"><span class="class-name">input, select</span><span class="class-desc">Automatisch gestylt, kein Extra-Klasse nötig</span></div>
+      <div class="class-item"><span class="class-name">textarea</span><span class="class-desc">Mehrzeiliges Textfeld, resize:vertical</span></div>
+      <div class="class-item"><span class="class-name">label</span><span class="class-desc">Beschriftung, automatisch formatiert</span></div>
+    </div>
+
+    <div class="classes-group">
+      <div class="classes-group-title">Navigation</div>
+      <div class="class-item"><span class="class-name">.navbar</span><span class="class-desc">Sticky Top-Navbar mit Backdrop-Blur</span></div>
+      <div class="class-item"><span class="class-name">.navbar-inner</span><span class="class-desc">Innerer Flex-Container, max-width</span></div>
+      <div class="class-item"><span class="class-name">.navbar-brand</span><span class="class-desc">Logo / Markenname</span></div>
+      <div class="class-item"><span class="class-name">.navbar-brand-accent</span><span class="class-desc">Farbiger Teil des Logos</span></div>
+      <div class="class-item"><span class="class-name">.navbar-nav</span><span class="class-desc">Navigationsliste (ul)</span></div>
+      <div class="class-item"><span class="class-name">.navbar-actions</span><span class="class-desc">Rechter Bereich (CTA, Icons)</span></div>
+      <div class="class-item"><span class="class-name">.navbar-toggle</span><span class="class-desc">Burger-Button (mobil)</span></div>
+    </div>
+
+    <div class="classes-group">
+      <div class="classes-group-title">Karten &amp; Alerts</div>
+      <div class="class-item"><span class="class-name">.card</span><span class="class-desc">Inhaltskarte mit Hover-Effekt</span></div>
+      <div class="class-item"><span class="class-name">.card-header</span><span class="class-desc">Kartenüberschrift mit Trennlinie</span></div>
+      <div class="class-item"><span class="class-name">.alert</span><span class="class-desc">Basis-Alert (immer erforderlich)</span></div>
+      <div class="class-item"><span class="class-name">.alert-info/success/warning/error</span><span class="class-desc">Semantische Farb-Variante</span></div>
+      <div class="class-item"><span class="class-name">.badge</span><span class="class-desc">Kleines Label / Status-Chip</span></div>
+      <div class="class-item"><span class="class-name">.badge-primary/secondary/accent/outline</span><span class="class-desc">Badge-Varianten</span></div>
+    </div>
+
+    <div class="classes-group">
+      <div class="classes-group-title">Toast &amp; Modal</div>
+      <div class="class-item"><span class="class-name">.toast-container</span><span class="class-desc">Positionierter Wrapper für Toasts</span></div>
+      <div class="class-item"><span class="class-name">.toast-top-right</span><span class="class-desc">Position: oben rechts (+ 5 weitere)</span></div>
+      <div class="class-item"><span class="class-name">.toast</span><span class="class-desc">Einzelne Benachrichtigung</span></div>
+      <div class="class-item"><span class="class-name">.toast-info/success/warning/error</span><span class="class-desc">Typ-Variante mit Akzentfarbe</span></div>
+      <div class="class-item"><span class="class-name">.toast-hiding</span><span class="class-desc">Klasse für Dismiss-Animation (JS)</span></div>
+      <div class="class-item"><span class="class-name">.modal-overlay</span><span class="class-desc">Vollbild-Overlay-Hintergrund</span></div>
+      <div class="class-item"><span class="class-name">.modal</span><span class="class-desc">Modal-Dialogbox</span></div>
+    </div>
+
+    <div class="classes-group">
+      <div class="classes-group-title">Footer</div>
+      <div class="class-item"><span class="class-name">.footer</span><span class="class-desc">Seiten-Footer mit Border-Top</span></div>
+      <div class="class-item"><span class="class-name">.footer-main</span><span class="class-desc">4-spaltiges Grid-Layout</span></div>
+      <div class="class-item"><span class="class-name">.footer-brand</span><span class="class-desc">Logo im Footer</span></div>
+      <div class="class-item"><span class="class-name">.footer-col-title</span><span class="class-desc">Spaltenüberschrift</span></div>
+      <div class="class-item"><span class="class-name">.footer-links</span><span class="class-desc">Link-Liste in einer Spalte</span></div>
+      <div class="class-item"><span class="class-name">.footer-social</span><span class="class-desc">Social-Media Icon-Buttons</span></div>
+      <div class="class-item"><span class="class-name">.footer-bottom</span><span class="class-desc">Copyright & Legal-Zeile</span></div>
+    </div>
+
+    <div class="classes-group">
+      <div class="classes-group-title">Utilities</div>
+      <div class="class-item"><span class="class-name">.text-primary/secondary</span><span class="class-desc">Textfarbe aus Theme-Palette</span></div>
+      <div class="class-item"><span class="class-name">.text-center/left/right</span><span class="class-desc">Text-Ausrichtung</span></div>
+      <div class="class-item"><span class="class-name">.mt/mb/mr-xs/sm/md/lg/xl</span><span class="class-desc">Margin-Helfer (alle Richtungen)</span></div>
+      <div class="class-item"><span class="class-name">.p-sm/md/lg/xl</span><span class="class-desc">Padding-Helfer</span></div>
+      <div class="class-item"><span class="class-name">.gap-sm/md/lg</span><span class="class-desc">Flex/Grid-Gap-Helfer</span></div>
+      <div class="class-item"><span class="class-name">.bg-surface</span><span class="class-desc">Surface-Hintergrundfarbe</span></div>
+      <div class="class-item"><span class="class-name">.rounded / .shadow</span><span class="class-desc">Border-Radius / Box-Shadow</span></div>
+    </div>
+
+    <div class="classes-group">
+      <div class="classes-group-title">Burger-Menü (JS)</div>
+      <div class="class-item"><span class="class-name">.navbar-toggle</span><span class="class-desc">Button mit 3 Spans (Striche)</span></div>
+      <div class="class-item"><span class="class-name">.is-open</span><span class="class-desc">An Toggle: animiert Burger → X</span></div>
+      <div class="class-item"><span class="class-name">.open</span><span class="class-desc">An .navbar-nav: zeigt Menü mobil</span></div>
+    </div>
+
+  </div><!-- /classes-grid -->
+
+  <!-- Burger JS snippet -->
+  <div style="margin-top:32px">
+    <div style="font-family:var(--head);font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);margin-bottom:12px">Burger-Menü aktivieren (JavaScript)</div>
+    <div class="code-block">
+      <span class="code-lang">js</span>
+      <code><span class="code-k">const</span> btn = document.getElementById(<span class="code-s">'burger-btn'</span>);
+<span class="code-k">const</span> nav = document.getElementById(<span class="code-s">'main-nav'</span>);
+
+btn.addEventListener(<span class="code-s">'click'</span>, () =&gt; {
+  <span class="code-k">const</span> open = nav.classList.toggle(<span class="code-s">'open'</span>);
+  btn.classList.toggle(<span class="code-s">'is-open'</span>, open);
+  btn.setAttribute(<span class="code-s">'aria-expanded'</span>, String(open));
+});
+
+<span class="code-c">// Schließen bei Link-Klick</span>
+nav.querySelectorAll(<span class="code-s">'a'</span>).forEach(a =&gt;
+  a.addEventListener(<span class="code-s">'click'</span>, () =&gt; {
+    nav.classList.remove(<span class="code-s">'open'</span>);
+    btn.classList.remove(<span class="code-s">'is-open'</span>);
+  })
+);</code>
+    </div>
+  </div>
+
+  <!-- Toast JS snippet -->
+  <div style="margin-top:24px">
+    <div style="font-family:var(--head);font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);margin-bottom:12px">Toast-Benachrichtigung auslösen (JavaScript)</div>
+    <div class="code-block">
+      <span class="code-lang">js</span>
+      <code><span class="code-c">// HTML: Container-Div an beliebiger Position im Body</span>
+<span class="code-c">// &lt;div class="toast-container toast-top-right" id="tc"&gt;&lt;/div&gt;</span>
+
+<span class="code-k">function</span> <span class="code-a">showToast</span>(type, msg, duration = <span class="code-v">4000</span>) {
+  <span class="code-k">const</span> el = document.createElement(<span class="code-s">'div'</span>);
+  el.className = <span class="code-s">`toast toast-<span class="code-v">${type}</span>`</span>;
+  el.innerHTML = <span class="code-s">`
+    &lt;div class="toast-body"&gt;
+      &lt;div class="toast-title"&gt;<span class="code-v">${type}</span>&lt;/div&gt;
+      &lt;div class="toast-message"&gt;<span class="code-v">${msg}</span>&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button class="toast-close"&gt;✕&lt;/button&gt;
+    &lt;div class="toast-progress"
+         style="animation-duration:<span class="code-v">${duration}</span>ms"&gt;
+    &lt;/div&gt;`</span>;
+
+  <span class="code-k">const</span> dismiss = () =&gt; {
+    el.classList.add(<span class="code-s">'toast-hiding'</span>);
+    el.addEventListener(<span class="code-s">'animationend'</span>,
+      () =&gt; el.remove(), { once: <span class="code-k">true</span> });
+  };
+  el.querySelector(<span class="code-s">'.toast-close'</span>)
+    .addEventListener(<span class="code-s">'click'</span>, dismiss);
+  document.getElementById(<span class="code-s">'tc'</span>).appendChild(el);
+  setTimeout(dismiss, duration);
+}</code>
+    </div>
+  </div>
+
+</section>
+
+<hr class="section-divider">
+
+<!-- VARIABLEN -->
+<section class="section" id="variablen">
+  <div class="section-label">04 — CSS-Variablen</div>
+  <h2 class="section-title">Design Tokens</h2>
+  <p class="section-desc">Alle Themes nutzen dieselben CSS Custom Properties. Eigene Styles können direkt auf diese Variablen referenzieren und sind damit automatisch theme-kompatibel.</p>
+
+  <div class="vars-grid">
+
+    <div class="var-group">
+      <div class="var-group-title">Farben</div>
+      <div class="var-row"><span class="var-name">--color-bg</span><span class="var-note">Seitenhintergrund</span></div>
+      <div class="var-row"><span class="var-name">--color-surface</span><span class="var-note">Karten, Modals, Inputs</span></div>
+      <div class="var-row"><span class="var-name">--color-surface-alt</span><span class="var-note">Alternativer Surface</span></div>
+      <div class="var-row"><span class="var-name">--color-primary</span><span class="var-note">Hauptakzentfarbe</span></div>
+      <div class="var-row"><span class="var-name">--color-primary-hover</span><span class="var-note">Hover-Zustand Primary</span></div>
+      <div class="var-row"><span class="var-name">--color-secondary</span><span class="var-note">Sekundäre Akzentfarbe</span></div>
+      <div class="var-row"><span class="var-name">--color-accent</span><span class="var-note">Dritte Akzentfarbe</span></div>
+      <div class="var-row"><span class="var-name">--color-border</span><span class="var-note">Standard-Rahmenfarbe</span></div>
+      <div class="var-row"><span class="var-name">--color-border-light</span><span class="var-note">Helle Rahmenfarbe</span></div>
+    </div>
+
+    <div class="var-group">
+      <div class="var-group-title">Text &amp; Status</div>
+      <div class="var-row"><span class="var-name">--color-text</span><span class="var-note">Haupttextfarbe</span></div>
+      <div class="var-row"><span class="var-name">--color-text-secondary</span><span class="var-note">Sekundärer Text, Hints</span></div>
+      <div class="var-row"><span class="var-name">--color-success</span><span class="var-note">Erfolg / Bestätigung</span></div>
+      <div class="var-row"><span class="var-name">--color-warning</span><span class="var-note">Warnung</span></div>
+      <div class="var-row"><span class="var-name">--color-error</span><span class="var-note">Fehler / Gefahr</span></div>
+      <div class="var-row"><span class="var-name">--color-info</span><span class="var-note">Information</span></div>
+    </div>
+
+    <div class="var-group">
+      <div class="var-group-title">Typografie</div>
+      <div class="var-row"><span class="var-name">--font-heading</span><span class="var-note">Schrift für H1–H6</span></div>
+      <div class="var-row"><span class="var-name">--font-body</span><span class="var-note">Schrift für Fließtext</span></div>
+      <div class="var-row"><span class="var-name">--line-height</span><span class="var-note">Zeilenhöhe Body (1.65–1.75)</span></div>
+    </div>
+
+    <div class="var-group">
+      <div class="var-group-title">Form &amp; Abstand</div>
+      <div class="var-row"><span class="var-name">--radius-sm/md/lg/full</span><span class="var-note">Border-Radius Stufen</span></div>
+      <div class="var-row"><span class="var-name">--shadow-sm/md/lg</span><span class="var-note">Box-Shadow Stufen</span></div>
+      <div class="var-row"><span class="var-name">--space-xs/sm/md/lg/xl/2xl</span><span class="var-note">Abstandsskala (4–96 px)</span></div>
+      <div class="var-row"><span class="var-name">--transition</span><span class="var-note">Standard CSS-Transition</span></div>
+    </div>
+
+  </div><!-- /vars-grid -->
+
+  <!-- Custom styles example -->
+  <div style="margin-top:32px">
+    <div style="font-family:var(--head);font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink);margin-bottom:12px">Eigene Styles auf Theme-Tokens aufbauen</div>
+    <div class="code-block">
+      <span class="code-lang">css</span>
+      <code><span class="code-c">/* Eigene Komponente die sich automatisch ans Theme anpasst */</span>
+.my-hero {
+  background: <span class="code-v">var(--color-surface)</span>;
+  border: 1px solid <span class="code-v">var(--color-border)</span>;
+  border-radius: <span class="code-v">var(--radius-lg)</span>;
+  padding: <span class="code-v">var(--space-xl)</span>;
+  font-family: <span class="code-v">var(--font-heading)</span>;
+  box-shadow: <span class="code-v">var(--shadow-md)</span>;
+}
+
+.my-hero__title {
+  color: <span class="code-v">var(--color-primary)</span>;
+  font-size: 2rem;
+}
+
+.my-hero__cta {
+  <span class="code-c">/* Ergänze .btn und .btn-primary direkt im HTML */</span>
+}</code>
+    </div>
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <a href="#" class="footer-brand">
+        <span class="logo-dot"></span>
+        aeropus.css
+      </a>
+      <div class="footer-tagline">10 Themes · 1 Link · kein Build-Schritt</div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#themes">Themes</a></li>
+      <li><a href="#einbindung">Einbindung</a></li>
+      <li><a href="#klassen">Klassen</a></li>
+      <li><a href="#variablen">Variablen</a></li>
+      <li><a href="Test.html" target="_blank">Live-Demo</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  function copyUrl(btn, url) {
+    navigator.clipboard.writeText('<link rel="stylesheet" href="' + url + '">').then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'Kopiert!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
