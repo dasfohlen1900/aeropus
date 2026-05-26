@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCR Wiki — Stepford County Railway</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --accent: #e8a020; --accent2: #2f80ed; --accent3: #27ae60; --danger: #e74c3c;
+    --connect: #0096EE; --express: #FF0080; --waterline: #34495E;
+    --airlink: #EC7D33; --metro: #EE4044;
+    --text: #e6edf3; --muted: #8b949e;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--bg); color:var(--text); font-family:'Lato',sans-serif; font-weight:300; line-height:1.7; overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; background:repeating-linear-gradient(90deg,transparent,transparent 120px,rgba(255,255,255,0.012) 120px,rgba(255,255,255,0.012) 121px); pointer-events:none; z-index:0; }
+
+  /* HEADER */
+  header { position:relative; background:linear-gradient(135deg,#090c12 0%,#152032 65%,#0d1117 100%); border-bottom:3px solid var(--accent); overflow:hidden; animation:fadeDown .7s ease both; }
+  .header-rail { position:absolute; bottom:0; left:0; right:0; height:5px; background:repeating-linear-gradient(90deg,var(--accent) 0,var(--accent) 28px,transparent 28px,transparent 38px); opacity:.35; }
+  .header-inner { max-width:1200px; margin:0 auto; padding:44px 32px 38px; display:flex; align-items:center; gap:22px; }
+  .logo-badge { background:var(--accent); color:#000; font-family:'Raleway',sans-serif; font-weight:900; font-size:1.9rem; width:70px; height:70px; display:flex; align-items:center; justify-content:center; border-radius:14px; flex-shrink:0; box-shadow:0 0 36px rgba(232,160,32,.4); }
+  .header-text h1 { font-family:'Raleway',sans-serif; font-weight:900; font-size:clamp(1.7rem,3.5vw,2.6rem); color:#fff; line-height:1.1; }
+  .header-text h1 span { color:var(--accent); }
+  .header-text p { color:var(--muted); font-size:.9rem; margin-top:5px; letter-spacing:.4px; }
+  .header-meta { margin-left:auto; display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
+  .header-emoji { font-size:3rem; animation:trainSlide 3s ease-in-out infinite alternate; }
+  .header-version { font-family:'Raleway',sans-serif; font-weight:700; font-size:.72rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); background:rgba(232,160,32,.1); border:1px solid rgba(232,160,32,.3); padding:3px 10px; border-radius:20px; }
+  @keyframes trainSlide { from{transform:translateX(-5px)} to{transform:translateX(5px)} }
+
+  /* NAV */
+  nav { background:var(--surface); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+  .nav-inner { max-width:1200px; margin:0 auto; padding:0 32px; display:flex; overflow-x:auto; scrollbar-width:none; }
+  .nav-inner::-webkit-scrollbar { display:none; }
+  nav a { color:var(--muted); text-decoration:none; font-family:'Raleway',sans-serif; font-weight:600; font-size:.78rem; letter-spacing:.9px; text-transform:uppercase; padding:13px 14px; border-bottom:2px solid transparent; white-space:nowrap; transition:color .2s,border-color .2s; }
+  nav a:hover { color:var(--accent); border-bottom-color:var(--accent); }
+
+  /* LAYOUT */
+  .page { max-width:1200px; margin:0 auto; padding:44px 32px; display:grid; grid-template-columns:1fr 272px; gap:40px; position:relative; z-index:1; }
+  main { min-width:0; }
+
+  /* SECTIONS */
+  section { margin-bottom:56px; }
+  .section-label { font-family:'Raleway',sans-serif; font-weight:700; font-size:.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--accent); margin-bottom:7px; }
+  h2 { font-family:'Raleway',sans-serif; font-weight:900; font-size:1.65rem; color:#fff; margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+  h2 .icon { font-size:1.15rem; }
+  h3 { font-family:'Raleway',sans-serif; font-weight:700; font-size:1rem; color:var(--accent); margin:24px 0 10px; }
+  p { margin-bottom:13px; color:#c9d1d9; font-size:.93rem; }
+
+  /* STAT STRIP */
+  .stat-strip { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:24px; }
+  .stat-item { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; }
+  .stat-num { font-family:'Raleway',sans-serif; font-weight:900; font-size:1.6rem; color:var(--accent); line-height:1; }
+  .stat-lbl { font-size:.72rem; color:var(--muted); margin-top:4px; }
+
+  /* INFOBOX */
+  .infobox { border-radius:9px; padding:13px 17px; margin:13px 0; font-size:.87rem; display:flex; gap:10px; align-items:flex-start; }
+  .infobox .ib-icon { font-size:1.1rem; flex-shrink:0; margin-top:2px; }
+  .infobox.warning { background:rgba(232,160,32,.07); border-left:3px solid var(--accent); }
+  .infobox.info    { background:rgba(47,128,237,.07); border-left:3px solid var(--accent2); }
+  .infobox.success { background:rgba(39,174,96,.07); border-left:3px solid var(--accent3); }
+  .infobox.danger  { background:rgba(231,76,60,.07); border-left:3px solid var(--danger); }
+
+  /* OPERATOR LOGOS */
+  .op-logos { display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin:16px 0; padding:20px; background:var(--surface); border:1px solid var(--border); border-radius:12px; }
+  .op-logo-item { display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .op-logo-item img { height:36px; width:auto; object-fit:contain; filter:drop-shadow(0 2px 6px rgba(0,0,0,.4)); }
+  .op-logo-lbl { font-size:.7rem; color:var(--muted); font-family:'Raleway',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:.8px; }
+
+  /* OPERATOR CARDS */
+  .operator-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px; }
+  .op-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px; border-left-width:4px; transition:transform .2s,box-shadow .2s; }
+  .op-card:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.3); }
+  .op-connect   { border-left-color:var(--connect); }
+  .op-express   { border-left-color:var(--express); }
+  .op-waterline { border-left-color:var(--waterline); }
+  .op-airlink   { border-left-color:var(--airlink); }
+  .op-metro     { border-left-color:var(--metro); }
+  .op-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .op-logo-sm { height:22px; width:auto; object-fit:contain; filter:drop-shadow(0 1px 4px rgba(0,0,0,.5)); }
+  .op-name { font-family:'Raleway',sans-serif; font-weight:900; font-size:.95rem; color:#fff; }
+  .op-tag { display:inline-block; padding:1px 8px; border-radius:12px; font-size:.7rem; font-weight:700; font-family:'Raleway',sans-serif; margin-bottom:7px; }
+  .tag-connect  { background:rgba(0,150,238,.15); color:#4db8ff; }
+  .tag-express  { background:rgba(255,0,128,.15); color:#ff70c0; }
+  .tag-waterline{ background:rgba(52,73,94,.35); color:#9ab0c4; }
+  .tag-airlink  { background:rgba(236,125,51,.15); color:#ffaa70; }
+  .tag-metro    { background:rgba(238,64,68,.15); color:#ff8080; }
+  .op-desc { font-size:.81rem; color:var(--muted); line-height:1.55; }
+  .op-routes { font-family:'Raleway',sans-serif; font-size:.74rem; font-weight:700; color:var(--accent); margin-top:7px; }
+  .train-chips { display:flex; flex-wrap:wrap; gap:3px; margin-top:7px; }
+  .train-chip { background:rgba(255,255,255,.06); border:1px solid var(--border); border-radius:5px; padding:1px 6px; font-size:.7rem; color:#c9d1d9; }
+
+  /* FLEET IMAGES */
+  .fleet-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; }
+  .fleet-img-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .fleet-img-card img { width:100%; height:auto; display:block; }
+  .fleet-img-label { font-family:'Raleway',sans-serif; font-weight:700; font-size:.75rem; padding:8px 12px; color:var(--muted); display:flex; align-items:center; gap:6px; }
+
+  /* ROUTE MAPS */
+  .map-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:14px; }
+  .map-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; cursor:pointer; transition:border-color .2s, transform .2s; }
+  .map-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .map-card img { width:100%; height:auto; display:block; }
+  .map-label { font-family:'Raleway',sans-serif; font-weight:700; font-size:.75rem; padding:8px 12px; color:var(--muted); }
+
+  /* LIGHTBOX */
+  .lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:9999; align-items:center; justify-content:center; }
+  .lightbox.active { display:flex; }
+  .lightbox img { max-width:92vw; max-height:92vh; border-radius:8px; object-fit:contain; }
+  .lightbox-close { position:absolute; top:20px; right:28px; font-size:2rem; color:#fff; cursor:pointer; font-family:'Raleway',sans-serif; font-weight:900; opacity:.7; }
+  .lightbox-close:hover { opacity:1; }
+
+  /* DATA TABLE */
+  .data-table { width:100%; border-collapse:collapse; margin-top:14px; font-size:.83rem; }
+  .data-table th { font-family:'Raleway',sans-serif; font-weight:700; font-size:.68rem; letter-spacing:1px; text-transform:uppercase; color:var(--muted); padding:8px 11px; text-align:left; border-bottom:1px solid var(--border); white-space:nowrap; }
+  .data-table td { padding:7px 11px; border-bottom:1px solid rgba(48,54,61,.4); vertical-align:middle; color:#c9d1d9; }
+  .data-table tr:hover td { background:rgba(255,255,255,.02); }
+
+  /* STATION TABLE */
+  .station-table-wrap { overflow-x:auto; margin-top:14px; border-radius:10px; border:1px solid var(--border); }
+  .station-table { width:100%; border-collapse:collapse; font-size:.8rem; }
+  .station-table th { font-family:'Raleway',sans-serif; font-weight:700; font-size:.66rem; letter-spacing:1px; text-transform:uppercase; color:var(--muted); padding:9px 10px; text-align:left; border-bottom:1px solid var(--border); background:var(--surface); white-space:nowrap; position:sticky; top:0; }
+  .station-table td { padding:6px 10px; border-bottom:1px solid rgba(48,54,61,.35); vertical-align:middle; }
+  .station-table tr:last-child td { border-bottom:none; }
+  .station-table tr:hover td { background:rgba(255,255,255,.02); }
+  .station-table tr.demolished td { opacity:.45; }
+  .station-table tr.abandoned td { opacity:.65; }
+
+  .s-badge { display:inline-block; width:20px; height:20px; border-radius:4px; font-size:.65rem; font-weight:700; font-family:'Raleway',sans-serif; display:inline-flex; align-items:center; justify-content:center; }
+  .s-u { background:rgba(39,174,96,.2); color:#5ecf8b; }
+  .s-d { background:rgba(231,76,60,.2); color:#f08080; }
+  .s-a { background:rgba(232,160,32,.2); color:#f4c660; }
+
+  .code-badge { font-family:monospace; font-size:.75rem; color:var(--accent); background:rgba(232,160,32,.08); padding:1px 5px; border-radius:4px; }
+  .zone-badge { font-family:'Raleway',sans-serif; font-weight:700; font-size:.72rem; background:rgba(255,255,255,.08); border-radius:10px; padding:1px 7px; color:#c9d1d9; }
+
+  /* OPERATOR DOTS */
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .dot-c { background:var(--connect); } .dot-e { background:var(--express); }
+  .dot-w { background:var(--waterline); } .dot-a { background:var(--airlink); }
+  .dot-m { background:var(--metro); }
+  .dots { display:flex; gap:3px; align-items:center; }
+
+  .check { color:var(--accent3); } .cross { color:var(--danger); }
+
+  /* RANK BADGES */
+  .rank-badge { display:inline-block; padding:2px 10px; border-radius:20px; font-family:'Raleway',sans-serif; font-weight:700; font-size:.73rem; white-space:nowrap; }
+  .rb-td  { background:rgba(255,255,255,.08); color:#aaa; }
+  .rb-qd  { background:rgba(100,180,255,.15); color:#70c0ff; }
+  .rb-ds  { background:rgba(232,160,32,.15); color:#f4c660; }
+  .rb-gd  { background:rgba(39,174,96,.15); color:#5ecf8b; }
+  .rb-sg  { background:rgba(180,100,255,.15); color:#d090ff; }
+  .rb-sv  { background:rgba(231,76,60,.15); color:#f08080; }
+  .rb-mgr { background:rgba(232,160,32,.25); color:var(--accent); }
+
+  /* RULES LIST */
+  .rules-list { list-style:none; margin-top:10px; }
+  .rules-list li { display:flex; align-items:flex-start; gap:9px; padding:9px 0; border-bottom:1px solid rgba(48,54,61,.4); font-size:.88rem; color:#c9d1d9; }
+  .rules-list li:last-child { border-bottom:none; }
+  .rules-list .ri { font-size:.95rem; flex-shrink:0; margin-top:3px; }
+
+  /* STEPS */
+  .steps { display:flex; flex-direction:column; }
+  .step { display:flex; gap:16px; padding:14px 0; border-bottom:1px solid rgba(48,54,61,.4); }
+  .step:last-child { border-bottom:none; }
+  .step-num { font-family:'Raleway',sans-serif; font-weight:900; font-size:1.4rem; color:var(--accent); opacity:.5; flex-shrink:0; width:28px; line-height:1.2; }
+  .step-body { flex:1; }
+  .step-title { font-family:'Raleway',sans-serif; font-weight:700; font-size:.95rem; color:#fff; margin-bottom:3px; }
+  .step-desc { font-size:.82rem; color:var(--muted); line-height:1.55; }
+  .step-req { display:inline-block; margin-top:5px; font-size:.73rem; color:var(--accent); background:rgba(232,160,32,.08); border:1px solid rgba(232,160,32,.2); border-radius:5px; padding:2px 7px; }
+
+  /* TIMELINE */
+  .timeline { position:relative; padding-left:26px; margin-top:14px; }
+  .timeline::before { content:''; position:absolute; left:7px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--accent),var(--accent2),transparent); }
+  .tl-item { position:relative; margin-bottom:24px; }
+  .tl-item::before { content:''; position:absolute; left:-21px; top:5px; width:9px; height:9px; border-radius:50%; background:var(--accent); border:2px solid var(--bg); box-shadow:0 0 7px var(--accent); }
+  .tl-date { font-family:'Raleway',sans-serif; font-weight:700; font-size:.72rem; letter-spacing:1px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; }
+  .tl-title { font-family:'Raleway',sans-serif; font-weight:700; font-size:.95rem; color:#fff; margin-bottom:4px; }
+  .tl-text { font-size:.84rem; color:var(--muted); }
+
+  /* PENALTY */
+  .penalty-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+  .penalty-item { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:12px 14px; }
+  .penalty-level { font-family:'Raleway',sans-serif; font-weight:700; font-size:.7rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:2px; }
+  .pl-1{color:#f4c660} .pl-2{color:#ff9966} .pl-3{color:var(--danger)} .pl-4{color:#c0392b}
+  .penalty-action { font-size:.86rem; color:#c9d1d9; }
+
+  /* ADVERTISING */
+  .ad-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:14px; }
+  .ad-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; cursor:pointer; transition:transform .2s,border-color .2s; }
+  .ad-card:hover { transform:translateY(-3px); border-color:rgba(255,255,255,.15); }
+  .ad-card img { width:100%; height:180px; object-fit:cover; display:block; }
+  .ad-label { font-size:.72rem; color:var(--muted); padding:6px 8px; font-family:'Raleway',sans-serif; font-weight:600; }
+
+  /* STATION SIGNS */
+  .signs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; margin-top:14px; }
+  .sign-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; cursor:pointer; transition:transform .2s; }
+  .sign-card:hover { transform:translateY(-2px); }
+  .sign-card img { width:100%; height:auto; display:block; }
+  .sign-name { font-size:.7rem; color:var(--muted); padding:5px 8px; font-family:'Raleway',sans-serif; font-weight:600; }
+
+  /* MARKERS */
+  .marker-grid { display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap; margin-top:14px; }
+  .marker-item { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:10px; text-align:center; }
+  .marker-item img { height:60px; width:auto; object-fit:contain; display:block; margin:0 auto 6px; }
+  .marker-item span { font-size:.72rem; color:var(--muted); font-family:'Raleway',sans-serif; }
+
+  /* FILTER BAR */
+  .filter-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .filter-btn { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:4px 14px; font-family:'Raleway',sans-serif; font-weight:700; font-size:.75rem; color:var(--muted); cursor:pointer; transition:all .15s; }
+  .filter-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .filter-btn.active { background:var(--accent); border-color:var(--accent); color:#000; }
+  .filter-btn.fc { border-color:var(--connect); color:var(--connect); }
+  .filter-btn.fc.active { background:var(--connect); color:#fff; border-color:var(--connect); }
+  .filter-btn.fm { border-color:var(--metro); color:var(--metro); }
+  .filter-btn.fm.active { background:var(--metro); color:#fff; }
+  .filter-btn.fw { border-color:var(--waterline); color:#9ab0c4; }
+  .filter-btn.fw.active { background:var(--waterline); color:#fff; }
+  .filter-btn.fa { border-color:var(--airlink); color:var(--airlink); }
+  .filter-btn.fa.active { background:var(--airlink); color:#fff; }
+  .filter-btn.fe { border-color:var(--express); color:var(--express); }
+  .filter-btn.fe.active { background:var(--express); color:#fff; }
+
+  /* SIDEBAR */
+  aside { position:sticky; top:52px; height:fit-content; }
+  .sidebar-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:16px; }
+  .sidebar-header { background:var(--accent); color:#000; font-family:'Raleway',sans-serif; font-weight:900; font-size:.78rem; letter-spacing:1px; text-transform:uppercase; padding:9px 15px; }
+  .sidebar-body { padding:14px; }
+  .sidebar-stat { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid rgba(48,54,61,.4); font-size:.81rem; }
+  .sidebar-stat:last-child { border-bottom:none; }
+  .sidebar-stat .label { color:var(--muted); display:flex; align-items:center; gap:5px; }
+  .sidebar-stat .value { font-family:'Raleway',sans-serif; font-weight:700; color:#fff; }
+  .toc-list { list-style:none; }
+  .toc-list li { border-bottom:1px solid rgba(48,54,61,.35); }
+  .toc-list li:last-child { border-bottom:none; }
+  .toc-list a { display:block; padding:7px 0; color:var(--muted); text-decoration:none; font-size:.81rem; transition:color .2s,padding-left .2s; }
+  .toc-list a:hover { color:var(--accent); padding-left:4px; }
+  .toc-num { font-family:'Raleway',sans-serif; font-weight:700; color:var(--accent); margin-right:5px; font-size:.7rem; }
+
+  /* FOOTER */
+  footer { background:var(--surface); border-top:1px solid var(--border); padding:22px 32px; text-align:center; color:var(--muted); font-size:.77rem; position:relative; z-index:1; }
+  footer span { color:var(--accent); }
+
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-18px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeUp   { from{opacity:0;transform:translateY(18px)}  to{opacity:1;transform:translateY(0)} }
+
+  @media(max-width:900px) {
+    .page{grid-template-columns:1fr} aside{position:static}
+    .header-meta{display:none} .stat-strip{grid-template-columns:repeat(3,1fr)}
+    .operator-grid{grid-template-columns:1fr} .fleet-grid{grid-template-columns:1fr}
+    .map-grid{grid-template-columns:1fr 1fr} .ad-grid{grid-template-columns:1fr 1fr}
+    .penalty-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lb" onclick="closeLB()">
+  <div class="lightbox-close">✕</div>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-badge">SCR</div>
+    <div class="header-text">
+      <h1>Stepford County <span>Railway</span></h1>
+      <p>Community Wiki — Operators · Trains · Stations · Ranks · History</p>
+    </div>
+    <div class="header-meta">
+      <div class="header-emoji">🚅</div>
+      <div class="header-version">Version 2.3 · Jan 2026</div>
+    </div>
+  </div>
+  <div class="header-rail"></div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#overview">Overview</a>
+    <a href="#operators">Operators</a>
+    <a href="#trains">Trains</a>
+    <a href="#maps">Maps</a>
+    <a href="#stations">Stations</a>
+    <a href="#signs">Station Signs</a>
+    <a href="#ranks">Ranks</a>
+    <a href="#training">Training</a>
+    <a href="#rules">Rules</a>
+    <a href="#trespassing">Trespassing</a>
+    <a href="#advertising">Advertising</a>
+    <a href="#history">History</a>
+  </div>
+</nav>
+
+<div class="page">
+<main>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="section-label">Introduction</div>
+  <h2><span class="icon">🚉</span> What is SCR?</h2>
+  <p>Stepford County Railway (SCR) is a British-inspired heavy rail simulation on Roblox, open since 25 November 2017. Players drive trains, dispatch, guard, or signal across a UK-style network. Founded by SCRTeamOfficial (Charlie_RBX, visually impaired); BanTech became the main developer.</p>
+  <div class="stat-strip">
+    <div class="stat-item"><div class="stat-num">75</div><div class="stat-lbl">Open Stations</div></div>
+    <div class="stat-item"><div class="stat-num">100</div><div class="stat-lbl">Routes</div></div>
+    <div class="stat-item"><div class="stat-num">56</div><div class="stat-lbl">Train Classes</div></div>
+    <div class="stat-item"><div class="stat-num">14</div><div class="stat-lbl">Lines</div></div>
+    <div class="stat-item"><div class="stat-num">58.8mi</div><div class="stat-lbl">Route Length</div></div>
+  </div>
+  <p>Infrastructure is maintained jointly by SCR and Transport for Stepford (TfS). All five operators run 100 routes. The game has 10 fare zones. AirLink and Express offer First Class.</p>
+  <div class="infobox info"><span class="ib-icon">ℹ️</span><span>The SCR Unofficial Wiki (scr.fandom.com) has 631+ articles. It has no official connection to SCR management — it cannot assist with bans, items, or codes.</span></div>
+</section>
+
+<!-- OPERATORS -->
+<section id="operators">
+  <div class="section-label">Train Operating Companies</div>
+  <h2><span class="icon">🏢</span> Operators</h2>
+
+  <div class="op-logos">
+    <div class="op-logo-item"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/0/07/Stepford_Connect_Logo_%28Dark%29.svg/revision/latest?cb=20250102153146" alt="Connect"><div class="op-logo-lbl">Connect</div></div>
+    <div class="op-logo-item"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/e/ee/Metro_wordmark.svg/revision/latest?cb=20250619180153" alt="Metro"><div class="op-logo-lbl">Metro</div></div>
+    <div class="op-logo-item"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/2/22/Waterline_logo_blue.svg/revision/latest/scale-to-width-down/536?cb=20250804103347" alt="Waterline"><div class="op-logo-lbl">Waterline</div></div>
+    <div class="op-logo-item"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/a/a6/Airlink_Logo.svg/revision/latest?cb=20250308193024" alt="AirLink"><div class="op-logo-lbl">AirLink</div></div>
+    <div class="op-logo-item"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/d/d7/Stepford_Express_Logo_%28Light%29.svg/revision/latest/scale-to-width-down/1000?cb=20250619183702" alt="Express"><div class="op-logo-lbl">Express</div></div>
+  </div>
+
+  <div class="operator-grid">
+    <div class="op-card op-connect">
+      <div class="op-header"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/0/07/Stepford_Connect_Logo_%28Dark%29.svg/revision/latest?cb=20250102153146" class="op-logo-sm" alt="Connect"><div class="op-name">Stepford Connect</div></div>
+      <span class="op-tag tag-connect">Regional & Semi-fast · Since 2017</span>
+      <div class="op-desc">Oldest and largest operator. Runs to Whitefield, Benton, Leighton, Airport, Hampton Hargate and Llyn-by-the-Sea. Full end-to-end journey ~44 min. Colour: <strong>#0096EE</strong>. Pre-V1.5 branded as teal "Connect". 38 routes, most in the network.</div>
+      <div class="op-routes">38 routes · 21 train classes</div>
+      <div class="train-chips"><span class="train-chip">157</span><span class="train-chip">158</span><span class="train-chip">168</span><span class="train-chip">170</span><span class="train-chip">185</span><span class="train-chip">313</span><span class="train-chip">319</span><span class="train-chip">321</span><span class="train-chip">331/0</span><span class="train-chip">331/1</span><span class="train-chip">350</span><span class="train-chip">357★</span><span class="train-chip">365</span><span class="train-chip">377</span><span class="train-chip">379</span><span class="train-chip">380</span><span class="train-chip">385</span><span class="train-chip">387</span><span class="train-chip">444</span><span class="train-chip">707</span><span class="train-chip">720</span><span class="train-chip">730/0</span></div>
+    </div>
+    <div class="op-card op-metro">
+      <div class="op-header"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/e/ee/Metro_wordmark.svg/revision/latest?cb=20250619180153" class="op-logo-sm" alt="Metro"><div class="op-name">Metro</div></div>
+      <span class="op-tag tag-metro">Urban Metro · Since V2.2 May 2025</span>
+      <div class="op-desc">Newest operator — first new TOC in 5+ years. Took over 12 Connect routes. Metro Core tunnel section with new underground stations. Extensions to Stepford Bay and Whitney Green via Berrily. Colour: <strong>#EE4044</strong>.</div>
+      <div class="op-routes">26 routes · 5 train classes</div>
+      <div class="train-chips"><span class="train-chip">323</span><span class="train-chip">333</span><span class="train-chip">360</span><span class="train-chip">398</span><span class="train-chip">717★</span></div>
+    </div>
+    <div class="op-card op-waterline">
+      <div class="op-header"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/2/22/Waterline_logo_blue.svg/revision/latest/scale-to-width-down/536?cb=20250804103347" class="op-logo-sm" alt="Waterline"><div class="op-name">Waterline</div></div>
+      <span class="op-tag tag-waterline">Commuter Rail · Since V1.5</span>
+      <div class="op-desc">Named after River Ben. Commuter services around Benton: Newry Harbour, Connolly, Farleigh, Esterfield, Airport T2, Morganstown, Greenslade. Max 100 MPH on select sections. Sub-franchise of Connect before V1.5. No "Longer Trains" gamepass trains. Colour: <strong>#34495E</strong>.</div>
+      <div class="op-routes">11 routes · 9 train classes</div>
+      <div class="train-chips"><span class="train-chip">143</span><span class="train-chip">156</span><span class="train-chip">158</span><span class="train-chip">165</span><span class="train-chip">166</span><span class="train-chip">172</span><span class="train-chip">195</span><span class="train-chip">387</span><span class="train-chip">730/1</span></div>
+    </div>
+    <div class="op-card op-airlink">
+      <div class="op-header"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/a/a6/Airlink_Logo.svg/revision/latest?cb=20250308193024" class="op-logo-sm" alt="AirLink"><div class="op-name">AirLink</div></div>
+      <span class="op-tag tag-airlink">Airport Express · Since V1.1 · First Class</span>
+      <div class="op-desc">Airport link: Central → Airport Central in under 10 min. All 3 terminals via Loop (R058). Only operator not serving the Benton Zone. Most trains 100 MPH; Class 397 & 802 reach 125 MPH. Originally planned in orange — colour given to AirLink later. Colour: <strong>#EC7D33</strong>.</div>
+      <div class="op-routes">11 routes · 9 train classes</div>
+      <div class="train-chips"><span class="train-chip">332</span><span class="train-chip">345</span><span class="train-chip">360/2</span><span class="train-chip">379</span><span class="train-chip">387/2</span><span class="train-chip">390</span><span class="train-chip">397</span><span class="train-chip">745</span><span class="train-chip">802</span></div>
+    </div>
+    <div class="op-card op-express" style="grid-column:1/-1">
+      <div class="op-header"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/d/d7/Stepford_Express_Logo_%28Light%29.svg/revision/latest/scale-to-width-down/1000?cb=20250619183702" class="op-logo-sm" alt="Express"><div class="op-name">Stepford Express</div></div>
+      <span class="op-tag tag-express">High-Speed · Since V1.4 · First Class</span>
+      <div class="op-desc">All trains run at <strong>125 MPH</strong> — the only operator with a consistent top speed across its entire fleet. Serves Central, Benton, Leighton, Morganstown, Newry, Westwyvern, Rayleigh Bay and Llyn-by-the-Sea. First operator to have a fully meshed fleet. Routes are named rather than just showing termini (to differentiate stopping patterns). Rebranded in V1.7. Colour: <strong>#FF0080</strong>.</div>
+      <div class="op-routes">14 routes · 9 train classes</div>
+      <div class="train-chips"><span class="train-chip">43 (5-car)</span><span class="train-chip">43 (7-car)</span><span class="train-chip">43 (8-car)</span><span class="train-chip">68</span><span class="train-chip">220</span><span class="train-chip">221</span><span class="train-chip">555</span><span class="train-chip">800</span><span class="train-chip">801</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINS -->
+<section id="trains">
+  <div class="section-label">Rolling Stock</div>
+  <h2><span class="icon">🚆</span> Trains & Fleet</h2>
+  <p>All 56 active train classes use the NGv3 model standard as of V2.3. Retired: Classes 465, 508, 701. Scenery-only: Class 08 &amp; 66. Proposed: Class 365. ★ = Free train.</p>
+
+  <h3>Fleet Images (V2.3)</h3>
+  <div class="fleet-grid">
+    <div class="fleet-img-card"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/1/10/Connect2.3.png/revision/latest/scale-to-width-down/1536?cb=20260402121903" alt="Connect Fleet" onclick="openLB(this.src)"><div class="fleet-img-label"><span class="dot dot-c"></span> Stepford Connect Fleet</div></div>
+    <div class="fleet-img-card"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/5/54/Metro2.3.png/revision/latest/scale-to-width-down/1536?cb=20260111132022" alt="Metro Fleet" onclick="openLB(this.src)"><div class="fleet-img-label"><span class="dot dot-m"></span> Metro Fleet</div></div>
+    <div class="fleet-img-card"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/3/37/Waterline_Stock_2_0.png/revision/latest/scale-to-width-down/1536?cb=20260411160420" alt="Waterline Fleet" onclick="openLB(this.src)"><div class="fleet-img-label"><span class="dot dot-w"></span> Waterline Fleet</div></div>
+    <div class="fleet-img-card"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/4/4f/Airlink_fleet.png/revision/latest/scale-to-width-down/1536?cb=20260402112354" alt="AirLink Fleet" onclick="openLB(this.src)"><div class="fleet-img-label"><span class="dot dot-a"></span> AirLink Fleet</div></div>
+  </div>
+  <div class="fleet-grid" style="margin-top:10px;grid-template-columns:1fr">
+    <div class="fleet-img-card"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/f/fb/Express2.3Fleet.png/revision/latest/scale-to-width-down/1536?cb=20260111133427" alt="Express Fleet" onclick="openLB(this.src)"><div class="fleet-img-label"><span class="dot dot-e"></span> Stepford Express Fleet</div></div>
+  </div>
+
+  <h3>Coach Stop Markers</h3>
+  <div class="marker-grid">
+    <div class="marker-item"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/1/15/SCarSM.png/revision/latest/scale-to-width-down/220?cb=20260214154624" alt="5-car marker"><span>5-Car Stop Marker</span></div>
+    <div class="marker-item"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/a/a1/6CarSM.png/revision/latest/scale-to-width-down/220?cb=20260214160221" alt="6-car marker"><span>6-Car Stop Marker</span></div>
+    <div class="marker-item"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/f/fd/DieselPowerChangeover.png/revision/latest/scale-to-width-down/168?cb=20260216141450" alt="Diesel changeover"><span>Diesel Power Changeover Sign</span></div>
+  </div>
+
+  <h3>Detailed Train Data</h3>
+  <div style="overflow-x:auto">
+  <table class="data-table">
+    <thead><tr><th>Class</th><th>Operator</th><th>Type</th><th>Max Speed</th><th>Coaches</th><th>Manufacturer</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>43 (HST)</strong></td><td style="color:var(--express)">Express</td><td>Diesel IC</td><td>125 mph</td><td>5 / 7 / 8</td><td>British Rail</td><td>3 coach variants; 7 &amp; 8 via Longer Trains gamepass. Iconic High Speed Train.</td></tr>
+      <tr><td><strong>68</strong></td><td style="color:var(--express)">Express</td><td>Diesel Loco</td><td>125 mph</td><td>–</td><td>Stadler</td><td>Diesel locomotive hauling Express services</td></tr>
+      <tr><td><strong>143</strong></td><td style="color:#9ab0c4">Waterline</td><td>DMU</td><td>75 mph</td><td>2</td><td>British Rail</td><td>Pacer; heritage diesel unit</td></tr>
+      <tr><td><strong>156</strong></td><td style="color:#9ab0c4">Waterline</td><td>DMU</td><td>75 mph</td><td>2</td><td>Metro-Cammell</td><td>Super Sprinter</td></tr>
+      <tr><td><strong>158</strong></td><td style="color:var(--connect)">Connect</td><td>DMU</td><td>90 mph</td><td>2–3</td><td>BREL</td><td>Express Sprinter; also on Waterline</td></tr>
+      <tr><td><strong>165/166</strong></td><td style="color:#9ab0c4">Waterline</td><td>DMU</td><td>90 mph</td><td>2–3</td><td>BREL</td><td>Network Turbo. Upgraded NGv2 doors in franchise renewal.</td></tr>
+      <tr><td><strong>168</strong></td><td style="color:var(--connect)">Connect</td><td>DMU</td><td>100 mph</td><td>3–4</td><td>Bombardier</td><td>Chiltern Clubman; first directly introduced as NGv3</td></tr>
+      <tr><td><strong>170</strong></td><td style="color:var(--connect)">Connect</td><td>DMU</td><td>100 mph</td><td>2–3</td><td>Bombardier</td><td>Turbostar</td></tr>
+      <tr><td><strong>172</strong></td><td style="color:#9ab0c4">Waterline</td><td>DMU</td><td>75 mph</td><td>2</td><td>Bombardier</td><td>Turbostar variant</td></tr>
+      <tr><td><strong>185</strong></td><td style="color:var(--connect)">Connect</td><td>DMU</td><td>100 mph</td><td>3</td><td>Siemens</td><td>Desiro; 6-car stop markers added V1.9.2</td></tr>
+      <tr><td><strong>195</strong></td><td style="color:#9ab0c4">Waterline</td><td>DMU</td><td>100 mph</td><td>2–3</td><td>CAF</td><td>First Waterline train with coach variants</td></tr>
+      <tr><td><strong>220/221</strong></td><td style="color:var(--express)">Express</td><td>DMU</td><td>125 mph</td><td>4–5</td><td>Bombardier</td><td>Voyager; Express's first fully meshed fleet. 221 is tilting variant.</td></tr>
+      <tr><td><strong>313</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>75 mph</td><td>3</td><td>British Rail</td><td>Has dedicated emergency exit; dual-voltage (AC/DC)</td></tr>
+      <tr><td><strong>319</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>4</td><td>BREL</td><td>Dual-voltage Thameslink; has dedicated emergency exit</td></tr>
+      <tr><td><strong>321</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>4</td><td>BREL</td><td>Network Express; revised livery in V1.9</td></tr>
+      <tr><td><strong>323</strong></td><td style="color:var(--metro)">Metro</td><td>EMU</td><td>90 mph</td><td>3</td><td>Hunslet TPL</td><td>Metro unit</td></tr>
+      <tr><td><strong>331/0 & /1</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>3–5</td><td>CAF</td><td>Civity; /1 carries Pride Train livery since V1.6</td></tr>
+      <tr><td><strong>332</strong></td><td style="color:var(--airlink)">AirLink</td><td>EMU</td><td>100 mph</td><td>4–6</td><td>CAF</td><td>Heathrow Express unit; formerly shared door chimes with 333</td></tr>
+      <tr><td><strong>333</strong></td><td style="color:var(--metro)">Metro</td><td>EMU</td><td>100 mph</td><td>4</td><td>CAF</td><td>Yorkshire-style unit on Metro</td></tr>
+      <tr><td><strong>345 Aventra</strong></td><td style="color:var(--airlink)">AirLink</td><td>EMU</td><td>90 mph</td><td>7–9</td><td>Bombardier</td><td>Most expensive: 4,500 points. Terminals Shuttle only (R058).</td></tr>
+      <tr><td><strong>350 Desiro</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>110 mph</td><td>4/8</td><td>Siemens</td><td>2nd fastest overall (tied). First NGv3 Haughton Foundry model. 1,500 pts.</td></tr>
+      <tr><td><strong>357 Electrostar</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>4</td><td>Bombardier</td><td>★ Free train; "noob train" alongside 717</td></tr>
+      <tr><td><strong>360</strong></td><td style="color:var(--metro)">Metro</td><td>EMU</td><td>100 mph</td><td>4–5</td><td>Siemens</td><td>Desiro; also a Special edition variant. Metro unit.</td></tr>
+      <tr><td><strong>365</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>4</td><td>ABB/BREL</td><td>Proposed — not yet in service</td></tr>
+      <tr><td><strong>377 Electrostar</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>5</td><td>Bombardier</td><td>Longest single Electrostar unit (5 coaches). Subclass /7. 1,500 pts.</td></tr>
+      <tr><td><strong>379 Electrostar</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>4</td><td>Bombardier</td><td>Also operated by AirLink (/2 variant)</td></tr>
+      <tr><td><strong>380 Desiro</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>3/4</td><td>Siemens</td><td>3-coach /0, 4-coach /1. Shares door chimes with 377, 379, 387.</td></tr>
+      <tr><td><strong>385</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>3–4</td><td>Hitachi</td><td>AT200; ScotRail-style unit on Connect</td></tr>
+      <tr><td><strong>387 Electrostar</strong></td><td style="color:var(--connect)">Connect</td> / <td style="color:var(--airlink)">AirLink</td><td>110 mph</td><td>4/8</td><td>Bombardier</td><td>Left Connect 2017, returned 2026. 2nd fastest (tied). AirLink /2 is only AirLink train with 3rd-rail + cab-end gangways.</td></tr>
+      <tr><td><strong>390 Pendolino</strong></td><td style="color:var(--airlink)">AirLink</td><td>EMU</td><td>125 mph</td><td>9–11</td><td>Alstom</td><td>Tilting express; one of AirLink's premium units</td></tr>
+      <tr><td><strong>397</strong></td><td style="color:var(--airlink)">AirLink</td><td>EMU</td><td>125 mph</td><td>5</td><td>CAF</td><td>One of two AirLink trains reaching 125 mph</td></tr>
+      <tr><td><strong>398 Citylink</strong></td><td style="color:var(--metro)">Metro</td><td>Tram-Train</td><td>60 mph</td><td>3</td><td>Stadler</td><td>Tram-train on Stepford Bay branch; new V2.3 platforms at Berrily</td></tr>
+      <tr><td><strong>444 Desiro</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>5</td><td>Siemens</td><td>Introduced V1.9.1; one of Connect's longer units</td></tr>
+      <tr><td><strong>555</strong></td><td style="color:var(--express)">Express</td><td>EMU</td><td>125 mph</td><td>5</td><td>Stadler</td><td>FLIRT; newer Express unit</td></tr>
+      <tr><td><strong>700 Desiro City</strong></td><td>—</td><td>Retired EMU</td><td>100 mph</td><td>8</td><td>Siemens</td><td>Original SCR train (2017). Retired; replaced by Class 707. Class 700 also refers to scenery trains.</td></tr>
+      <tr><td><strong>707 Desiro City</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>5–10</td><td>Siemens</td><td>Replaced Class 700; one of Connect's cheaper trains</td></tr>
+      <tr><td><strong>717 Desiro City</strong></td><td style="color:var(--metro)">Metro</td><td>EMU</td><td>85 mph</td><td>6</td><td>Siemens</td><td>★ Free (since V2.2). Only 85 MPH train in SCR. Fastest on Metro. Transferred from Connect. Only non-Stadler Metro train.</td></tr>
+      <tr><td><strong>720 Aventra</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>5–10</td><td>Bombardier</td><td>Introduced V1.8; large Connect fleet unit</td></tr>
+      <tr><td><strong>730/0</strong></td><td style="color:var(--connect)">Connect</td><td>EMU</td><td>100 mph</td><td>3–5</td><td>Bombardier</td><td>Connect variant of Class 730 family; bi-mode capable (V2.3)</td></tr>
+      <tr><td><strong>730/1</strong></td><td style="color:#9ab0c4">Waterline</td><td>EMU</td><td>110 mph</td><td>3–5</td><td>Bombardier</td><td>2nd fastest overall (tied). Waterline flagship. First upgraded NGv2 doors + new branding.</td></tr>
+      <tr><td><strong>745</strong></td><td style="color:var(--airlink)">AirLink</td><td>EMU</td><td>125 mph</td><td>12</td><td>Stadler</td><td>FLIRT; high capacity AirLink unit</td></tr>
+      <tr><td><strong>755</strong></td><td style="color:var(--airlink)">AirLink</td><td>Bi-mode</td><td>100 mph</td><td>3–5</td><td>Stadler</td><td>FLIRT; bi-mode diesel/electric</td></tr>
+      <tr><td><strong>777</strong></td><td style="color:var(--metro)">Metro</td><td>EMU</td><td>75 mph</td><td>4</td><td>Stadler</td><td>Has dedicated emergency exit; Merseyrail-style Metro unit</td></tr>
+      <tr><td><strong>800 Azuma</strong></td><td style="color:var(--express)">Express</td><td>Bi-mode</td><td>125 mph</td><td>5–9</td><td>Hitachi</td><td>Bi-mode IET; functional power states in V2.3</td></tr>
+      <tr><td><strong>801 Azuma</strong></td><td style="color:var(--express)">Express</td><td>EMU</td><td>125 mph</td><td>5–9</td><td>Hitachi</td><td>Electric-only IET variant</td></tr>
+      <tr><td><strong>802</strong></td><td style="color:var(--airlink)">AirLink</td><td>Bi-mode</td><td>125 mph</td><td>5</td><td>Hitachi</td><td>One of two AirLink trains reaching 125 mph (alongside 397)</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- MAPS -->
+<section id="maps">
+  <div class="section-label">Route Maps</div>
+  <h2><span class="icon">🗾</span> Route Maps (V2.3)</h2>
+  <p>All maps are dark-theme versions from the SCR Unofficial Wiki. Click to enlarge.</p>
+  <div class="map-grid">
+    <div class="map-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/5/51/SCR_V2.3_Main_Map_-_Dark.png/revision/latest/scale-to-width-down/536?cb=20260110182150')">
+      <img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/5/51/SCR_V2.3_Main_Map_-_Dark.png/revision/latest/scale-to-width-down/536?cb=20260110182150" alt="Main Map">
+      <div class="map-label">🗺️ Full Network Map</div>
+    </div>
+    <div class="map-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/0/01/SCR_V2.3_Connect_Map_-_Dark.png/revision/latest/scale-to-width-down/536?cb=20260110183020')">
+      <img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/0/01/SCR_V2.3_Connect_Map_-_Dark.png/revision/latest/scale-to-width-down/536?cb=20260110183020" alt="Connect Map">
+      <div class="map-label"><span class="dot dot-c"></span> Stepford Connect</div>
+    </div>
+    <div class="map-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/1/16/SCR_V2.3_Metro_Map_-_Dark.png/revision/latest/scale-to-width-down/536?cb=20260110183133')">
+      <img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/1/16/SCR_V2.3_Metro_Map_-_Dark.png/revision/latest/scale-to-width-down/536?cb=20260110183133" alt="Metro Map">
+      <div class="map-label"><span class="dot dot-m"></span> Metro</div>
+    </div>
+    <div class="map-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/c/cc/SCR_V2.3_Waterline_Map_-_Dark.png/revision/latest/scale-to-width-down/536?cb=20260110183229')">
+      <img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/c/cc/SCR_V2.3_Waterline_Map_-_Dark.png/revision/latest/scale-to-width-down/536?cb=20260110183229" alt="Waterline Map">
+      <div class="map-label"><span class="dot dot-w"></span> Waterline</div>
+    </div>
+    <div class="map-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/e/e4/SCR_2.0_AirLink_Map_%28Dark%29.png/revision/latest/scale-to-width-down/536?cb=20240923150855')">
+      <img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/e/e4/SCR_2.0_AirLink_Map_%28Dark%29.png/revision/latest/scale-to-width-down/536?cb=20240923150855" alt="AirLink Map">
+      <div class="map-label"><span class="dot dot-a"></span> AirLink</div>
+    </div>
+    <div class="map-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/9/97/SCR_V2.3_Express_Map_-_Dark.png/revision/latest/scale-to-width-down/536?cb=20260110183331')">
+      <img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/9/97/SCR_V2.3_Express_Map_-_Dark.png/revision/latest/scale-to-width-down/536?cb=20260110183331" alt="Express Map">
+      <div class="map-label"><span class="dot dot-e"></span> Stepford Express</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATIONS -->
+<section id="stations">
+  <div class="section-label">The Network</div>
+  <h2><span class="icon">🗺️</span> All Stations</h2>
+  <p><strong>75 open (U)</strong> · <strong>1 abandoned (A)</strong> · <strong>8+ demolished (D)</strong> as of V2.3. Most inspired by real London stations. Zones 1–10 plus Airport (Zone 7). ★ = Free train stops.</p>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterStations('all',this)">All</button>
+    <button class="filter-btn fc" onclick="filterStations('c',this)">Connect</button>
+    <button class="filter-btn fm" onclick="filterStations('m',this)">Metro</button>
+    <button class="filter-btn fw" onclick="filterStations('w',this)">Waterline</button>
+    <button class="filter-btn fa" onclick="filterStations('a',this)">AirLink</button>
+    <button class="filter-btn fe" onclick="filterStations('e',this)">Express</button>
+  </div>
+
+  <div class="station-table-wrap">
+  <table class="station-table" id="stationTable">
+    <thead><tr>
+      <th>Status</th><th>Code</th><th>HC</th><th>Zone</th><th>Station</th><th>Operators</th><th>Managed by</th><th>Dispatch</th><th>Electric</th>
+    </tr></thead>
+    <tbody>
+      <tr data-ops="a"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">SAO</span></td><td>–</td><td><span class="zone-badge">7</span></td><td>Airport Terminal 1</td><td><div class="dots"><span class="dot dot-a" title="AirLink"></span></div></td><td>AirLink</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cwa"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">SAX</span></td><td>X</td><td><span class="zone-badge">7</span></td><td>Airport Terminal 2</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-w"></span><span class="dot dot-a"></span></div></td><td>AirLink</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="a"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">SAZ</span></td><td>Z</td><td><span class="zone-badge">7</span></td><td>Airport Terminal 3</td><td><div class="dots"><span class="dot dot-a"></span></div></td><td>AirLink</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="w"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">SAW</span></td><td>–</td><td><span class="zone-badge">8</span></td><td>Airport West</td><td><div class="dots"><span class="dot dot-w"></span></div></td><td>Waterline</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cm"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">AGP</span></td><td>–</td><td><span class="zone-badge">3</span></td><td>Angel Pass</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="w"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">APK</span></td><td>–</td><td><span class="zone-badge">5</span></td><td>Ashlan Park</td><td><div class="dots"><span class="dot dot-w"></span></div></td><td>Waterline</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">ALB</span></td><td>–</td><td><span class="zone-badge">9</span></td><td>Aslockby</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">BAR</span></td><td>B</td><td><span class="zone-badge">3</span></td><td>Barton</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">BPK</span></td><td>–</td><td><span class="zone-badge">6</span></td><td>Beaulieu Park</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cm"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">BCY</span></td><td>C</td><td><span class="zone-badge">1</span></td><td>Beechley</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cmwe"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">BEN</span></td><td>B</td><td><span class="zone-badge">5</span></td><td><strong>Benton</strong></td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span><span class="dot dot-w"></span><span class="dot dot-e"></span></div></td><td>SCR</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">BBG</span></td><td>–</td><td><span class="zone-badge">6</span></td><td>Benton Bridge</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cma"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">BRY</span></td><td>Y</td><td><span class="zone-badge">3</span></td><td>Berrily</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span><span class="dot dot-a"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span> P1–5</td><td><span class="check">✔</span> P1–5</td></tr>
+      <tr data-ops="cm"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">BOD</span></td><td>–</td><td><span class="zone-badge">3</span></td><td>Bodin</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">CXN</span></td><td>–</td><td><span class="zone-badge">1</span></td><td>Cadoxton</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr data-ops="w"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">CSP</span></td><td>–</td><td><span class="zone-badge">5</span></td><td>Cambridge Street Parkway</td><td><div class="dots"><span class="dot dot-w"></span></div></td><td>Waterline</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">CLB</span></td><td>–</td><td><span class="zone-badge">9</span></td><td>Carnalea Bridge</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr data-ops="cm"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">CHP</span></td><td>–</td><td><span class="zone-badge">1</span></td><td>City Hospital</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="w"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">CON</span></td><td>O</td><td><span class="zone-badge">5</span></td><td>Connolly</td><td><div class="dots"><span class="dot dot-w"></span></div></td><td>Waterline</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cm"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">COX</span></td><td>–</td><td><span class="zone-badge">3</span></td><td>Coxly</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">CXN</span></td><td>–</td><td><span class="zone-badge">3</span></td><td>Coxly Newtown</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">DTR</span></td><td>–</td><td><span class="zone-badge">3</span></td><td>Denton Road</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">EBR</span></td><td>–</td><td><span class="zone-badge">3</span></td><td>East Berrily</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="we"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">EDQ</span></td><td>–</td><td><span class="zone-badge">4</span></td><td>Eden Quay</td><td><div class="dots"><span class="dot dot-w"></span><span class="dot dot-e"></span></div></td><td>Waterline</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="ce"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">EDG</span></td><td>E</td><td><span class="zone-badge">9</span></td><td>Edgemead</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-e"></span></div></td><td>Connect</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cmae"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">ELJ</span></td><td>–</td><td><span class="zone-badge">3</span></td><td>Elsemere Junction</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span><span class="dot dot-a"></span><span class="dot dot-e"></span></div></td><td>AirLink / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">EMP</span></td><td>–</td><td><span class="zone-badge">3</span></td><td>Elsemere Pond</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="w"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">EFD</span></td><td>Q</td><td><span class="zone-badge">8</span></td><td>Esterfield</td><td><div class="dots"><span class="dot dot-w"></span></div></td><td>Waterline</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="w"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">FRD</span></td><td>–</td><td><span class="zone-badge">4</span></td><td>Faraday Road</td><td><div class="dots"><span class="dot dot-w"></span></div></td><td>Waterline</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="w"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">FAR</span></td><td>J</td><td><span class="zone-badge">8</span></td><td>Farleigh</td><td><div class="dots"><span class="dot dot-w"></span></div></td><td>Waterline</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">FAY</span></td><td>–</td><td><span class="zone-badge">9</span></td><td>Faymere</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cm"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">FNQ</span></td><td>–</td><td><span class="zone-badge">1</span></td><td>Financial Quarter</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">FWY</span></td><td>–</td><td><span class="zone-badge">2</span></td><td>Four Ways</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="mw"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">GNS</span></td><td>G</td><td><span class="zone-badge">3</span></td><td>Greenslade</td><td><div class="dots"><span class="dot dot-m"></span><span class="dot dot-w"></span></div></td><td>Waterline</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr class="demolished" data-ops=""><td><span class="s-badge s-d">D</span></td><td><span class="code-badge">HLS</span></td><td>–</td><td>–</td><td>Hallam Square</td><td>Tramlink</td><td>Tramlink</td><td>N/A</td><td>N/A</td></tr>
+      <tr data-ops="cae"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">HHG</span></td><td>G</td><td><span class="zone-badge">6</span></td><td>Hampton Hargate</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-a"></span><span class="dot dot-e"></span></div></td><td>Connect</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">HPK</span></td><td>–</td><td><span class="zone-badge">1</span></td><td>Hemdon Park</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">HTR</span></td><td>–</td><td><span class="zone-badge">2</span></td><td>Houghton Rake</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="check">✔</span></td><td><span class="cross">✗</span></td></tr>
+      <tr data-ops="w"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">JST</span></td><td>–</td><td><span class="zone-badge">8</span></td><td>James Street</td><td><div class="dots"><span class="dot dot-w"></span></div></td><td>Waterline</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="ce"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">LTC</span></td><td>T</td><td><span class="zone-badge">9</span></td><td>Leighton City</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-e"></span></div></td><td>SCR</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cae"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">LSR</span></td><td>R</td><td><span class="zone-badge">9</span></td><td>Leighton Stepford Road</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-a"></span><span class="dot dot-e"></span></div></td><td>Express</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">LTW</span></td><td>K</td><td><span class="zone-badge">9</span></td><td>Leighton West</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="ce"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">LYN</span></td><td>L</td><td><span class="zone-badge">10</span></td><td>Llyn-by-the-Sea</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-e"></span></div></td><td>SCR</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">MLC</span></td><td>–</td><td><span class="zone-badge">10</span></td><td>Millcastle</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">MRC</span></td><td>–</td><td><span class="zone-badge">9</span></td><td>Millcastle Racecourse</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cmwae"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">MGT</span></td><td>M</td><td><span class="zone-badge">6</span></td><td>Morganstown</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span><span class="dot dot-w"></span><span class="dot dot-a"></span><span class="dot dot-e"></span></div></td><td>SCR</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="mw"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">MGD</span></td><td>–</td><td><span class="zone-badge">6</span></td><td>Morganstown Docks</td><td><div class="dots"><span class="dot dot-m"></span><span class="dot dot-w"></span></div></td><td>Waterline</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">NHW</span></td><td>–</td><td><span class="zone-badge">3</span></td><td>New Harrow</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="we"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">NRY</span></td><td>N</td><td><span class="zone-badge">4</span></td><td>Newry</td><td><div class="dots"><span class="dot dot-w"></span><span class="dot dot-e"></span></div></td><td>Waterline</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="we"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">NRH</span></td><td>H</td><td><span class="zone-badge">4</span></td><td>Newry Harbour</td><td><div class="dots"><span class="dot dot-w"></span><span class="dot dot-e"></span></div></td><td>Waterline</td><td><span class="check">✔</span></td><td><span class="cross">✗</span></td></tr>
+      <tr data-ops="ce"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">NSE</span></td><td>–</td><td><span class="zone-badge">10</span></td><td>Northshore</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-e"></span></div></td><td>Express</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr class="demolished" data-ops=""><td><span class="s-badge s-d">D</span></td><td><span class="code-badge">OHW</span></td><td>–</td><td>–</td><td>Old Harrow</td><td>Metro (Legacy)</td><td>Metro (Legacy)</td><td>N/A</td><td>N/A</td></tr>
+      <tr data-ops="cmw"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">PBE</span></td><td>P</td><td><span class="zone-badge">5</span></td><td>Port Benton</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span><span class="dot dot-w"></span></div></td><td>Connect</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="ce"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">RLB</span></td><td>R</td><td><span class="zone-badge">9</span></td><td>Rayleigh Bay</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-e"></span></div></td><td>Connect</td><td><span class="check">✔</span></td><td><span class="cross">✗</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">RNW</span></td><td>–</td><td><span class="zone-badge">3</span></td><td>Robinson Way</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">RCP</span></td><td>–</td><td><span class="zone-badge">9</span></td><td>Rocket Parade</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="w"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">RDV</span></td><td>–</td><td><span class="zone-badge">8</span></td><td>Rosedale Village</td><td><div class="dots"><span class="dot dot-w"></span></div></td><td>Waterline</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cmae"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">SHB</span></td><td>I</td><td><span class="zone-badge">3</span></td><td>St Helens Bridge</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span><span class="dot dot-a"></span><span class="dot dot-e"></span></div></td><td>TfS / SCR</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr class="demolished" data-ops=""><td><span class="s-badge s-d">D</span></td><td><span class="code-badge">SHP</span></td><td>–</td><td>–</td><td>St Helens Park</td><td>Metro (Legacy)</td><td>Metro (Legacy)</td><td>N/A</td><td>N/A</td></tr>
+      <tr class="demolished" data-ops=""><td><span class="s-badge s-d">D</span></td><td><span class="code-badge">SHS</span></td><td>–</td><td>–</td><td>St Helens South</td><td>Metro (Legacy)</td><td>Metro (Legacy)</td><td>N/A</td><td>N/A</td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">STL</span></td><td>–</td><td><span class="zone-badge">10</span></td><td>Starryloch</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="ca"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">SAC</span></td><td>A</td><td><span class="zone-badge">7</span></td><td>Stepford Airport Central</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-a"></span></div></td><td>AirLink</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="ca"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">SAP</span></td><td>–</td><td><span class="zone-badge">7</span></td><td>Stepford Airport Parkway</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-a"></span></div></td><td>AirLink</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">STB</span></td><td>R</td><td><span class="zone-badge">1</span></td><td>Stepford Bay</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="cross">✗</span></td></tr>
+      <tr data-ops="cmae"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">SCN</span></td><td>S</td><td><span class="zone-badge">2</span></td><td><strong>Stepford Central</strong></td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span><span class="dot dot-a"></span><span class="dot dot-e"></span></div></td><td>TfS / SCR</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cma"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">SCE</span></td><td>–</td><td><span class="zone-badge">2</span></td><td>Stepford East</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span><span class="dot dot-a"></span></div></td><td>TfS / SCR</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">SHS</span></td><td>–</td><td><span class="zone-badge">2</span></td><td>Stepford High Street</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr class="demolished" data-ops=""><td><span class="s-badge s-d">D</span></td><td><span class="code-badge">SSO</span></td><td>–</td><td>–</td><td>Stepford Southgate</td><td>Metro (Legacy)</td><td>Metro (Legacy)</td><td>N/A</td><td>N/A</td></tr>
+      <tr data-ops="cm"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">UFC</span></td><td>U</td><td><span class="zone-badge">2</span></td><td>Stepford United Football Club</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cm"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">SCV</span></td><td>V</td><td><span class="zone-badge">1</span></td><td>Stepford Victoria</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span></div></td><td>TfS / SCR</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr class="demolished" data-ops=""><td><span class="s-badge s-d">D</span></td><td><span class="code-badge">UNI</span></td><td>–</td><td>–</td><td>University</td><td>Metro (Legacy)</td><td>Metro (Legacy)</td><td>N/A</td><td>N/A</td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">USP</span></td><td>–</td><td><span class="zone-badge">6</span></td><td>Upper Staploe</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr class="abandoned" data-ops=""><td><span class="s-badge s-a">A</span></td><td><span class="code-badge">USP</span></td><td>–</td><td><span class="zone-badge">6</span></td><td>Upper Staploe (Metro Legacy)</td><td>Metro (Legacy)</td><td>Metro (Legacy)</td><td>N/A</td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="ca"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">WTN</span></td><td>–</td><td><span class="zone-badge">9</span></td><td>Water Newton</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-a"></span></div></td><td>Connect</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="w"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">WBN</span></td><td>–</td><td><span class="zone-badge">4</span></td><td>West Benton</td><td><div class="dots"><span class="dot dot-w"></span></div></td><td>Waterline</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr class="demolished" data-ops=""><td><span class="s-badge s-d">D</span></td><td><span class="code-badge">WBR</span></td><td>–</td><td>–</td><td>West Berrily</td><td>Tramlink</td><td>Tramlink</td><td>N/A</td><td>N/A</td></tr>
+      <tr data-ops="ce"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">WST</span></td><td>–</td><td><span class="zone-badge">9</span></td><td>Westercoast</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-e"></span></div></td><td>Connect</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="ce"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">WYV</span></td><td>W</td><td><span class="zone-badge">10</span></td><td>Westwyvern</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-e"></span></div></td><td>Express</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">WHF</span></td><td>F</td><td><span class="zone-badge">2</span></td><td>Whitefield</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="check">✔</span></td><td><span class="cross">✗</span></td></tr>
+      <tr data-ops="m"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">WFL</span></td><td>–</td><td><span class="zone-badge">2</span></td><td>Whitefield Lido</td><td><div class="dots"><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="mw"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">WNG</span></td><td>J</td><td><span class="zone-badge">6/3</span></td><td>Whitney Green</td><td><div class="dots"><span class="dot dot-m"></span><span class="dot dot-w"></span></div></td><td>Metro / Waterline</td><td><span class="cross">✗</span></td><td><span class="check">✔</span></td></tr>
+      <tr data-ops="cm"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">WFD</span></td><td>D</td><td><span class="zone-badge">1</span></td><td>Willowfield</td><td><div class="dots"><span class="dot dot-c"></span><span class="dot dot-m"></span></div></td><td>Metro / TfS</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+      <tr class="demolished" data-ops=""><td><span class="s-badge s-d">D</span></td><td><span class="code-badge">WIN</span></td><td>–</td><td>–</td><td>Winstree</td><td>Connect</td><td>High Speed</td><td>N/A</td><td>N/A</td></tr>
+      <tr data-ops="c"><td><span class="s-badge s-u">U</span></td><td><span class="code-badge">WHL</span></td><td>–</td><td><span class="zone-badge">2</span></td><td>Woodhead Lane</td><td><div class="dots"><span class="dot dot-c"></span></div></td><td>Connect</td><td><span class="check">✔</span></td><td><span class="cross">✗</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- STATION SIGNS -->
+<section id="signs">
+  <div class="section-label">Visual Identity</div>
+  <h2><span class="icon">🪧</span> Station Signs & Nameboards</h2>
+
+  <h3>Operator Sign Templates</h3>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+    <img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/f/f7/CNStatSignEmpty.png/revision/latest/scale-to-width-down/185?cb=20260118154331" style="height:48px;border-radius:6px;cursor:pointer" alt="Connect sign" onclick="openLB(this.src)">
+    <img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/6/69/WLStatSignEmpty.png/revision/latest/scale-to-width-down/185?cb=20260118154504" style="height:48px;border-radius:6px;cursor:pointer" alt="Waterline sign" onclick="openLB(this.src)">
+    <img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/c/cd/ALStatSignEmpty.png/revision/latest/scale-to-width-down/185?cb=20260118154630" style="height:48px;border-radius:6px;cursor:pointer" alt="AirLink sign" onclick="openLB(this.src)">
+    <img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/f/fe/EXStatSignEmpty.png/revision/latest/scale-to-width-down/185?cb=20260118154709" style="height:48px;border-radius:6px;cursor:pointer" alt="Express sign" onclick="openLB(this.src)">
+    <img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/e/ea/MTStatSignEmpty.png/revision/latest/scale-to-width-down/185?cb=20260118155010" style="height:48px;border-radius:6px;cursor:pointer" alt="Metro sign" onclick="openLB(this.src)">
+  </div>
+
+  <h3>In-Game Station Nameboards</h3>
+  <div class="signs-grid">
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/2/2b/SCNStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240604124854')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/2/2b/SCNStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240604124854" alt="SCN"><div class="sign-name">Stepford Central</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/1/1a/SCVStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240604124807')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/1/1a/SCVStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240604124807" alt="SCV"><div class="sign-name">Stepford Victoria</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/e/ef/STEStationSign-HueAdjusted.png/revision/latest/scale-to-width-down/1220?cb=20240611185255')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/e/ef/STEStationSign-HueAdjusted.png/revision/latest/scale-to-width-down/1220?cb=20240611185255" alt="STE"><div class="sign-name">Stepford East</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/6/69/SHBStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240604124853')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/6/69/SHBStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240604124853" alt="SHB"><div class="sign-name">St Helens Bridge</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/e/e6/BENStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240604124854')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/e/e6/BENStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240604124854" alt="BEN"><div class="sign-name">Benton</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/6/60/MGTStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240607231017')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/6/60/MGTStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240607231017" alt="MGT"><div class="sign-name">Morganstown</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/1/1d/LTCStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240604124854')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/1/1d/LTCStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240604124854" alt="LTC"><div class="sign-name">Leighton City</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/8/82/LYNStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240604124854')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/8/82/LYNStationSign.png/revision/latest/scale-to-width-down/1220?cb=20240604124854" alt="LYN"><div class="sign-name">Llyn-by-the-Sea</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/e/ec/EDGStationSign-InGame.png/revision/latest/scale-to-width-down/1000?cb=20240608132307')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/e/ec/EDGStationSign-InGame.png/revision/latest/scale-to-width-down/1000?cb=20240608132307" alt="EDG"><div class="sign-name">Edgemead</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/e/e2/WFDStationSign-InGame-MET.png/revision/latest/scale-to-width-down/1000?cb=20250512103842')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/e/e2/WFDStationSign-InGame-MET.png/revision/latest/scale-to-width-down/1000?cb=20250512103842" alt="WFD"><div class="sign-name">Willowfield</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/6/61/BCYStationSign-InGame-MET.png/revision/latest/scale-to-width-down/1000?cb=20250513172434')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/6/61/BCYStationSign-InGame-MET.png/revision/latest/scale-to-width-down/1000?cb=20250513172434" alt="BCY"><div class="sign-name">Beechley</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/5/54/WHFStationSign-InGame.png/revision/latest/scale-to-width-down/1000?cb=20240608164419')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/5/54/WHFStationSign-InGame.png/revision/latest/scale-to-width-down/1000?cb=20240608164419" alt="WHF"><div class="sign-name">Whitefield</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/9/98/EMJStationSign-InGame.png/revision/latest/scale-to-width-down/1000?cb=20240602182459')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/9/98/EMJStationSign-InGame.png/revision/latest/scale-to-width-down/1000?cb=20240602182459" alt="ELJ"><div class="sign-name">Elsemere Junction</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/a/ac/BODStationSign-InGame-MET.png/revision/latest/scale-to-width-down/1000?cb=20250512102114')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/a/ac/BODStationSign-InGame-MET.png/revision/latest/scale-to-width-down/1000?cb=20250512102114" alt="BOD"><div class="sign-name">Bodin</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/6/64/SACStationSign-InGame.png/revision/latest/scale-to-width-down/1000?cb=20240608125804')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/6/64/SACStationSign-InGame.png/revision/latest/scale-to-width-down/1000?cb=20240608125804" alt="SAC"><div class="sign-name">Stepford Airport Central</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/3/3f/SAXStationSign-InGame.png/revision/latest/scale-to-width-down/1000?cb=20240608130113')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/3/3f/SAXStationSign-InGame.png/revision/latest/scale-to-width-down/1000?cb=20240608130113" alt="SAX"><div class="sign-name">Airport Terminal 2</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/0/07/HHGStationSign-InGame.png/revision/latest/scale-to-width-down/1000?cb=20240608165627')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/0/07/HHGStationSign-InGame.png/revision/latest/scale-to-width-down/1000?cb=20240608165627" alt="HHG"><div class="sign-name">Hampton Hargate</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/a/a6/SAZStationSign-InGame.png/revision/latest/scale-to-width-down/535?cb=20240608130201')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/a/a6/SAZStationSign-InGame.png/revision/latest/scale-to-width-down/535?cb=20240608130201" alt="SAZ"><div class="sign-name">Airport Terminal 3</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/9/99/LSRStationSign-InGame.png/revision/latest/scale-to-width-down/535?cb=20240604124854')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/9/99/LSRStationSign-InGame.png/revision/latest/scale-to-width-down/535?cb=20240604124854" alt="LSR"><div class="sign-name">Leighton Stepford Road</div></div>
+    <div class="sign-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/e/ea/WYVStationSign-InGame.png/revision/latest/scale-to-width-down/535?cb=20240602214726')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/e/ea/WYVStationSign-InGame.png/revision/latest/scale-to-width-down/535?cb=20240602214726" alt="WYV"><div class="sign-name">Westwyvern</div></div>
+  </div>
+</section>
+
+<!-- RANKS -->
+<section id="ranks">
+  <div class="section-label">Staff Hierarchy</div>
+  <h2><span class="icon">🏅</span> Ranks</h2>
+  <table class="data-table">
+    <thead><tr><th>Rank</th><th>Tag</th><th>Requirement</th><th>Permissions</th></tr></thead>
+    <tbody>
+      <tr><td><span class="rank-badge rb-td">Trainee Driver</span></td><td style="color:var(--muted)">[TD]</td><td>Join SCR Roblox Group</td><td>Same in-game abilities as QD. Can try DS/GD/SG roles on Private Server. Wears white uniform regardless of operator.</td></tr>
+      <tr><td><span class="rank-badge rb-qd">Qualified Driver</span></td><td style="color:var(--muted)">[QD]</td><td>120 XP + QD training</td><td>#driver-lounge access. In-game shift program. Eligible for Dispatcher training (360 XP req) or Supervisor application (13+).</td></tr>
+      <tr><td><span class="rank-badge rb-ds">Dispatcher</span></td><td style="color:var(--muted)">[DS]</td><td>360 XP + theory quiz + DS training</td><td>Manage platforms, dispatch trains. Must not dispatch on red (except SPAD/overshoot). Stand in correct half of train facing right direction.</td></tr>
+      <tr><td><span class="rank-badge rb-gd">Guard</span></td><td style="color:var(--muted)">[GD]</td><td>DS rank + GD training</td><td>Guard trains, manage passenger safety. Prerequisite for Signaller application.</td></tr>
+      <tr><td><span class="rank-badge rb-sg">Signaller</span></td><td style="color:var(--muted)">[SG]</td><td>Guard/SV + application + training + 13+ + PC + Discord</td><td>Highest Member rank. Access to 6 ROCs (Central, Berrily, Benton, Hampton Hargate, Airport Central, Llyn). Originally called "Controllers" pre-Big Update.</td></tr>
+      <tr><td><span class="rank-badge rb-sv">Supervisor</span></td><td style="color:var(--muted)">[SV]</td><td>QD+ (Driving dept) / Guard+ (others) + application + training</td><td>4 departments: Driving, Dispatching, Guarding, Signalling. Host trainings, handle tickets, moderate in-game.</td></tr>
+      <tr><td><span class="rank-badge rb-mgr">Management</span></td><td style="color:var(--muted)">[DM/PM/GM+]</td><td>Internal appointment</td><td>Full access: all ROCs, staff areas, offices, cabs. TLD handles game design.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- TRAINING -->
+<section id="training">
+  <div class="section-label">Progression</div>
+  <h2><span class="icon">🎓</span> Training Process</h2>
+  <p>Dedicated training map used for all trainings since V1.10.4. Training routes R901–R905 are used. Signaller Training 2.0 will move the process fully in-game (no Discord/Google Forms required).</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Trainee Driver → Qualified Driver</div><div class="step-desc">Earn 120 XP. Attend a scheduled QD training session. Pass the practical assessment.</div><span class="step-req">120 XP · SCR Group membership</span></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Qualified Driver → Dispatcher</div><div class="step-desc">Earn 360 XP. Pass Dispatcher theory quiz. Attend Dispatcher training on the dedicated training map. Learn platform positioning and signal protocol.</div><span class="step-req">QD rank · 360 XP · theory quiz · DS training</span></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Dispatcher → Guard</div><div class="step-desc">Attend and pass a Guard training session. Learn door operations, communication with driver and dispatcher.</div><span class="step-req">Dispatcher rank · GD training</span></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Guard → Signaller</div><div class="step-desc">Submit application in SCR Official Discord (#application-forms). Applications open periodically. If accepted, complete practical training session. Theory was historically a separate test — merged into application questions since Sept 2021.</div><span class="step-req">Guard/SV rank · 13+ · PC/laptop · SCR Official Discord</span></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">→ Supervisor (any dept)</div><div class="step-desc">Apply via Discord when open for your target department. Pass Supervisor training. Requires ClickUp/Google/Roblox/Discord accounts with 2FA. May join up to two departments.</div><span class="step-req">QD+ (Driving) · Guard+ (Dispatching/Signalling) · 2FA on all accounts · PC + reliable internet</span></div></div>
+  </div>
+  <div class="infobox info"><span class="ib-icon">🔮</span><span><strong>Training 2.0 (Signaller):</strong> Full in-game training process planned — removes Discord/age requirements and introduces simulated virtual traffic for consistent difficulty across all trainees.</span></div>
+</section>
+
+<!-- RULES -->
+<section id="rules">
+  <div class="section-label">Conduct</div>
+  <h2><span class="icon">📋</span> General Rules</h2>
+  <ul class="rules-list">
+    <li><span class="ri">🚫</span><span><strong>Exploiting/Hacking:</strong> Any third-party tools for unfair advantage. Permanent ban. Accessing staff areas (cabs, ROCs, signal boxes, offices) via exploits is covered here.</span></li>
+    <li><span class="ri">🚫</span><span><strong>SPAD:</strong> Driving past a red signal without Signaller authorisation.</span></li>
+    <li><span class="ri">🚫</span><span><strong>Trolling:</strong> Disrupting services, blocking trains, griefing, or train surfing.</span></li>
+    <li><span class="ri">🚫</span><span><strong>Trespassing:</strong> Walking on/alongside tracks, embankments, or railway bridges. Level crossings excepted.</span></li>
+    <li><span class="ri">🚫</span><span><strong>Impersonation:</strong> Claiming to be a staff member or another player.</span></li>
+    <li><span class="ri">✅</span><span><strong>Station Parkour:</strong> Climbing roofs, gantries, OLE equipment. Permitted since 12 Feb 2022.</span></li>
+    <li><span class="ri">✅</span><span><strong>Platform Jumping:</strong> Within stations. Permitted since 12 Feb 2022.</span></li>
+    <li><span class="ri">✅</span><span><strong>Grass/Baseplate:</strong> Freely accessible since V1.6.</span></li>
+  </ul>
+</section>
+
+<!-- TRESPASSING -->
+<section id="trespassing">
+  <div class="section-label">Key Rule</div>
+  <h2><span class="icon">⛔</span> Trespassing</h2>
+  <div class="infobox danger"><span class="ib-icon">🚧</span><span><strong>Current definition:</strong> Walking on or alongside train tracks (except level crossings), embankments, or the trackside portion of railway bridges.</span></div>
+  <h3>History</h3>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-date">The Big Update (V1.0)</div><div class="tl-title">Anti-Trespassing Script Introduced</div><div class="tl-text">Auto-despawn off roads/paths/platforms. Heavily criticised for accidental despawns at level crossings.</div></div>
+    <div class="tl-item"><div class="tl-date">Version 1.6</div><div class="tl-title">Baseplate Exempted</div><div class="tl-text">Grasslands and vegetation no longer trigger despawn.</div></div>
+    <div class="tl-item"><div class="tl-date">12 February 2022</div><div class="tl-title">Major Redefinition</div><div class="tl-text">Station parkour and platform jumping permitted. Train surfing → trolling. Staff-only areas moved under exploit rule (access only possible via exploits anyway).</div></div>
+  </div>
+  <h3>Penalties</h3>
+  <div class="penalty-grid">
+    <div class="penalty-item"><div class="penalty-level pl-1">1st Offence</div><div class="penalty-action">Despawn / warning</div></div>
+    <div class="penalty-item"><div class="penalty-level pl-2">Repeated</div><div class="penalty-action">Kick from server</div></div>
+    <div class="penalty-item"><div class="penalty-level pl-3">Serious</div><div class="penalty-action">Rank demotion</div></div>
+    <div class="penalty-item"><div class="penalty-level pl-4">Exploit-assisted</div><div class="penalty-action">In-game ban</div></div>
+  </div>
+</section>
+
+<!-- ADVERTISING -->
+<section id="advertising">
+  <div class="section-label">In-Game Media</div>
+  <h2><span class="icon">📢</span> Advertising & Posters</h2>
+  <p>Official in-game advertising posters used across SCR stations and rolling stock. Click to enlarge. Images licensed CC-BY-SA from the SCR Unofficial Wiki.</p>
+  <div class="ad-grid">
+    <div class="ad-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/c/c2/CN_Recruiting_P.png/revision/latest/scale-to-width-down/1150?cb=20240813020356')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/c/c2/CN_Recruiting_P.png/revision/latest/scale-to-width-down/1150?cb=20240813020356" alt="Connect Recruiting"><div class="ad-label" style="color:var(--connect)">Connect · Recruiting</div></div>
+    <div class="ad-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/e/e4/Connectadportrait.png/revision/latest/scale-to-width-down/1150?cb=20210726082952')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/e/e4/Connectadportrait.png/revision/latest/scale-to-width-down/1150?cb=20210726082952" alt="Connect Ad"><div class="ad-label" style="color:var(--connect)">Connect · Portrait Ad</div></div>
+    <div class="ad-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/b/bc/MetroRedTrainsGreenImpact.png/revision/latest/scale-to-width-down/1150?cb=20250518045635')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/b/bc/MetroRedTrainsGreenImpact.png/revision/latest/scale-to-width-down/1150?cb=20250518045635" alt="Metro Ad"><div class="ad-label" style="color:var(--metro)">Metro · Green Impact</div></div>
+    <div class="ad-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/c/c4/WaterlineAd191.png/revision/latest/scale-to-width-down/1150?cb=20240403020838')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/c/c4/WaterlineAd191.png/revision/latest/scale-to-width-down/1150?cb=20240403020838" alt="Waterline Ad"><div class="ad-label" style="color:#9ab0c4">Waterline · V1.9.1</div></div>
+    <div class="ad-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/d/d7/Waterlineadpotrait.png/revision/latest/scale-to-width-down/1150?cb=20210726083334')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/d/d7/Waterlineadpotrait.png/revision/latest/scale-to-width-down/1150?cb=20210726083334" alt="Waterline Portrait"><div class="ad-label" style="color:#9ab0c4">Waterline · Portrait</div></div>
+    <div class="ad-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/6/65/Airlinkadportrait.png/revision/latest/scale-to-width-down/1150?cb=20210726075854')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/6/65/Airlinkadportrait.png/revision/latest/scale-to-width-down/1150?cb=20210726075854" alt="AirLink Portrait"><div class="ad-label" style="color:var(--airlink)">AirLink · Portrait</div></div>
+    <div class="ad-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/4/48/AirlinkAd191.png/revision/latest/scale-to-width-down/1150?cb=20240403070549')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/4/48/AirlinkAd191.png/revision/latest/scale-to-width-down/1150?cb=20240403070549" alt="AirLink V1.9.1"><div class="ad-label" style="color:var(--airlink)">AirLink · V1.9.1</div></div>
+    <div class="ad-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/9/9c/ExpressAd193.png/revision/latest/scale-to-width-down/1150?cb=20240403020336')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/9/9c/ExpressAd193.png/revision/latest/scale-to-width-down/1150?cb=20240403020336" alt="Express Ad"><div class="ad-label" style="color:var(--express)">Express · V1.9.3</div></div>
+    <div class="ad-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/b/b2/EX_Progress_P.png/revision/latest/scale-to-width-down/150?cb=20240813020455')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/b/b2/EX_Progress_P.png/revision/latest/scale-to-width-down/150?cb=20240813020455" alt="Express Progress"><div class="ad-label" style="color:var(--express)">Express · Progress</div></div>
+    <div class="ad-card" onclick="openLB('https://static.wikia.nocookie.net/scr-unofficial-main/images/2/29/SCVH25-Bringing_you_closer.png/revision/latest/scale-to-width-down/150?cb=20260508133240')"><img src="https://static.wikia.nocookie.net/scr-unofficial-main/images/2/29/SCVH25-Bringing_you_closer.png/revision/latest/scale-to-width-down/150?cb=20260508133240" alt="Metro Bringing you closer"><div class="ad-label" style="color:var(--metro)">Metro · Bringing You Closer</div></div>
+  </div>
+  <div class="infobox success" style="margin-top:16px"><span class="ib-icon">🏆</span><span>The "Bringing you closer" Metro poster (bottom right) won the first Community Spotlight hosted in May 2025, created by user <strong>cityuser</strong>.</span></div>
+</section>
+
+<!-- HISTORY -->
+<section id="history">
+  <div class="section-label">Version Timeline</div>
+  <h2><span class="icon">📅</span> Update History</h2>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-date">25 Nov 2017</div><div class="tl-title">Public Launch (Beta)</div><div class="tl-text">Single route: Stepford Town ↔ Port Benton. Only Connect and the Class 700. Very under-detailed network.</div></div>
+    <div class="tl-item"><div class="tl-date">The Big Update — V1.0</div><div class="tl-title">Complete Overhaul · Out of Beta</div><div class="tl-text">Points system, headcode system, anti-trespassing script. Signallers renamed from Controllers. First 20 Signallers recruited. Waterline removed from gamepass.</div></div>
+    <div class="tl-item"><div class="tl-date">Version 1.1</div><div class="tl-title">AirLink + 13 New Stations</div><div class="tl-text">AirLink introduced. Platforms 12–15 at Stepford Central (inspired by London Waterloo). Airport Terminals 1 & 2 added.</div></div>
+    <div class="tl-item"><div class="tl-date">Version 1.4</div><div class="tl-title">Stepford Express + Terminal 3</div><div class="tl-text">Express added as 4th operator. Stepford Central renovated (now also based on Manchester Piccadilly). Terminal 3 added.</div></div>
+    <div class="tl-item"><div class="tl-date">Version 1.5</div><div class="tl-title">Connect Rebrand · Waterline Spin-Off · Guard Role</div><div class="tl-text">Connect becomes "Stepford Connect" (sky-blue #0096EE). Waterline spun off from Connect. Guard rank introduced.</div></div>
+    <div class="tl-item"><div class="tl-date">Version 1.6</div><div class="tl-title">Baseplate Walking Permitted</div><div class="tl-text">Anti-trespass script amended. Grasslands/vegetation now accessible. Connect/Waterline NGv1 upgrades.</div></div>
+    <div class="tl-item"><div class="tl-date">Version 1.7</div><div class="tl-title">Express Rebrand · NGv3 Begins</div><div class="tl-text">Express rebranded (last operator to do so). NGv3 model standard introduced. Class 377 updated to /7 subclass, 5 coaches.</div></div>
+    <div class="tl-item"><div class="tl-date">Version 1.8 / 1.8.2</div><div class="tl-title">Class 717 · Training Centre</div><div class="tl-text">Class 717 to Connect. SCR Training Centre built near Stepford United FC (superseded by V1.10.4 training map).</div></div>
+    <div class="tl-item"><div class="tl-date">Version 1.9</div><div class="tl-title">Express to Newry Harbour · Esterfield Extension</div><div class="tl-text">Express extended: R083–R086 added. Announced on April Fools — initially dismissed as a joke. Waterline extended to Esterfield (Farleigh, Rosedale Village added).</div></div>
+    <div class="tl-item"><div class="tl-date">Version 1.10 / 1.10.4</div><div class="tl-title">Class 345 · Dedicated Training Map</div><div class="tl-text">Class 345 introduced (4,500 pts — priciest in SCR). Dedicated training map replaces in-game venues. Training routes R901–R905.</div></div>
+    <div class="tl-item"><div class="tl-date">12 February 2022</div><div class="tl-title">Trespassing Redefined</div><div class="tl-text">Station parkour/platform jumping decriminalised. Train surfing → trolling. Staff-only area violations → exploit rule.</div></div>
+    <div class="tl-item"><div class="tl-date">12 August 2024 — V2.0</div><div class="tl-title">New Movement System · Rayleigh Bay Branch</div><div class="tl-text">Realistic acceleration/deceleration physics. Revamped driving & dispatching UIs. Rayleigh Bay Branch added. All Connect/Waterline trains → NGv3.</div></div>
+    <div class="tl-item"><div class="tl-date">11 May 2025 — V2.2</div><div class="tl-title">Metro — 5th Operator</div><div class="tl-text">First new operator in 5+ years. 12 Connect routes + Class 717 → Metro. Metro Core tunnel opened. Extensions to Stepford Bay & Whitney Green. 7-car & 8-car Class 43 variants added.</div></div>
+    <div class="tl-item"><div class="tl-date">10 January 2026 — V2.3</div><div class="tl-title">Power States · Stepford Bay Branch</div><div class="tl-text">First ever power states in SCR. Bi-mode/tri-mode functional. Battery trains charge on other power sources. Emergency brake when pantograph raised leaving OLE. New Stepford Bay branch. Class 387 returned to Connect (left in 2017). 23 sneak peeks released — 2nd most in SCR history.</div></div>
+  </div>
+</section>
+
+</main>
+
+<!-- SIDEBAR -->
+<aside>
+  <div class="sidebar-card">
+    <div class="sidebar-header">📖 Contents</div>
+    <div class="sidebar-body">
+      <ul class="toc-list">
+        <li><a href="#overview"><span class="toc-num">1.</span> Overview</a></li>
+        <li><a href="#operators"><span class="toc-num">2.</span> Operators</a></li>
+        <li><a href="#trains"><span class="toc-num">3.</span> Trains</a></li>
+        <li><a href="#maps"><span class="toc-num">4.</span> Route Maps</a></li>
+        <li><a href="#stations"><span class="toc-num">5.</span> All Stations</a></li>
+        <li><a href="#signs"><span class="toc-num">6.</span> Station Signs</a></li>
+        <li><a href="#ranks"><span class="toc-num">7.</span> Ranks</a></li>
+        <li><a href="#training"><span class="toc-num">8.</span> Training</a></li>
+        <li><a href="#rules"><span class="toc-num">9.</span> Rules</a></li>
+        <li><a href="#trespassing"><span class="toc-num">10.</span> Trespassing</a></li>
+        <li><a href="#advertising"><span class="toc-num">11.</span> Advertising</a></li>
+        <li><a href="#history"><span class="toc-num">12.</span> History</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sidebar-header">📊 Network (V2.3)</div>
+    <div class="sidebar-body">
+      <div class="sidebar-stat"><span class="label">Open stations</span><span class="value">75</span></div>
+      <div class="sidebar-stat"><span class="label">Lines</span><span class="value">14</span></div>
+      <div class="sidebar-stat"><span class="label">Total routes</span><span class="value">100</span></div>
+      <div class="sidebar-stat"><span class="label">Train classes</span><span class="value">56</span></div>
+      <div class="sidebar-stat"><span class="label">Route length</span><span class="value">58.8 mi</span></div>
+      <div class="sidebar-stat"><span class="label">Fare zones</span><span class="value">10</span></div>
+      <div class="sidebar-stat"><span class="label">Launched</span><span class="value">Nov 2017</span></div>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sidebar-header">🚉 Routes per Operator</div>
+    <div class="sidebar-body">
+      <div class="sidebar-stat"><span class="label"><span class="dot dot-c" style="margin-right:5px"></span>Connect</span><span class="value">38</span></div>
+      <div class="sidebar-stat"><span class="label"><span class="dot dot-m" style="margin-right:5px"></span>Metro</span><span class="value">26</span></div>
+      <div class="sidebar-stat"><span class="label"><span class="dot dot-e" style="margin-right:5px"></span>Express</span><span class="value">14</span></div>
+      <div class="sidebar-stat"><span class="label"><span class="dot dot-w" style="margin-right:5px"></span>Waterline</span><span class="value">11</span></div>
+      <div class="sidebar-stat"><span class="label"><span class="dot dot-a" style="margin-right:5px"></span>AirLink</span><span class="value">11</span></div>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sidebar-header">🚆 Speed Records</div>
+    <div class="sidebar-body">
+      <div class="sidebar-stat"><span class="label">Fastest</span><span class="value">125 mph</span></div>
+      <div class="sidebar-stat"><span class="label">125 mph trains</span><span class="value">Express fleet + 397/802</span></div>
+      <div class="sidebar-stat"><span class="label">Slowest active</span><span class="value">75 mph (143/156)</span></div>
+      <div class="sidebar-stat"><span class="label">Metro fastest</span><span class="value">85 mph (Cl. 717)</span></div>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sidebar-header">⚠️ Trespassing</div>
+    <div class="sidebar-body" style="font-size:.82rem;color:var(--muted);line-height:1.6;">
+      <p style="font-size:.82rem;margin-bottom:8px;">Tracks, embankments &amp; bridges are <strong style="color:var(--danger)">off-limits</strong>.</p>
+      <p style="font-size:.82rem;margin-bottom:8px;">Level crossings: <strong style="color:var(--accent3)">permitted</strong>.</p>
+      <p style="font-size:.82rem;margin:0;">Station parkour: <strong style="color:var(--accent3)">permitted</strong> since Feb 2022.</p>
+    </div>
+  </div>
+</aside>
+</div>
+
+<footer>
+  <p>SCR Community Wiki &nbsp;·&nbsp; Data &amp; images sourced from <span>scr.fandom.com</span> under CC-BY-SA &nbsp;·&nbsp; Not officially affiliated with SCR management &nbsp;·&nbsp; V2.3 · January 2026</p>
+</footer>
+
+<script>
+function openLB(src) {
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb').classList.add('active');
+}
+function closeLB() {
+  document.getElementById('lb').classList.remove('active');
+}
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLB(); });
+
+function filterStations(op, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#stationTable tbody tr').forEach(row => {
+    if(op === 'all') { row.style.display = ''; return; }
+    const ops = row.dataset.ops || '';
+    row.style.display = ops.includes(op) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
