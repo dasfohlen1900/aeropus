@@ -3,79 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Theme Showcase — Green · Yellow · Amber</title>
-  <link id="theme-css" rel="stylesheet" href="Light_Sage.css">
+  <title>CSS Theme Showcase — All 10 Themes</title>
+  <link id="theme-css" rel="stylesheet" href="Dark_Bold.css">
   <style>
+    /* ── Theme Switcher ── */
     #theme-switcher {
       position: fixed; bottom: 24px; right: 24px; z-index: 99999;
       display: flex; flex-direction: column; gap: 6px; align-items: flex-end;
     }
     #theme-switcher-toggle {
       width: 52px; height: 52px; border-radius: 50%;
-      background: #4a7c59; color: #fff; font-size: 1.3rem;
+      background: #444; color: #fff; font-size: 1.4rem;
       border: none; cursor: pointer;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
       display: flex; align-items: center; justify-content: center;
-      transition: transform 0.2s, background 0.2s;
+      transition: transform 0.2s;
     }
-    #theme-switcher-toggle:hover { transform: scale(1.08); background: #3d6a4a; }
+    #theme-switcher-toggle:hover { transform: scale(1.1); }
 
     #theme-panel {
-      display: none; flex-direction: column; gap: 6px;
-      background: rgba(15,15,10,0.95); backdrop-filter: blur(12px);
-      border-radius: 12px; padding: 12px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.5); min-width: 200px;
+      display: none; flex-direction: column; gap: 4px;
+      background: rgba(10,10,10,0.96); backdrop-filter: blur(16px);
+      border-radius: 14px; padding: 12px;
+      box-shadow: 0 10px 48px rgba(0,0,0,0.6); min-width: 210px;
+      border: 1px solid rgba(255,255,255,0.08);
     }
     #theme-panel.open { display: flex; }
 
-    .theme-btn {
-      padding: 10px 16px; border-radius: 7px; border: 2px solid transparent;
-      cursor: pointer; font-weight: 700; font-size: 0.8rem;
-      text-align: left; transition: all 0.15s; letter-spacing: 0.03em;
-      font-family: 'Raleway', sans-serif;
+    .theme-group-label {
+      font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.3); padding: 6px 8px 2px;
+      font-family: system-ui, sans-serif; font-weight: 600;
     }
-    .theme-btn:hover { filter: brightness(1.1); }
-    .theme-btn.active { border-color: rgba(255,255,255,0.6) !important; }
 
-    .theme-btn[data-theme="Light_Sage"]   { background: #4a7c59; color: #fff; }
-    .theme-btn[data-theme="Light_Solar"]  { background: #d4a017; color: #1e1a10; }
-    .theme-btn[data-theme="Dark_Forest"]  { background: #1c2e22; color: #4ecb6e; border: 1px solid #4ecb6e; }
-    .theme-btn[data-theme="Dark_Ember"]   { background: #2e2a1a; color: #c8a83c; border: 1px solid #c8a83c; }
+    .theme-btn {
+      padding: 9px 14px; border-radius: 8px; border: 1.5px solid transparent;
+      cursor: pointer; font-weight: 600; font-size: 0.78rem;
+      text-align: left; transition: all 0.15s; letter-spacing: 0.02em;
+      font-family: system-ui, sans-serif; display: flex; align-items: center; gap: 8px;
+    }
+    .theme-btn:hover { filter: brightness(1.15); }
+    .theme-btn.active { border-color: rgba(255,255,255,0.55) !important; }
 
-    .showcase-section { padding: 64px 0; border-bottom: 1px solid var(--color-border, #ccc); }
+    /* Dark themes */
+    .theme-btn[data-theme="Dark_Bold"]    { background: #1a1a1a; color: #ff3333; }
+    .theme-btn[data-theme="Dark_Modern"]  { background: #13132b; color: #a78bfa; }
+    .theme-btn[data-theme="Dark_Sporty"]  { background: #1a1a2e; color: #e94560; }
+    .theme-btn[data-theme="Dark_Forest"]  { background: #142018; color: #4ecb6e; }
+    .theme-btn[data-theme="Dark_Ember"]   { background: #221f14; color: #c8a83c; }
+    /* Light themes */
+    .theme-btn[data-theme="Light_Airy"]   { background: #e8e4ff; color: #6c5ce7; }
+    .theme-btn[data-theme="Light_Clean"]  { background: #eef0ff; color: #4361ee; }
+    .theme-btn[data-theme="Light_Elegant"]{ background: #f5ede4; color: #8b4513; }
+    .theme-btn[data-theme="Light_Sage"]   { background: #d4e8da; color: #2d5e3a; }
+    .theme-btn[data-theme="Light_Solar"]  { background: #fdf0c0; color: #7a5800; }
+
+    /* ── Layout helpers ── */
+    .showcase-section {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--color-border, #ccc);
+    }
     .showcase-section:last-child { border-bottom: none; }
 
     .section-label {
       font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em;
       color: var(--color-text-secondary); margin-bottom: 32px;
       display: flex; align-items: center; gap: 14px;
-      font-family: var(--font-heading, sans-serif); font-weight: 700;
+      font-family: var(--font-heading, system-ui); font-weight: 700;
     }
-    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--color-border, #ccc); }
+    .section-label::after { content:''; flex:1; height:1px; background: var(--color-border, #ccc); }
 
     .demo-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; margin-bottom: 24px; }
 
-    .hero { padding: 100px 0 80px; text-align: center; }
+    .hero { padding: 96px 0 72px; text-align: center; }
     .hero h1 { margin-bottom: 20px; }
-    .hero p { max-width: 580px; margin: 0 auto 36px; font-size: 1.1rem; }
+    .hero p  { max-width: 580px; margin: 0 auto 36px; font-size: 1.05rem; }
 
-    .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
-    .swatch { border-radius: var(--radius-md, 8px); overflow: hidden; box-shadow: var(--shadow-sm); }
-    .swatch-color { height: 54px; }
-    .swatch-label { padding: 7px 10px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: var(--color-surface); color: var(--color-text-secondary); font-family: var(--font-heading, sans-serif); }
+    .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(105px,1fr)); gap: 10px; }
+    .swatch { border-radius: var(--radius-md,8px); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .swatch-color { height: 52px; }
+    .swatch-label { padding: 7px 10px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: var(--color-surface); color: var(--color-text-secondary); font-family: var(--font-heading, system-ui); }
 
-    .input-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+    .input-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 24px; }
     .toast-demo-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+    .sub-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--color-text-secondary); font-family:var(--font-heading,system-ui); font-weight:700; margin-bottom: 10px; display: block; }
   </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
+<!-- ═══════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════ -->
 <nav class="navbar">
   <div class="navbar-inner">
     <a href="#" class="navbar-brand">UI<span class="navbar-brand-accent">Kit</span></a>
     <ul class="navbar-nav" id="main-nav">
-      <li><a href="#colors" class="active">Colors</a></li>
+      <li><a href="#colors"     class="active">Colors</a></li>
       <li><a href="#typography">Type</a></li>
       <li><a href="#buttons">Buttons</a></li>
       <li><a href="#forms">Forms</a></li>
@@ -91,13 +114,16 @@
   </div>
 </nav>
 
+<!-- ═══════════════════════════════════════
+     MAIN
+═══════════════════════════════════════ -->
 <main>
   <div class="container">
 
     <!-- HERO -->
     <div class="hero">
       <h1>Theme <span class="text-primary">Showcase</span></h1>
-      <p class="text-secondary">Four new themes — earthy, warm, natural. Raleway headings, Work Sans body. Switch via the button bottom-right.</p>
+      <p class="text-secondary">10 handcrafted CSS themes — switch live with the palette button bottom-right. Every component, every state.</p>
       <div class="demo-row justify-center">
         <a href="#" class="btn btn-primary">Primary Action</a>
         <a href="#" class="btn btn-secondary">Secondary</a>
@@ -111,8 +137,9 @@
       <div class="swatch-grid">
         <div class="swatch"><div class="swatch-color" style="background:var(--color-bg)"></div><div class="swatch-label">BG</div></div>
         <div class="swatch"><div class="swatch-color" style="background:var(--color-surface)"></div><div class="swatch-label">Surface</div></div>
-        <div class="swatch"><div class="swatch-color" style="background:var(--color-surface-alt)"></div><div class="swatch-label">Surface Alt</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-surface-alt,var(--color-border-light))"></div><div class="swatch-label">Surface Alt</div></div>
         <div class="swatch"><div class="swatch-color" style="background:var(--color-primary)"></div><div class="swatch-label">Primary</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-primary-hover)"></div><div class="swatch-label">Primary Hov</div></div>
         <div class="swatch"><div class="swatch-color" style="background:var(--color-secondary)"></div><div class="swatch-label">Secondary</div></div>
         <div class="swatch"><div class="swatch-color" style="background:var(--color-accent)"></div><div class="swatch-label">Accent</div></div>
         <div class="swatch"><div class="swatch-color" style="background:var(--color-success)"></div><div class="swatch-label">Success</div></div>
@@ -121,30 +148,32 @@
         <div class="swatch"><div class="swatch-color" style="background:var(--color-info)"></div><div class="swatch-label">Info</div></div>
         <div class="swatch"><div class="swatch-color" style="background:var(--color-border)"></div><div class="swatch-label">Border</div></div>
         <div class="swatch"><div class="swatch-color" style="background:var(--color-text)"></div><div class="swatch-label">Text</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--color-text-secondary)"></div><div class="swatch-label">Text 2nd</div></div>
       </div>
     </section>
 
     <!-- TYPOGRAPHY -->
     <section class="showcase-section" id="typography">
-      <div class="section-label">Typography — Raleway + Work Sans</div>
+      <div class="section-label">Typography</div>
       <h1>H1 — The Quick Brown Fox</h1>
       <h2>H2 — Jumps Over the Lazy Dog</h2>
       <h3>H3 — Pack My Box With Five Dozen Liquor Jugs</h3>
       <h4>H4 — Sphinx of Black Quartz, Judge My Vow</h4>
       <h5>H5 — How Vexingly Quick Daft Zebras Jump</h5>
       <h6>H6 — The Five Boxing Wizards Jump Quickly</h6>
-      <p class="mt-md">Body text (Work Sans) — Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
-      <p><small>Small text — captions and secondary information.</small></p>
-      <p><strong>Bold — emphasis and key content.</strong></p>
-      <p><a href="#">Link text — click to navigate.</a></p>
-      <blockquote class="mt-md">"In every walk with nature, one receives far more than he seeks." — John Muir</blockquote>
-      <code class="mt-md" style="display:inline-block">const theme = 'earthy';</code>
+      <p class="mt-md">Body — Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+      <p><small>Small — captions and secondary information.</small></p>
+      <p><strong>Strong — emphasis and key content.</strong></p>
+      <p><a href="#">Link — click to navigate somewhere useful.</a></p>
+      <blockquote class="mt-md">"Design is not just what it looks like and feels like. Design is how it works." — Steve Jobs</blockquote>
+      <code class="mt-md" style="display:inline-block">const theme = 'perfect';</code>
     </section>
 
     <!-- BUTTONS -->
     <section class="showcase-section" id="buttons">
       <div class="section-label">Buttons</div>
-      <p class="mb-sm text-secondary" style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;font-family:var(--font-heading)">Variants</p>
+
+      <span class="sub-label">Variants</span>
       <div class="demo-row mb-lg">
         <button class="btn btn-primary">Primary</button>
         <button class="btn btn-secondary">Secondary</button>
@@ -152,7 +181,8 @@
         <button class="btn btn-outline">Outline</button>
         <button class="btn btn-ghost">Ghost</button>
       </div>
-      <p class="mb-sm text-secondary" style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;font-family:var(--font-heading)">Sizes</p>
+
+      <span class="sub-label">Sizes</span>
       <div class="demo-row">
         <button class="btn btn-primary btn-sm">Small</button>
         <button class="btn btn-primary">Default</button>
@@ -178,7 +208,7 @@
           <input type="password" placeholder="••••••••">
         </div>
         <div class="form-group">
-          <label>Select Option</label>
+          <label>Select</label>
           <select>
             <option>Option One</option>
             <option>Option Two</option>
@@ -191,10 +221,10 @@
         </div>
         <div class="form-group">
           <label>Checkboxes &amp; Radios</label>
-          <div class="mb-sm"><label style="display:flex;align-items:center;font-weight:400;text-transform:none;letter-spacing:0"><input type="checkbox" checked> Remember me</label></div>
-          <div class="mb-sm"><label style="display:flex;align-items:center;font-weight:400;text-transform:none;letter-spacing:0"><input type="checkbox"> Subscribe to updates</label></div>
-          <div class="mb-sm"><label style="display:flex;align-items:center;font-weight:400;text-transform:none;letter-spacing:0"><input type="radio" name="r"> Option A</label></div>
-          <label style="display:flex;align-items:center;font-weight:400;text-transform:none;letter-spacing:0"><input type="radio" name="r" checked> Option B</label>
+          <div class="mb-sm"><label style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:.95rem"><input type="checkbox" checked> Remember me</label></div>
+          <div class="mb-sm"><label style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:.95rem"><input type="checkbox"> Subscribe to updates</label></div>
+          <div class="mb-sm"><label style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:.95rem"><input type="radio" name="r1"> Option A</label></div>
+          <label style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:.95rem"><input type="radio" name="r1" checked> Option B</label>
         </div>
       </div>
     </section>
@@ -203,16 +233,16 @@
     <section class="showcase-section" id="components">
       <div class="section-label">Components</div>
 
-      <p class="mb-sm text-secondary" style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;font-family:var(--font-heading)">Cards</p>
+      <span class="sub-label">Cards</span>
       <div class="grid-3 mb-lg">
         <div class="card">
           <div class="card-header">Card Title</div>
-          <p>A contained surface for grouping related content and providing clear visual structure to complex information.</p>
+          <p>A contained surface for grouping related content and providing clear visual structure.</p>
           <button class="btn btn-primary btn-sm mt-md">Action</button>
         </div>
         <div class="card">
           <div class="card-header">Feature Card</div>
-          <p>Cards can hold any combination of text, badges, images, and interactive controls.</p>
+          <p>Cards support any combination of text, badges, images, and interactive elements.</p>
           <div class="demo-row mt-md">
             <span class="badge badge-primary">New</span>
             <span class="badge badge-secondary">Featured</span>
@@ -222,17 +252,17 @@
         <div class="card">
           <div class="card-header">Metric Card</div>
           <div style="font-size:2.8rem;font-weight:800;color:var(--color-primary);line-height:1;margin-bottom:8px">98%</div>
-          <p class="text-secondary">Satisfaction score across all tracked sessions this quarter.</p>
+          <p class="text-secondary">Satisfaction score across all sessions this quarter.</p>
         </div>
       </div>
 
-      <p class="mb-sm text-secondary" style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;font-family:var(--font-heading)">Alerts</p>
+      <span class="sub-label">Alerts</span>
       <div class="alert alert-info mb-sm">ℹ️ <strong>Info:</strong> Your session will expire in 15 minutes. Please save your work.</div>
       <div class="alert alert-success mb-sm">✅ <strong>Success:</strong> Profile updated and saved successfully.</div>
       <div class="alert alert-warning mb-sm">⚠️ <strong>Warning:</strong> Storage is almost full — currently at 90%.</div>
       <div class="alert alert-error mb-lg">❌ <strong>Error:</strong> Unable to connect to the server. Please try again.</div>
 
-      <p class="mb-sm text-secondary" style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;font-family:var(--font-heading)">Badges</p>
+      <span class="sub-label">Badges</span>
       <div class="demo-row mb-lg">
         <span class="badge badge-primary">Primary</span>
         <span class="badge badge-secondary">Secondary</span>
@@ -240,7 +270,7 @@
         <span class="badge badge-outline">Outline</span>
       </div>
 
-      <p class="mb-sm text-secondary" style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;font-family:var(--font-heading)">Table</p>
+      <span class="sub-label">Table</span>
       <table class="mb-lg">
         <thead>
           <tr><th>Name</th><th>Role</th><th>Status</th><th>Joined</th></tr>
@@ -253,18 +283,18 @@
         </tbody>
       </table>
 
-      <p class="mb-sm text-secondary" style="font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;font-family:var(--font-heading)">Modal</p>
+      <span class="sub-label">Modal</span>
       <button class="btn btn-outline" onclick="document.getElementById('demo-modal').style.display='flex'">Open Modal</button>
     </section>
 
     <!-- TOASTS -->
     <section class="showcase-section" id="toasts">
       <div class="section-label">Toast Notifications</div>
-      <p class="mb-md text-secondary">Click to fire a toast. Auto-dismisses after 4 seconds with animated progress bar.</p>
+      <p class="mb-md text-secondary">Click to fire a toast — auto-dismisses after 4 s with animated progress bar.</p>
       <div class="toast-demo-row">
         <button class="btn btn-sm" style="background:var(--color-info);color:#fff;border:none" onclick="showToast('info')">ℹ️ Info</button>
         <button class="btn btn-sm" style="background:var(--color-success);color:#fff;border:none" onclick="showToast('success')">✅ Success</button>
-        <button class="btn btn-sm" style="background:var(--color-warning);color:#18160f;border:none" onclick="showToast('warning')">⚠️ Warning</button>
+        <button class="btn btn-sm" style="background:var(--color-warning);color:var(--color-text);border:none" onclick="showToast('warning')">⚠️ Warning</button>
         <button class="btn btn-sm" style="background:var(--color-error);color:#fff;border:none" onclick="showToast('error')">❌ Error</button>
       </div>
       <div class="toast-demo-row">
@@ -275,36 +305,39 @@
       </div>
     </section>
 
-  </div>
+  </div><!-- /container -->
 </main>
 
-<!-- FOOTER -->
+<!-- ═══════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════ -->
 <footer class="footer">
   <div class="footer-main">
     <div>
       <span class="footer-brand">UI<span class="footer-brand-accent">Kit</span></span>
-      <p class="footer-tagline">Four handcrafted CSS themes — earthy, warm, and natural. Raleway headings, Work Sans body. No reds, blues, or purples.</p>
+      <p class="footer-tagline">Ten handcrafted CSS themes — dark and light, bold and minimal, cool and earthy. Drop-in ready for any project.</p>
       <div class="footer-social">
         <a href="#">Gh</a><a href="#">Tw</a><a href="#">Li</a><a href="#">Dr</a>
       </div>
     </div>
     <div>
-      <div class="footer-col-title">Themes</div>
+      <div class="footer-col-title">Dark Themes</div>
       <ul class="footer-links">
-        <li><a href="#">Light Sage</a></li>
-        <li><a href="#">Light Solar</a></li>
+        <li><a href="#">Dark Bold</a></li>
+        <li><a href="#">Dark Modern</a></li>
+        <li><a href="#">Dark Sporty</a></li>
         <li><a href="#">Dark Forest</a></li>
         <li><a href="#">Dark Ember</a></li>
       </ul>
     </div>
     <div>
-      <div class="footer-col-title">Components</div>
+      <div class="footer-col-title">Light Themes</div>
       <ul class="footer-links">
-        <li><a href="#">Buttons</a></li>
-        <li><a href="#">Forms</a></li>
-        <li><a href="#">Cards</a></li>
-        <li><a href="#">Toasts</a></li>
-        <li><a href="#">Modals</a></li>
+        <li><a href="#">Light Airy</a></li>
+        <li><a href="#">Light Clean</a></li>
+        <li><a href="#">Light Elegant</a></li>
+        <li><a href="#">Light Sage</a></li>
+        <li><a href="#">Light Solar</a></li>
       </ul>
     </div>
     <div>
@@ -350,21 +383,30 @@
 <!-- THEME SWITCHER -->
 <div id="theme-switcher">
   <div id="theme-panel">
-    <button class="theme-btn active" data-theme="Light_Sage">🌿 Light Sage</button>
-    <button class="theme-btn" data-theme="Light_Solar">☀️ Light Solar</button>
-    <button class="theme-btn" data-theme="Dark_Forest">🌲 Dark Forest</button>
-    <button class="theme-btn" data-theme="Dark_Ember">🔥 Dark Ember</button>
+    <div class="theme-group-label">Dark</div>
+    <button class="theme-btn active" data-theme="Dark_Bold">⚡ Dark Bold</button>
+    <button class="theme-btn"        data-theme="Dark_Modern">🌌 Dark Modern</button>
+    <button class="theme-btn"        data-theme="Dark_Sporty">🏎 Dark Sporty</button>
+    <button class="theme-btn"        data-theme="Dark_Forest">🌲 Dark Forest</button>
+    <button class="theme-btn"        data-theme="Dark_Ember">🔥 Dark Ember</button>
+    <div class="theme-group-label">Light</div>
+    <button class="theme-btn"        data-theme="Light_Airy">🌸 Light Airy</button>
+    <button class="theme-btn"        data-theme="Light_Clean">✨ Light Clean</button>
+    <button class="theme-btn"        data-theme="Light_Elegant">🏺 Light Elegant</button>
+    <button class="theme-btn"        data-theme="Light_Sage">🌿 Light Sage</button>
+    <button class="theme-btn"        data-theme="Light_Solar">☀️ Light Solar</button>
   </div>
   <button id="theme-switcher-toggle" title="Switch Theme">🎨</button>
 </div>
 
 <script>
-  /* Theme Switcher */
-  const panel = document.getElementById('theme-panel');
+  /* ── Theme Switcher ── */
+  const panel     = document.getElementById('theme-panel');
   const toggleBtn = document.getElementById('theme-switcher-toggle');
   const themeLink = document.getElementById('theme-css');
 
   toggleBtn.addEventListener('click', () => panel.classList.toggle('open'));
+
   document.querySelectorAll('.theme-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       themeLink.href = btn.dataset.theme + '.css';
@@ -373,18 +415,23 @@
       panel.classList.remove('open');
     });
   });
+
   document.addEventListener('click', e => {
-    if (!document.getElementById('theme-switcher').contains(e.target)) panel.classList.remove('open');
+    if (!document.getElementById('theme-switcher').contains(e.target)) {
+      panel.classList.remove('open');
+    }
   });
 
-  /* Burger Menu */
+  /* ── Burger Menu ── */
   const burgerBtn = document.getElementById('burger-btn');
   const mainNav   = document.getElementById('main-nav');
+
   burgerBtn.addEventListener('click', () => {
     const isOpen = mainNav.classList.toggle('open');
     burgerBtn.classList.toggle('is-open', isOpen);
     burgerBtn.setAttribute('aria-expanded', String(isOpen));
   });
+
   mainNav.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       mainNav.classList.remove('open');
@@ -393,20 +440,21 @@
     });
   });
 
-  /* Toast System */
+  /* ── Toast System ── */
   const TOASTS = {
-    info:    { icon: 'ℹ️', title: 'Information',  msg: 'Your settings have been saved successfully.' },
-    success: { icon: '✅', title: 'Done!',         msg: 'The file was uploaded without any issues.' },
-    warning: { icon: '⚠️', title: 'Heads Up',      msg: 'Your storage space is almost full (90%).' },
-    error:   { icon: '❌', title: 'Error',          msg: 'Connection failed. Please check your network.' },
+    info:    { icon: 'ℹ️', title: 'Information', msg: 'Your settings have been saved successfully.' },
+    success: { icon: '✅', title: 'Done!',        msg: 'The file was uploaded without any issues.' },
+    warning: { icon: '⚠️', title: 'Heads Up',     msg: 'Your storage space is almost full (90%).' },
+    error:   { icon: '❌', title: 'Error',         msg: 'Connection failed. Please check your network.' },
   };
+
   function showToast(type = 'info', position = 'toast-top-right', duration = 4000) {
-    const d = TOASTS[type];
-    const posId = 'tc-' + position.replace('toast-', '');
-    const container = document.getElementById(posId);
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.innerHTML = `
+    const d   = TOASTS[type];
+    const cid = 'tc-' + position.replace('toast-', '');
+    const box = document.getElementById(cid);
+    const el  = document.createElement('div');
+    el.className = `toast toast-${type}`;
+    el.innerHTML = `
       <span class="toast-icon">${d.icon}</span>
       <div class="toast-body">
         <div class="toast-title">${d.title}</div>
@@ -414,28 +462,39 @@
       </div>
       <button class="toast-close" aria-label="Close">✕</button>
       <div class="toast-progress" style="animation-duration:${duration}ms"></div>`;
+
     const dismiss = () => {
-      toast.classList.add('toast-hiding');
-      toast.addEventListener('animationend', () => toast.remove(), { once: true });
+      el.classList.add('toast-hiding');
+      el.addEventListener('animationend', () => el.remove(), { once: true });
     };
-    toast.querySelector('.toast-close').addEventListener('click', dismiss);
-    container.appendChild(toast);
+    el.querySelector('.toast-close').addEventListener('click', dismiss);
+    box.appendChild(el);
     setTimeout(dismiss, duration);
   }
 
-  /* Scroll spy */
+  /* ── Scroll Spy ── */
   const sections = document.querySelectorAll('.showcase-section[id]');
   const navLinks = document.querySelectorAll('.navbar-nav a');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
+
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
         navLinks.forEach(l => l.classList.remove('active'));
-        const match = document.querySelector(`.navbar-nav a[href="#${entry.target.id}"]`);
-        if (match) match.classList.add('active');
+        const m = document.querySelector(`.navbar-nav a[href="#${e.target.id}"]`);
+        if (m) m.classList.add('active');
       }
     });
-  }, { threshold: 0.4 });
-  sections.forEach(s => observer.observe(s));
+  }, { threshold: 0.4 }).observe && sections.forEach(s => {
+    new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const m = document.querySelector(`.navbar-nav a[href="#${e.target.id}"]`);
+          if (m) m.classList.add('active');
+        }
+      });
+    }, { threshold: 0.35 }).observe(s);
+  });
 </script>
 </body>
 </html>
