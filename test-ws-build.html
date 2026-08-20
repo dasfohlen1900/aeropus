@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SiteBuilder Studio</title>
+  <style>
+    :root {
+      --bg-color: #f8f9fa;
+      --sidebar-width: 280px;
+      --primary: #1a73e8;
+      --border-color: #dadce0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: var(--bg-color);
+      color: #202124;
+    }
+
+    /* Side Panel Controls */
+    aside {
+      width: var(--sidebar-width);
+      background: #ffffff;
+      border-right: 1px solid var(--border-color);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    aside h2 { font-size: 1.1rem; margin-bottom: 10px; color: #5f6368; }
+
+    .btn {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: left;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .btn:hover { background: #f1f3f4; border-color: #c6c6c6; }
+    .btn-primary { background: var(--primary); color: #fff; border: none; }
+    .btn-primary:hover { background: #1557b0; }
+
+    /* Main Canvas Work Area */
+    main {
+      flex-grow: 1;
+      padding: 40px;
+      overflow-y: auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    #canvas {
+      width: 100%;
+      max-width: 850px;
+      background: #ffffff;
+      min-height: 600px;
+      box-shadow: 0 1px 3px rgba(60,64,67,0.15);
+      border-radius: 8px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Editable Blocks */
+    .block {
+      position: relative;
+      padding: 15px;
+      border: 1px dashed transparent;
+      border-radius: 4px;
+      transition: border 0.2s;
+    }
+
+    .block:hover { border-color: var(--primary); }
+
+    .block-tools {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      display: none;
+      gap: 5px;
+    }
+
+    .block:hover .block-tools { display: flex; }
+
+    .btn-sm {
+      background: #ea4335;
+      color: white;
+      border: none;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    [contenteditable="true"]:focus {
+      outline: 2px solid var(--primary);
+      border-radius: 2px;
+    }
+
+    /* Grid Module */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  </style>
+</head>
+<body>
+
+  <aside>
+    <h2>Bausteine</h2>
+    <button class="btn" onclick="addBlock('header')">+ Kopfzeile</button>
+    <button class="btn" onclick="addBlock('text')">+ Textfeld</button>
+    <button class="btn" onclick="addBlock('two-column')">+ 2 Spalten Layout</button>
+    <button class="btn" onclick="addBlock('image')">+ Bildplatzhalter</button>
+    
+    <hr style="border: none; border-top: 1px solid var(--border-color); margin: 10px 0;">
+    
+    <h2>Aktionen</h2>
+    <button class="btn btn-primary" onclick="exportHTML()">HTML Exportieren</button>
+  </aside>
+
+  <main>
+    <div id="canvas">
+      <!-- Standard-Startblöcke -->
+      <div class="block" data-type="header">
+        <div class="block-tools"><button class="btn-sm" onclick="deleteBlock(this)">Löschen</button></div>
+        <h1 contenteditable="true">Titel der Webseite</h1>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+
+    // Bausteine hinzufügen
+    function addBlock(type) {
+      const block = document.createElement('div');
+      block.className = 'block';
+      block.setAttribute('data-type', type);
+
+      let content = '';
+      const tools = `<div class="block-tools"><button class="btn-sm" onclick="deleteBlock(this)">Löschen</button></div>`;
+
+      switch(type) {
+        case 'header':
+          content = `<h2 contenteditable="true">Neue Überschrift</h2>`;
+          break;
+        case 'text':
+          content = `<p contenteditable="true">Hier kannst du deinen Text direkt eingeben und bearbeiten.</p>`;
+          break;
+        case 'two-column':
+          content = `
+            <div class="grid-2">
+              <div contenteditable="true"><p>Spalte 1 Inhalt...</p></div>
+              <div contenteditable="true"><p>Spalte 2 Inhalt...</p></div>
+            </div>`;
+          break;
+        case 'image':
+          content = `<img src="https://via.placeholder.com/700x200" style="width:100%; border-radius:4px;" alt="Platzhalter">`;
+          break;
+      }
+
+      block.innerHTML = tools + content;
+      canvas.appendChild(block);
+    }
+
+    // Element entfernen
+    function deleteBlock(btn) {
+      btn.closest('.block').remove();
+    }
+
+    // Fertigen Code als statisches HTML herunterladen
+    function exportHTML() {
+      const clone = canvas.cloneNode(true);
+      
+      // Bearbeitungswerkzeuge vor dem Export entfernen
+      clone.querySelectorAll('.block-tools').forEach(el => el.remove());
+      clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+      clone.querySelectorAll('.block').forEach(el => {
+        el.style.border = 'none';
+        el.removeAttribute('data-type');
+      });
+
+      const fullDocument = `<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Exportierte Seite</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #fff; padding: 40px; }
+    .container { max-width: 850px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    ${clone.innerHTML}
+  </div>
+</body>
+</html>`;
+
+      const blob = new Blob([fullDocument], { type: 'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'index.html';
+      a.click();
+    }
+  </script>
+</body>
+</html>
