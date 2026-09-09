@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aeropus — Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,600&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ============================================================
+   AEROPUS — DESIGNSYSTEM
+   Basisfarbe: #990000
+   ============================================================ */
+
+:root{
+
+  /* ---- Rot-Skala (abgeleitet von #990000, hsl(0,100%,30%)) ---- */
+  --red-950: #5c0000;
+  --red-900: #990000;   /* Basisfarbe */
+  --red-800: #ad0d0d;
+  --red-700: #c22525;
+  --red-600: #d63f3f;
+  --red-500: #e5615c;
+  --red-400: #ee8b83;
+  --red-300: #f4b0a9;
+  --red-200: #f8cfc9;
+  --red-100: #fbe4e0;
+  --red-50:  #fdf3f1;
+
+  /* ---- Neutrale Töne (warm, leicht rot getönt) ---- */
+  --ink-900: #2a1414;
+  --ink-700: #4a2b2b;
+  --ink-500: #7a5a58;
+  --ink-300: #b9a09d;
+  --paper-100: #fffaf8;
+  --paper-200: #fdf3f0;
+  --paper-300: #f7e5e1;
+
+  /* ---- Semantik ---- */
+  --color-bg: var(--paper-100);
+  --color-surface: #ffffff;
+  --color-text: var(--ink-900);
+  --color-text-muted: var(--ink-500);
+  --color-border: var(--red-100);
+  --color-primary: var(--red-900);
+  --color-primary-hover: var(--red-950);
+  --color-accent: var(--red-600);
+  --color-success: #3f7a4f;
+  --color-success-bg: #eaf5ec;
+  --color-warning: #a86a12;
+  --color-warning-bg: #fbf1de;
+
+  /* ---- Typografie ---- */
+  --font-sans: 'Raleway', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-footer: 'Barlow', sans-serif;
+
+  /* ---- Radien & Schatten ---- */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 2px 8px rgba(153,0,0,0.08);
+  --shadow-md: 0 8px 28px rgba(153,0,0,0.14);
+  --shadow-lg: 0 20px 50px rgba(153,0,0,0.20);
+
+  --header-h: 76px;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(circle at 100% 0%, var(--red-100) 0%, transparent 45%),
+    radial-gradient(circle at 0% 30%, var(--red-50) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+
+::selection{ background:var(--red-300); color:var(--ink-900); }
+
+/* ============================================================
+   ÜBERSCHRIFTEN  h1 – h6
+   ============================================================ */
+
+h1,h2,h3,h4,h5,h6{
+  font-family: var(--font-sans);
+  color: var(--color-primary);
+  font-weight:800;
+  line-height:1.15;
+  letter-spacing:-0.01em;
+}
+
+h1{
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight:800;
+  letter-spacing:-0.02em;
+}
+
+h2{
+  font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+  font-weight:700;
+}
+
+h3{
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight:700;
+  color: var(--ink-900);
+}
+
+h4{
+  font-size:1.35rem;
+  font-weight:600;
+  color: var(--ink-900);
+}
+
+h5{
+  font-size:1.1rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  color: var(--color-accent);
+}
+
+h6{
+  font-size:0.85rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.14em;
+  color: var(--ink-500);
+}
+
+.eyebrow{
+  font-family:var(--font-sans);
+  font-size:0.8rem;
+  font-weight:700;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--color-accent);
+  display:inline-block;
+  margin-bottom:0.75rem;
+}
+
+/* ============================================================
+   TEXT
+   ============================================================ */
+
+p{ color:var(--color-text); font-size:1rem; max-width:65ch; }
+
+.lead{
+  font-size:1.2rem;
+  color:var(--ink-700);
+  font-weight:400;
+}
+
+.text-muted{ color:var(--color-text-muted); }
+
+.text-serif{
+  font-family: var(--font-serif);
+}
+
+a.link{
+  color:var(--color-primary);
+  font-weight:600;
+  border-bottom:1.5px solid var(--red-300);
+  padding-bottom:1px;
+  transition:.2s ease;
+}
+a.link:hover{ border-color:var(--color-primary); color:var(--color-primary-hover); }
+
+hr.divider{
+  border:none;
+  height:1px;
+  background:linear-gradient(90deg, var(--red-300), transparent);
+  margin:2.5rem 0;
+}
+
+/* ============================================================
+   ZITATE
+   ============================================================ */
+
+blockquote{
+  font-family: var(--font-serif);
+  font-style:italic;
+  font-size:1.5rem;
+  line-height:1.5;
+  color:var(--ink-900);
+  position:relative;
+  padding:1rem 0 1rem 2.2rem;
+  border-left:4px solid var(--color-primary);
+  margin:2rem 0;
+}
+blockquote::before{
+  content:"\201C";
+  font-family:var(--font-serif);
+  font-size:4.5rem;
+  color:var(--red-200);
+  position:absolute;
+  left:-0.15em;
+  top:-0.6rem;
+  line-height:1;
+  z-index:0;
+}
+blockquote cite{
+  display:block;
+  font-family:var(--font-sans);
+  font-style:normal;
+  font-weight:600;
+  font-size:0.85rem;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  color:var(--color-accent);
+  margin-top:0.9rem;
+}
+
+/* ============================================================
+   KARTEN
+   ============================================================ */
+
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+  gap:1.5rem;
+}
+
+.card{
+  background:var(--color-surface);
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-lg);
+  padding:1.8rem;
+  box-shadow:var(--shadow-sm);
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:var(--shadow-md);
+  border-color:var(--red-300);
+}
+.card h4{ margin-bottom:0.5rem; color:var(--color-primary); }
+.card p{ font-size:0.95rem; color:var(--ink-500); }
+.card .card-icon{
+  width:44px; height:44px;
+  border-radius:var(--radius-sm);
+  background:var(--red-100);
+  color:var(--color-primary);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem;
+  margin-bottom:1rem;
+}
+
+.card--accent{
+  background: linear-gradient(155deg, var(--color-primary), var(--red-950));
+  border:none;
+  color:var(--paper-100);
+}
+.card--accent h4, .card--accent p{ color:var(--paper-100); }
+.card--accent .card-icon{ background:rgba(255,255,255,0.15); color:#fff; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn{
+  font-family:var(--font-sans);
+  font-weight:600;
+  font-size:0.95rem;
+  padding:0.85rem 1.7rem;
+  border-radius:var(--radius-pill);
+  border:2px solid transparent;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  transition:.2s ease;
+  letter-spacing:0.01em;
+}
+
+.btn-primary{
+  background:var(--color-primary);
+  color:#fff;
+  box-shadow:var(--shadow-sm);
+}
+.btn-primary:hover{ background:var(--color-primary-hover); transform:translateY(-2px); box-shadow:var(--shadow-md); }
+
+.btn-secondary{
+  background:var(--red-100);
+  color:var(--color-primary);
+}
+.btn-secondary:hover{ background:var(--red-200); transform:translateY(-2px); }
+
+.btn-outline{
+  background:transparent;
+  border-color:var(--color-primary);
+  color:var(--color-primary);
+}
+.btn-outline:hover{ background:var(--color-primary); color:#fff; }
+
+.btn-ghost{
+  background:transparent;
+  color:var(--ink-700);
+}
+.btn-ghost:hover{ background:var(--paper-300); }
+
+.btn-sm{ padding:0.55rem 1.15rem; font-size:0.85rem; }
+.btn-lg{ padding:1.05rem 2.2rem; font-size:1.05rem; }
+
+.btn:disabled{ opacity:0.5; cursor:not-allowed; transform:none !important; }
+
+/* ============================================================
+   BUBBLES / PILLS / TAGS
+   ============================================================ */
+
+.bubble{
+  display:inline-flex;
+  align-items:center;
+  gap:0.4rem;
+  font-size:0.82rem;
+  font-weight:600;
+  padding:0.45rem 1rem;
+  border-radius:var(--radius-pill);
+  background:var(--red-100);
+  color:var(--color-primary);
+  border:1px solid var(--red-200);
+}
+
+.bubble--solid{ background:var(--color-primary); color:#fff; border-color:var(--color-primary); }
+.bubble--outline{ background:transparent; border:1.5px solid var(--color-primary); color:var(--color-primary); }
+.bubble--muted{ background:var(--paper-300); color:var(--ink-500); border-color:var(--paper-300); }
+
+.bubble-dot{
+  width:7px; height:7px; border-radius:50%; background:currentColor;
+}
+
+.bubble-row{ display:flex; flex-wrap:wrap; gap:0.6rem; }
+
+/* ============================================================
+   BADGES (Extra)
+   ============================================================ */
+
+.badge{
+  display:inline-block;
+  font-size:0.7rem;
+  font-weight:700;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  padding:0.25rem 0.55rem;
+  border-radius:var(--radius-sm);
+  background:var(--color-primary);
+  color:#fff;
+  vertical-align:middle;
+}
+.badge--soft{ background:var(--red-100); color:var(--color-primary); }
+
+/* ============================================================
+   INLINE ALERTS (Extra)
+   ============================================================ */
+
+.alert{
+  display:flex;
+  gap:0.9rem;
+  align-items:flex-start;
+  padding:1rem 1.2rem;
+  border-radius:var(--radius-md);
+  border-left:4px solid var(--color-primary);
+  background:var(--red-50);
+  font-size:0.92rem;
+}
+.alert strong{ display:block; margin-bottom:0.15rem; color:var(--color-primary); }
+.alert-icon{ font-weight:800; font-size:1.1rem; line-height:1.4; flex-shrink:0; }
+
+.alert--error{ border-color:var(--color-primary); background:var(--red-50); }
+.alert--error strong{ color:var(--color-primary); }
+
+.alert--warning{ border-color:var(--color-warning); background:var(--color-warning-bg); }
+.alert--warning strong{ color:var(--color-warning); }
+
+.alert--success{ border-color:var(--color-success); background:var(--color-success-bg); }
+.alert--success strong{ color:var(--color-success); }
+
+.alert--info{ border-color:var(--red-400); background:var(--paper-200); }
+.alert--info strong{ color:var(--red-700); }
+
+.alert--neutral{ border-color:var(--ink-300); background:var(--paper-200); }
+.alert--neutral strong{ color:var(--ink-700); }
+
+/* ============================================================
+   FORMULARFELDER (Extra)
+   ============================================================ */
+
+.field{ display:flex; flex-direction:column; gap:0.4rem; max-width:360px; }
+.field label{ font-family:var(--font-footer); font-size:0.85rem; font-weight:600; color:var(--ink-700); }
+.field-hint{ font-family:var(--font-footer); font-size:0.78rem; color:var(--ink-500); }
+.field input, .field textarea, .field select{
+  font-family:var(--font-footer);
+  padding:0.75rem 1rem;
+  border-radius:var(--radius-sm);
+  border:1.5px solid var(--red-200);
+  background:#fff;
+  font-size:0.95rem;
+  color:var(--color-text);
+  transition:.2s ease;
+  width:100%;
+}
+.field input:focus, .field textarea:focus, .field select:focus{
+  outline:none;
+  border-color:var(--color-primary);
+  box-shadow:0 0 0 3px var(--red-100);
+}
+.field textarea{ resize:vertical; min-height:100px; font-family:var(--font-footer); }
+.field input:disabled, .field select:disabled{ background:var(--paper-300); color:var(--ink-300); cursor:not-allowed; }
+.field input.invalid, .field select.invalid{ border-color:var(--color-primary); box-shadow:0 0 0 3px var(--red-100); }
+.field-error{ font-family:var(--font-footer); font-size:0.78rem; color:var(--color-primary); font-weight:600; }
+
+/* Checkbox & Radio */
+.check-row{ display:flex; align-items:center; gap:0.6rem; font-family:var(--font-footer); font-size:0.92rem; color:var(--ink-700); }
+.check-row input[type="checkbox"], .check-row input[type="radio"]{
+  width:18px; height:18px;
+  accent-color:var(--color-primary);
+  cursor:pointer;
+}
+
+/* Toggle Switch */
+.switch{ position:relative; display:inline-block; width:44px; height:24px; }
+.switch input{ opacity:0; width:0; height:0; }
+.switch-track{
+  position:absolute; inset:0; background:var(--red-200); border-radius:var(--radius-pill);
+  cursor:pointer; transition:.25s ease;
+}
+.switch-track::before{
+  content:""; position:absolute; height:18px; width:18px; left:3px; top:3px;
+  background:#fff; border-radius:50%; transition:.25s ease; box-shadow:var(--shadow-sm);
+}
+.switch input:checked + .switch-track{ background:var(--color-primary); }
+.switch input:checked + .switch-track::before{ transform:translateX(20px); }
+
+/* Custom Select / Dropdown */
+.select-wrap{ position:relative; }
+.select-wrap select{ appearance:none; -webkit-appearance:none; padding-right:2.6rem; cursor:pointer; }
+.select-wrap::after{
+  content:"▾";
+  position:absolute; right:1rem; top:50%; transform:translateY(-50%);
+  color:var(--color-primary); pointer-events:none; font-size:0.85rem;
+}
+
+/* Range Slider */
+.field input[type="range"]{
+  padding:0; border:none; background:transparent; accent-color:var(--color-primary); height:auto;
+}
+
+.form-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:1.5rem; max-width:820px; }
+
+/* ============================================================
+   TOASTS — unten rechts
+   ============================================================ */
+
+.toast-stack{
+  position:fixed;
+  bottom:1.5rem;
+  right:1.5rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.8rem;
+  z-index:999;
+  width:min(340px, 88vw);
+}
+
+.toast{
+  display:flex;
+  gap:0.8rem;
+  align-items:flex-start;
+  background:var(--color-surface);
+  border-radius:var(--radius-md);
+  padding:1rem 1.1rem;
+  box-shadow:var(--shadow-lg);
+  border-left:5px solid var(--color-primary);
+  transform:translateX(120%);
+  opacity:0;
+  transition:transform .35s cubic-bezier(.2,.9,.3,1.2), opacity .3s ease;
+}
+.toast.show{ transform:translateX(0); opacity:1; }
+
+.toast-icon{
+  width:32px; height:32px;
+  border-radius:50%;
+  flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:800;
+  font-size:0.95rem;
+}
+
+.toast-title{ font-weight:700; font-size:0.92rem; margin-bottom:0.15rem; }
+.toast-text{ font-size:0.83rem; color:var(--ink-500); }
+.toast-close{
+  margin-left:auto;
+  background:none; border:none; cursor:pointer;
+  color:var(--ink-300); font-size:1rem; line-height:1;
+  padding:0.1rem;
+}
+.toast-close:hover{ color:var(--ink-700); }
+
+.toast--error{ border-left-color:var(--color-primary); }
+.toast--error .toast-icon{ background:var(--red-900); color:#fff; }
+
+.toast--info{ border-left-color:var(--red-400); }
+.toast--info .toast-icon{ background:var(--red-100); color:var(--color-primary); }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:500;
+  height:var(--header-h);
+  display:flex;
+  align-items:center;
+  background:rgba(255,250,248,0.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--color-border);
+}
+
+.header-inner{
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 2rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.logo{
+  font-family:var(--font-serif);
+  font-weight:700;
+  font-size:1.5rem;
+  color:var(--color-primary);
+  letter-spacing:0.01em;
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+}
+.logo::before{
+  content:"";
+  width:10px; height:10px;
+  border-radius:50%;
+  background:var(--color-primary);
+  box-shadow:0 0 0 4px var(--red-100);
+}
+
+.main-nav{ display:flex; align-items:center; gap:2.2rem; }
+.main-nav a{
+  font-size:0.95rem;
+  font-weight:600;
+  color:var(--ink-700);
+  position:relative;
+  padding:0.3rem 0;
+  transition:color .2s ease;
+}
+.main-nav a::after{
+  content:"";
+  position:absolute; left:0; bottom:-2px;
+  width:0; height:2px;
+  background:var(--color-primary);
+  transition:width .25s ease;
+}
+.main-nav a:hover{ color:var(--color-primary); }
+.main-nav a:hover::after{ width:100%; }
+.main-nav a.active{ color:var(--color-primary); }
+.main-nav a.active::after{ width:100%; }
+
+.burger{
+  display:none;
+  flex-direction:column;
+  gap:5px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:0.5rem;
+  z-index:600;
+}
+.burger span{
+  width:24px; height:2.5px;
+  background:var(--color-primary);
+  border-radius:2px;
+  transition:.3s ease;
+}
+.burger.open span:nth-child(1){ transform:translateY(7.5px) rotate(45deg); }
+.burger.open span:nth-child(2){ opacity:0; }
+.burger.open span:nth-child(3){ transform:translateY(-7.5px) rotate(-45deg); }
+
+/* Mobile Nav */
+@media (max-width: 860px){
+  .main-nav{
+    position:fixed;
+    top:var(--header-h);
+    right:0;
+    height:calc(100vh - var(--header-h));
+    width:min(320px, 78vw);
+    background:var(--color-surface);
+    flex-direction:column;
+    align-items:flex-start;
+    padding:2.2rem 2rem;
+    gap:1.6rem;
+    box-shadow:var(--shadow-lg);
+    transform:translateX(100%);
+    transition:transform .35s ease;
+  }
+  .main-nav.open{ transform:translateX(0); }
+  .main-nav a{ font-size:1.1rem; width:100%; }
+  .burger{ display:flex; }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero{
+  max-width:1200px;
+  margin:0 auto;
+  padding:5.5rem 2rem 4rem;
+  display:grid;
+  gap:1.6rem;
+  text-align:center;
+  justify-items:center;
+}
+.hero p.lead{ max-width:52ch; }
+.hero-actions{ display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-top:0.6rem; }
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+
+.section{
+  max-width:1200px;
+  margin:0 auto;
+  padding:4rem 2rem;
+}
+.section-head{ margin-bottom:2.2rem; max-width:60ch; }
+.section-head p{ color:var(--ink-500); }
+
+.section-alt{ background:var(--paper-200); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.site-footer{
+  font-family: var(--font-footer);
+  background: linear-gradient(160deg, var(--red-950), var(--color-primary));
+  color: var(--red-100);
+  margin-top:4rem;
+}
+
+.footer-inner{
+  max-width:1200px;
+  margin:0 auto;
+  padding:3.5rem 2rem 2rem;
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr 1fr;
+  gap:2.5rem;
+}
+
+.footer-brand{ font-family:var(--font-serif); font-size:1.4rem; color:#fff; margin-bottom:0.8rem; }
+.footer-inner p{ color:var(--red-200); font-size:0.9rem; max-width:32ch; }
+
+.footer-col h6{ color:var(--red-200); margin-bottom:1rem; letter-spacing:0.12em; }
+.footer-col a{
+  display:block;
+  color:var(--red-100);
+  font-size:0.92rem;
+  padding:0.35rem 0;
+  font-weight:500;
+  transition:.2s ease;
+}
+.footer-col a:hover{ color:#fff; transform:translateX(3px); }
+
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,0.15);
+  padding:1.4rem 2rem;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:0.8rem;
+  max-width:1200px;
+  margin:0 auto;
+  font-size:0.82rem;
+  color:var(--red-200);
+}
+
+@media (max-width:760px){
+  .footer-inner{ grid-template-columns:1fr 1fr; }
+}
+@media (max-width:480px){
+  .footer-inner{ grid-template-columns:1fr; }
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+
+.stack{ display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+.mt-lg{ margin-top:2.5rem; }
+
+/* ============================================================
+   EXTRA-MODUL: MINESWEEPER + COACH
+   (eigenständiger Block, nutzt Grundfarben & Variablen des
+   Designsystems weiter, ergänzt aber spielspezifisches CSS)
+   ============================================================ */
+
+.ms-app{
+  display:grid;
+  grid-template-columns: 1fr 300px;
+  gap:1.8rem;
+  align-items:start;
+}
+@media (max-width: 900px){
+  .ms-app{ grid-template-columns:1fr; }
+}
+
+.ms-panel{
+  background:var(--color-surface);
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  padding:1.6rem;
+}
+
+/* Toolbar */
+.ms-toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.9rem;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:1.4rem;
+}
+
+.ms-diffs{ display:flex; gap:0.5rem; }
+.ms-diff-btn{
+  font-family:var(--font-sans);
+  font-size:0.8rem;
+  font-weight:700;
+  padding:0.45rem 0.9rem;
+  border-radius:var(--radius-pill);
+  border:1.5px solid var(--red-200);
+  background:transparent;
+  color:var(--ink-500);
+  cursor:pointer;
+  transition:.2s ease;
+}
+.ms-diff-btn:hover{ border-color:var(--color-primary); color:var(--color-primary); }
+.ms-diff-btn.active{ background:var(--color-primary); border-color:var(--color-primary); color:#fff; }
+
+.ms-stats{ display:flex; gap:0.8rem; }
+.ms-stat{
+  display:flex;
+  align-items:center;
+  gap:0.4rem;
+  font-family:var(--font-sans);
+  font-weight:700;
+  font-size:0.95rem;
+  background:var(--red-50);
+  border:1px solid var(--red-100);
+  border-radius:var(--radius-sm);
+  padding:0.4rem 0.8rem;
+  color:var(--color-primary);
+  min-width:64px;
+  justify-content:center;
+}
+.ms-stat span.ms-emoji{ font-size:1rem; }
+
+.ms-actions{ display:flex; gap:0.6rem; }
+
+/* Spielfeld */
+.ms-board-wrap{
+  display:flex;
+  justify-content:center;
+  overflow-x:auto;
+  padding:0.4rem;
+}
+
+.ms-board{
+  display:grid;
+  gap:3px;
+  background:var(--red-200);
+  padding:6px;
+  border-radius:var(--radius-md);
+  box-shadow: inset 0 0 0 1.5px var(--red-300);
+}
+
+.ms-cell{
+  width:32px; height:32px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-sans);
+  font-weight:800;
+  font-size:0.95rem;
+  border-radius:5px;
+  background: linear-gradient(160deg,#ffffff, var(--paper-200));
+  border:1px solid var(--red-100);
+  cursor:pointer;
+  user-select:none;
+  transition: transform .08s ease, background .15s ease;
+}
+.ms-cell:hover{ background: var(--red-50); }
+.ms-cell:active{ transform:scale(0.94); }
+
+.ms-cell.revealed{
+  background:var(--paper-100);
+  border-color:var(--paper-300);
+  cursor:default;
+  box-shadow:none;
+}
+.ms-cell.revealed:hover{ background:var(--paper-100); }
+
+.ms-cell.flagged{ background:var(--red-100); }
+.ms-cell.flagged:hover{ background:var(--red-100); }
+
+.ms-cell.mine{ background:var(--red-900); }
+.ms-cell.mine-exploded{ background:var(--red-950); animation: ms-shake .35s ease; }
+
+@keyframes ms-shake{
+  0%,100%{ transform:translateX(0); }
+  25%{ transform:translateX(-3px); }
+  75%{ transform:translateX(3px); }
+}
+
+.ms-cell.hint-safe{ box-shadow: inset 0 0 0 3px var(--color-success); }
+.ms-cell.hint-mine{ box-shadow: inset 0 0 0 3px var(--red-900); }
+
+/* Zahlenfarben (klassisch, für Erkennbarkeit bewusst nicht rein rot) */
+.ms-n1{ color:#2563eb; }
+.ms-n2{ color:#16803d; }
+.ms-n3{ color:var(--red-800); }
+.ms-n4{ color:#5b21b6; }
+.ms-n5{ color:#92400e; }
+.ms-n6{ color:#0d9488; }
+.ms-n7{ color:var(--ink-900); }
+.ms-n8{ color:var(--ink-500); }
+
+.ms-endmsg{
+  text-align:center;
+  font-weight:700;
+  font-size:1rem;
+  margin-top:1.1rem;
+  padding:0.7rem;
+  border-radius:var(--radius-sm);
+  display:none;
+}
+.ms-endmsg.show{ display:block; }
+.ms-endmsg.win{ background:var(--color-success-bg); color:var(--color-success); }
+.ms-endmsg.lose{ background:var(--red-50); color:var(--color-primary); }
+
+.ms-mode-hint{
+  text-align:center;
+  font-size:0.8rem;
+  color:var(--ink-500);
+  margin-top:0.9rem;
+}
+
+/* Coach-Panel */
+.ms-coach{
+  position:sticky;
+  top:calc(var(--header-h) + 1.5rem);
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+
+.ms-coach-head{ display:flex; align-items:center; gap:0.8rem; }
+.ms-coach-avatar{
+  width:46px; height:46px;
+  border-radius:50%;
+  background: linear-gradient(155deg, var(--color-primary), var(--red-950));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.4rem;
+  flex-shrink:0;
+  box-shadow:var(--shadow-sm);
+}
+.ms-coach-name{ font-weight:700; color:var(--color-primary); font-size:1rem; }
+.ms-coach-role{ font-size:0.78rem; color:var(--ink-500); }
+
+.ms-coach-bubble{
+  background:var(--red-50);
+  border:1px solid var(--red-100);
+  border-radius:var(--radius-md);
+  padding:0.9rem 1rem;
+  font-size:0.9rem;
+  color:var(--ink-700);
+  min-height:64px;
+}
+
+.ms-coach-toggle{
+  display:flex; align-items:center; justify-content:space-between;
+  font-size:0.85rem; color:var(--ink-700); font-weight:600;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ============================== HEADER ============================== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">Aeropus</a>
+    <nav class="main-nav" id="mainNav">
+      <a href="/">Aeropus</a>
+      <a href="/ueber">Über mich</a>
+      <a href="/productivity">Produktivität</a>
+      <a href="/games" class="active">Games</a>
+      <a href="/coding">Programmieren</a>
+      <a href="/mehr">Mehr</a>
+    </nav>
+    <button class="burger" id="burgerBtn" aria-label="Menü öffnen">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+
+
+<!-- ============================== HERO ============================== -->
+<section class="hero">
+  <span class="eyebrow">Bereich</span>
+  <h1>Games</h1>
+  <p class="lead">Eine Übersicht meiner Spiele-Projekte, Reviews und Favoriten.</p>
+</section>
+
+<!-- ============================== GAMES-LISTE ============================== -->
+<section class="section" id="games-liste">
+  <div class="section-head">
+    <span class="eyebrow">Übersicht</span>
+    <h2>Alle Einträge</h2>
+    <p>Karten mit Link und Beschreibung — bereit zum Befüllen.</p>
+  </div>
+
+  <div class="card-grid">
+    <a href="https://geometry-rider-game.vercel.app/" class="card" style="display:block;">
+      <div class="card-icon">▸</div>
+      <h4>Geometry Rider '25</h4>
+      <p>Seit Ende 2025 das mit beste Spiel von mir, einfach zu verstehen und es macht Spaß</p>
+    </a>
+    <a href="https://aerogamehub.vercel.app/fussball" class="card--accent" style="display:block;">
+      <div class="card-icon">▸</div>
+      <h4>ULTRADrop</h4>
+      <p>Fußballspiel angelehnt an bekannte Draft/Squad Builder.</p>
+    </a>
+    <!--<a href="#" class="card" style="display:block;">
+      <div class="card-icon">▸</div>
+      <h4>Spieltitel 3</h4>
+      <p>Kurze Beschreibung des Spiels oder Projekts hier einfügen.</p>
+    </a>
+    <a href="#" class="card" style="display:block;">
+      <div class="card-icon">▸</div>
+      <h4>Spieltitel 4</h4>
+      <p>Kurze Beschreibung des Spiels oder Projekts hier einfügen.</p>
+    </a>
+    <a href="#" class="card" style="display:block;">
+      <div class="card-icon">▸</div>
+      <h4>Spieltitel 5</h4>
+      <p>Kurze Beschreibung des Spiels oder Projekts hier einfügen.</p>
+    </a>
+    <a href="#" class="card card--accent" style="display:block;">
+      <div class="card-icon">★</div>
+      <h4>Spieltitel 6</h4>
+      <p>Kurze Beschreibung des Spiels oder Projekts hier einfügen.</p>
+    </a>-->
+  </div>
+</section>
+
+<!-- ============================== MINESWEEPER ============================== -->
+<section class="section section-alt" id="minesweeper">
+  <div class="section-head">
+    <span class="eyebrow">Eingebettetes Spiel</span>
+    <h2>Minesweeper</h2>
+    <p>Klassisches Minesweeper direkt hier auf der Seite — mit einem Coach, der dir sichere Züge zeigt, wenn du feststeckst.</p>
+  </div>
+
+  <div class="ms-app">
+    <!-- Spielbereich -->
+    <div class="ms-panel">
+      <div class="ms-toolbar">
+        <div class="ms-diffs">
+          <button class="ms-diff-btn active" data-diff="easy">Leicht</button>
+          <button class="ms-diff-btn" data-diff="medium">Mittel</button>
+          <button class="ms-diff-btn" data-diff="hard">Schwer</button>
+        </div>
+        <div class="ms-stats">
+          <div class="ms-stat"><span class="ms-emoji">💣</span><span id="msMineCount">10</span></div>
+          <div class="ms-stat"><span class="ms-emoji">⏱</span><span id="msTimer">0</span></div>
+        </div>
+        <div class="ms-actions">
+          <button class="btn btn-outline btn-sm" id="msFlagModeBtn">🚩 Flaggen-Modus</button>
+          <button class="btn btn-primary btn-sm" id="msResetBtn">Neu starten</button>
+        </div>
+      </div>
+
+      <div class="ms-board-wrap">
+        <div class="ms-board" id="msBoard"></div>
+      </div>
+
+      <div class="ms-endmsg" id="msEndMsg"></div>
+      <p class="ms-mode-hint">Linksklick: aufdecken · Rechtsklick: Flagge setzen · Auf dem Handy: Flaggen-Modus verwenden.</p>
+    </div>
+
+    <!-- Coach -->
+    <div class="ms-panel ms-coach">
+      <div class="ms-coach-head">
+        <div class="ms-coach-avatar">🧭</div>
+        <div>
+          <div class="ms-coach-name">Coach Rosa</div>
+          <div class="ms-coach-role">Dein Minesweeper-Assistent</div>
+        </div>
+      </div>
+      <div class="ms-coach-bubble" id="msCoachMsg">
+        Starte eine Runde — ich sage dir Bescheid, wenn ich einen sicheren Zug für dich sehe.
+      </div>
+      <button class="btn btn-secondary" id="msHintBtn">Hinweis anfordern</button>
+      <div class="ms-coach-toggle">
+        Auto-Hinweise
+        <label class="switch">
+          <input type="checkbox" id="msAutoHint">
+          <span class="switch-track"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Aeropus</div>
+      <p>Meine persönliche Seite — Produktivität, Games, Code und mehr an einem Ort.</p>
+    </div>
+    <div class="footer-col">
+      <h6>Navigation</h6>
+      <a href="/">Aeropus</a>
+      <a href="/ueber">Über mich</a>
+      <a href="/productivity">Produktivität</a>
+    </div>
+    <div class="footer-col">
+      <h6>Mehr</h6>
+      <a href="/games">Games</a>
+      <a href="/coding">Programmieren</a>
+      <a href="/mehr">Mehr</a>
+    </div>
+    <div class="footer-col">
+      <h6>Kontakt</h6>
+      <a href="#">E-Mail</a>
+      <a href="#">GitHub</a>
+      <a href="#">Impressum</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Aeropus. Alle Rechte vorbehalten.</span>
+    <span>Gebaut mit Raleway, Playfair Display &amp; Barlow.</span>
+  </div>
+</footer>
+
+<!-- ============================== TOASTS ============================== -->
+<div class="toast-stack" id="toastStack"></div>
+
+
+<script>
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mainNav = document.getElementById('mainNav');
+  burgerBtn.addEventListener('click', () => {
+    burgerBtn.classList.toggle('open');
+    mainNav.classList.toggle('open');
+  });
+  mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    burgerBtn.classList.remove('open');
+    mainNav.classList.remove('open');
+  }));
+
+  function showToast(type){
+    const stack = document.getElementById('toastStack');
+    const toast = document.createElement('div');
+    toast.className = 'toast toast--' + type;
+
+    const icon = type === 'error' ? '!' : 'i';
+    const title = type === 'error' ? 'Fehler aufgetreten' : 'Zur Information';
+    const text = type === 'error'
+      ? 'Etwas ist schiefgelaufen. Bitte versuche es erneut.'
+      : 'Das ist eine kurze informative Nachricht für dich.';
+
+    toast.innerHTML = `
+      <div class="toast-icon">${icon}</div>
+      <div>
+        <div class="toast-title">${title}</div>
+        <div class="toast-text">${text}</div>
+      </div>
+      <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
+    `;
+    stack.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('show'));
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 400);
+    }, 5000);
+  }
+
+  /* ============================================================
+     MINESWEEPER + COACH
+     ============================================================ */
+  (function(){
+    const DIFFICULTIES = {
+      easy:   { rows: 9,  cols: 9,  mines: 10 },
+      medium: { rows: 12, cols: 12, mines: 24 },
+      hard:   { rows: 14, cols: 14, mines: 40 }
+    };
+
+    const boardEl   = document.getElementById('msBoard');
+    const mineCountEl = document.getElementById('msMineCount');
+    const timerEl   = document.getElementById('msTimer');
+    const endMsgEl  = document.getElementById('msEndMsg');
+    const resetBtn  = document.getElementById('msResetBtn');
+    const flagModeBtn = document.getElementById('msFlagModeBtn');
+    const hintBtn   = document.getElementById('msHintBtn');
+    const autoHintChk = document.getElementById('msAutoHint');
+    const coachMsg  = document.getElementById('msCoachMsg');
+    const diffBtns  = document.querySelectorAll('.ms-diff-btn');
+
+    let diff = 'easy';
+    let rows, cols, mineCount;
+    let grid = [];          // { mine, revealed, flagged, adjacent }
+    let firstClick = true;
+    let gameOver = false;
+    let flagMode = false;
+    let timerInterval = null;
+    let seconds = 0;
+    let revealedCount = 0;
+
+    function setCoach(msg){ coachMsg.textContent = msg; }
+
+    function startTimer(){
+      stopTimer();
+      seconds = 0;
+      timerEl.textContent = '0';
+      timerInterval = setInterval(() => {
+        seconds++;
+        timerEl.textContent = seconds;
+      }, 1000);
+    }
+    function stopTimer(){ if(timerInterval){ clearInterval(timerInterval); timerInterval = null; } }
+
+    function buildGrid(){
+      const cfg = DIFFICULTIES[diff];
+      rows = cfg.rows; cols = cfg.cols; mineCount = cfg.mines;
+      grid = [];
+      for(let r=0;r<rows;r++){
+        const row = [];
+        for(let c=0;c<cols;c++){
+          row.push({ mine:false, revealed:false, flagged:false, adjacent:0 });
+        }
+        grid.push(row);
+      }
+    }
+
+    function placeMines(excludeR, excludeC){
+      let placed = 0;
+      while(placed < mineCount){
+        const r = Math.floor(Math.random()*rows);
+        const c = Math.floor(Math.random()*cols);
+        const tooClose = Math.abs(r-excludeR) <= 1 && Math.abs(c-excludeC) <= 1;
+        if(grid[r][c].mine || tooClose) continue;
+        grid[r][c].mine = true;
+        placed++;
+      }
+      for(let r=0;r<rows;r++){
+        for(let c=0;c<cols;c++){
+          if(grid[r][c].mine) continue;
+          grid[r][c].adjacent = neighbors(r,c).filter(([nr,nc]) => grid[nr][nc].mine).length;
+        }
+      }
+    }
+
+    function neighbors(r,c){
+      const out = [];
+      for(let dr=-1;dr<=1;dr++){
+        for(let dc=-1;dc<=1;dc++){
+          if(dr===0 && dc===0) continue;
+          const nr=r+dr, nc=c+dc;
+          if(nr>=0 && nr<rows && nc>=0 && nc<cols) out.push([nr,nc]);
+        }
+      }
+      return out;
+    }
+
+    function renderBoard(){
+      boardEl.innerHTML = '';
+      boardEl.style.gridTemplateColumns = `repeat(${cols}, 32px)`;
+      for(let r=0;r<rows;r++){
+        for(let c=0;c<cols;c++){
+          const cell = document.createElement('div');
+          cell.className = 'ms-cell';
+          cell.dataset.r = r;
+          cell.dataset.c = c;
+          cell.addEventListener('click', () => onCellClick(r,c));
+          cell.addEventListener('contextmenu', (e) => { e.preventDefault(); toggleFlag(r,c); });
+          boardEl.appendChild(cell);
+        }
+      }
+      updateMineCounter();
+    }
+
+    function cellEl(r,c){ return boardEl.children[r*cols+c]; }
+
+    function updateMineCounter(){
+      const flagged = grid.flat().filter(cell => cell.flagged).length;
+      mineCountEl.textContent = Math.max(mineCount - flagged, 0);
+    }
+
+    function onCellClick(r,c){
+      if(gameOver) return;
+      const cell = grid[r][c];
+      if(cell.flagged) return;
+
+      if(flagMode){ toggleFlag(r,c); return; }
+
+      if(firstClick){
+        placeMines(r,c);
+        firstClick = false;
+        startTimer();
+        setCoach('Los geht’s! Ich melde mich, sobald ich einen sicheren Zug für dich finde.');
+      }
+
+      reveal(r,c);
+      checkWin();
+      if(!gameOver && autoHintChk.checked) runCoach(true);
+    }
+
+    function reveal(r,c){
+      const cell = grid[r][c];
+      if(cell.revealed || cell.flagged) return;
+      cell.revealed = true;
+      revealedCount++;
+      const el = cellEl(r,c);
+      el.classList.add('revealed');
+
+      if(cell.mine){
+        el.classList.add('mine','mine-exploded');
+        el.textContent = '💣';
+        endGame(false, r, c);
+        return;
+      }
+
+      if(cell.adjacent > 0){
+        el.textContent = cell.adjacent;
+        el.classList.add('ms-n' + cell.adjacent);
+      } else {
+        neighbors(r,c).forEach(([nr,nc]) => {
+          if(!grid[nr][nc].revealed) reveal(nr,nc);
+        });
+      }
+    }
+
+    function toggleFlag(r,c){
+      if(gameOver) return;
+      const cell = grid[r][c];
+      if(cell.revealed) return;
+      cell.flagged = !cell.flagged;
+      const el = cellEl(r,c);
+      el.classList.toggle('flagged', cell.flagged);
+      el.textContent = cell.flagged ? '🚩' : '';
+      updateMineCounter();
+    }
+
+    function checkWin(){
+      const totalSafe = rows*cols - mineCount;
+      if(revealedCount === totalSafe){
+        endGame(true);
+      }
+    }
+
+    function endGame(won, explodedR, explodedC){
+      gameOver = true;
+      stopTimer();
+      for(let r=0;r<rows;r++){
+        for(let c=0;c<cols;c++){
+          const cell = grid[r][c];
+          const el = cellEl(r,c);
+          if(cell.mine && !cell.flagged){
+            el.classList.add('mine');
+            if(!(r===explodedR && c===explodedC)) el.textContent = '💣';
+          }
+        }
+      }
+      endMsgEl.classList.add('show', won ? 'win' : 'lose');
+      endMsgEl.classList.remove(won ? 'lose' : 'win');
+      endMsgEl.textContent = won
+        ? `Gewonnen! Du hast alle Felder in ${seconds}s freigelegt.`
+        : 'Getroffen! Diese Mine hat dich erwischt — versuch es nochmal.';
+      setCoach(won
+        ? 'Sehr gut gespielt! Klick auf „Neu starten“ für die nächste Runde.'
+        : 'Kein Problem — jede Runde ist eine neue Chance. Ich helfe dir wieder mit Hinweisen.');
+    }
+
+    function resetGame(){
+      stopTimer();
+      gameOver = false;
+      firstClick = true;
+      revealedCount = 0;
+      endMsgEl.classList.remove('show','win','lose');
+      endMsgEl.textContent = '';
+      timerEl.textContent = '0';
+      buildGrid();
+      renderBoard();
+      setCoach('Neue Runde! Deckt dein erster Klick ist immer sicher — leg los.');
+    }
+
+    /* ---------- Coach-Logik ---------- */
+    function clearHints(){
+      boardEl.querySelectorAll('.hint-safe, .hint-mine').forEach(el => {
+        el.classList.remove('hint-safe','hint-mine');
+      });
+    }
+
+    function runCoach(silent){
+      clearHints();
+      if(gameOver){ setCoach('Die Runde ist vorbei — starte neu für einen weiteren Hinweis.'); return; }
+      if(firstClick){ setCoach('Mach zuerst einen Klick, dann kann ich das Feld analysieren.'); return; }
+
+      // 1) Sichere Felder finden: aufgedeckte Zahl == Anzahl geflaggter Nachbarn -> restliche Nachbarn sind sicher
+      for(let r=0;r<rows;r++){
+        for(let c=0;c<cols;c++){
+          const cell = grid[r][c];
+          if(!cell.revealed || cell.adjacent === 0) continue;
+          const nb = neighbors(r,c);
+          const flaggedCount = nb.filter(([nr,nc]) => grid[nr][nc].flagged).length;
+          const hiddenUnflagged = nb.filter(([nr,nc]) => !grid[nr][nc].revealed && !grid[nr][nc].flagged);
+          if(flaggedCount === cell.adjacent && hiddenUnflagged.length > 0){
+            const [sr,sc] = hiddenUnflagged[0];
+            cellEl(sr,sc).classList.add('hint-safe');
+            setCoach(`Das Feld bei Zeile ${sr+1}, Spalte ${sc+1} ist sicher — alle Minen um die „${cell.adjacent}“ sind bereits markiert.`);
+            return;
+          }
+        }
+      }
+
+      // 2) Minenfelder finden: Zahl == Anzahl aller verdeckten Nachbarn (auch ungeflaggt) -> alle sind Minen
+      for(let r=0;r<rows;r++){
+        for(let c=0;c<cols;c++){
+          const cell = grid[r][c];
+          if(!cell.revealed || cell.adjacent === 0) continue;
+          const nb = neighbors(r,c);
+          const hiddenAll = nb.filter(([nr,nc]) => !grid[nr][nc].revealed);
+          if(hiddenAll.length === cell.adjacent && hiddenAll.some(([nr,nc]) => !grid[nr][nc].flagged)){
+            const target = hiddenAll.find(([nr,nc]) => !grid[nr][nc].flagged);
+            const [mr,mc] = target;
+            cellEl(mr,mc).classList.add('hint-mine');
+            setCoach(`Vorsicht bei Zeile ${mr+1}, Spalte ${mc+1} — das Feld muss eine Mine sein. Am besten flaggen.`);
+            return;
+          }
+        }
+      }
+
+      if(!silent) setCoach('Gerade sehe ich keinen eindeutig sicheren Zug. Versuch eine Ecke mit wenigen Nachbarn oder rate mit Bedacht.');
+    }
+
+    /* ---------- Events ---------- */
+    diffBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        diffBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        diff = btn.dataset.diff;
+        resetGame();
+      });
+    });
+
+    resetBtn.addEventListener('click', resetGame);
+
+    flagModeBtn.addEventListener('click', () => {
+      flagMode = !flagMode;
+      flagModeBtn.classList.toggle('btn-outline', !flagMode);
+      flagModeBtn.classList.toggle('btn-primary', flagMode);
+      flagModeBtn.textContent = flagMode ? '🚩 Flaggen-Modus (an)' : '🚩 Flaggen-Modus';
+    });
+
+    hintBtn.addEventListener('click', () => runCoach(false));
+
+    resetGame();
+  })();
+</script>
+
+</body>
+</html>
