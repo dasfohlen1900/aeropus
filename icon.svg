@@ -1,0 +1,29 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <rect width="256" height="256" fill="#ffffff"/>
+
+  <!-- Große rosa Kreise -->
+  <circle cx="62" cy="52" r="42" fill="#EFA4A0"/>
+  <circle cx="170" cy="52" r="42" fill="#EFA4A0"/>
+  <circle cx="170" cy="170" r="42" fill="#EFA4A0"/>
+
+  <!-- Mittlere beige Kreise -->
+  <circle cx="33" cy="125" r="26" fill="#EDC7A9"/>
+  <circle cx="85" cy="125" r="26" fill="#EDC7A9"/>
+  <circle cx="85" cy="190" r="26" fill="#EDC7A9"/>
+
+  <!-- Hellgrüne Kreise -->
+  <circle cx="18" cy="182" r="14" fill="#C8D8A8"/>
+  <circle cx="52" cy="182" r="14" fill="#C8D8A8"/>
+  <circle cx="52" cy="212" r="14" fill="#C8D8A8"/>
+
+  <!-- Türkise Kreise -->
+  <circle cx="8" cy="220" r="7" fill="#92E1C2"/>
+  <circle cx="26" cy="220" r="7" fill="#92E1C2"/>
+  <circle cx="26" cy="238" r="7" fill="#92E1C2"/>
+
+  <!-- Mini-Kreise -->
+  <circle cx="6" cy="238" r="3.5" fill="#6FD7B4"/>
+  <circle cx="14" cy="238" r="3.5" fill="#6FD7B4"/>
+  <circle cx="14" cy="246" r="3.5" fill="#6FD7B4"/>
+</svg>
+``
